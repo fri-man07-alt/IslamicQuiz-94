@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Islamic Quiz PRO - Ultimate Edition</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* =========================================
+           1. المتغيرات والخلفيات
+           ========================================= */
+        :root { 
+            --p: #ffd700; 
+            --c: rgba(10, 15, 25, 0.95); 
+            --t: #fff; 
+            --bg-img: url('https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?q=80&w=1080'); 
+            --vs-img: url('https://replicate.delivery/xpbkg/fU9m03Yj2T4H1Q6w6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q/out-0.png'); 
+        }
+        
+        body.theme-blue { 
+            --p: #00d4ff; 
+            --c: rgba(0, 10, 30, 0.95); 
+            --bg-img: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=1080'); 
+        }
+        
+        body.theme-red { 
+            --p: #ff4d4d; 
+            --c: rgba(20, 5, 5, 0.95); 
+            --bg-img: url('https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?q=80&w=1080'); 
+        }
+        
+        body.theme-pink { 
+            --p: #ff66b2; 
+            --c: rgba(20, 5, 15, 0.95); 
+            --bg-img: url('https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1080'); 
+        }
+        
+        body.vs-mode-active { 
+            background: #050112 !important; 
+            background-image: var(--vs-img) !important; 
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            outline: none; 
+            font-family: Tahoma, sans-serif; 
+        }
+        
+        body { 
+            margin: 0; 
+            color: var(--t); 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #05050a; 
+            background-image: var(--bg-img); 
+            background-repeat: no-repeat; 
+            background-position: center center; 
+            background-attachment: fixed; 
+            background-size: cover; 
+            transition: all 0.5s; 
+        }
+        
+        .snow-overlay { 
+            position: fixed; 
+            inset: 0; 
+            z-index: -1; 
+            pointer-events: none; 
+            background-image: radial-gradient(4px 4px at 100px 50px, rgba(255,255,255,0.3) , transparent), 
+                              radial-gradient(6px 6px at 200px 150px, rgba(255,255,255,0.3), transparent); 
+            background-size: 600px 600px; 
+            animation: snowAnim 15s linear infinite; 
+            opacity: 0.5; 
+        }
+        
+        @keyframes snowAnim { 
+            0% { transform: translateY(-600px); } 
+            100% { transform: translateY(0px); } 
+        }
+
+        #top-glow { 
+            position: fixed; 
+            top: 3%; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 50; 
+            pointer-events: none; 
+        }
+        
+        .fire-banner { 
+            color: #000 !important; 
+            font-weight: 900; 
+            font-size: 1.4rem; 
+            background: linear-gradient(180deg, var(--p), #ff8c00); 
+            padding: 8px 30px; 
+            border-radius: 25px; 
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.6); 
+            display: inline-block; 
+            animation: textFade 4s ease-in-out infinite; 
+        }
+        
+        @keyframes textFade { 
+            0% { opacity: 0; transform: translateY(-15px) scale(0.9); } 
+            15% { opacity: 1; transform: translateY(0) scale(1); } 
+            85% { opacity: 1; transform: translateY(0) scale(1); } 
+            100% { opacity: 0; transform: translateY(15px) scale(0.9); } 
+        }
+        /* =========================================
+           2. الصناديق، الأزرار، والشارات والألقاب
+           ========================================= */
+        .box { 
+            position: relative; 
+            z-index: 10; 
+            width: 92%; 
+            max-width: 400px; 
+            background: var(--c); 
+            padding: 25px 20px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-top: 3px solid var(--p); 
+            text-align: center; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.9); 
+            backdrop-filter: blur(10px); 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            margin-top: 15px;
+        }
+        
+        .q-btn { 
+            background: linear-gradient(to right, rgba(30, 20, 45, 0.9), rgba(15, 10, 25, 0.9)); 
+            border: 1px solid #555; 
+            color: white; 
+            width: 100%; 
+            margin: 6px 0; 
+            padding: 12px; 
+            border-radius: 12px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        .q-btn:active { transform: scale(0.98); }
+        .primary { background: var(--p); color: #000; border: none; box-shadow: 0 0 15px rgba(255,215,0,0.3); }
+        .danger { background: rgba(255,0,0,0.2); border-color: #ff4d4d; color: #ff4d4d; }
+        
+        .correct { background: #2ecc71 !important; color: #000 !important; border: 2px solid #fff !important; animation: pulseG 0.5s; }
+        .wrong { background: #ff4d4d !important; color: #ffffff !important; border: none !important; }
+        
+        @keyframes pulseG { 
+            0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.7); } 
+            70% { box-shadow: 0 0 0 10px rgba(46,204,113,0); } 
+            100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); } 
+        }
+
+        #global-toast { 
+            visibility: hidden; 
+            min-width: 250px; 
+            background-color: rgba(255, 0, 0, 0.9); 
+            color: #fff; 
+            text-align: center; 
+            border-radius: 12px; 
+            padding: 16px; 
+            position: fixed; 
+            z-index: 999999; 
+            left: 50%; 
+            top: 30px; 
+            transform: translateX(-50%); 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            border: 2px solid #ff4d4d; 
+            box-shadow: 0 0 20px rgba(255,0,0,0.5);
+        }
+        
+        #global-toast.show { visibility: visible; animation: dropin 0.5s, dropout 0.5s 4.5s; }
+        @keyframes dropin { from {top: 0; opacity: 0;} to {top: 30px; opacity: 1;} } 
+        @keyframes dropout { from {top: 30px; opacity: 1;} to {top: 0; opacity: 0;} }
+        .owner-badge { color: #ffd700; text-shadow: 0 0 5px #ffae00; margin: 0 4px; display: inline-flex; align-items: center; }
+        .owner-badge i:first-child { font-size: 0.9rem; transform: translateY(-3px); }
+        .owner-badge i:last-child { font-size: 0.7rem; margin-right: -4px; }
+        .mod-badge { color: #00d4ff; text-shadow: 0 0 5px #005c97; margin: 0 4px; font-size: 0.8rem; display: inline-block; }
+        .dev-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(255, 0, 0, 0.2); border: 1px solid #ff4d4d; color: #ff4d4d !important; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; white-space: nowrap; }
+
+        .legendary-badge { display: inline-flex; justify-content: center; align-items: center; border-radius: 12px; font-weight: bold; position: relative; overflow: hidden; text-align: center; transition: all 0.3s ease; z-index: 1;}
+        .badge-text { position: relative; z-index: 2; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; color: #ffd700 !important; }
+        
+        @keyframes shineSweep { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        .has-shine::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; transform: skewX(-25deg); animation: shineSweep 4s infinite; z-index: 5; pointer-events: none; }
+        .shine-silver::after { background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8), transparent); }
+        .shine-blue::after { background: linear-gradient(to right, transparent, rgba(0, 212, 255, 0.9), transparent); }
+        .shine-gold::after { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.9), transparent); }
+        
+        @keyframes forceBgMove { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        @keyframes fireMoving { 0% { background-position: 0% 100%; } 50% { background-position: 0% 0%; } 100% { background-position: 0% 100%; } }
+        @keyframes innerSnowFall { from { background-position: 0px 0px, 0px 0px, 0px 0px; } to { background-position: 0px 40px, 0px 50px, 0px 0px; } }
+        @keyframes distinctPulse { 0% { box-shadow: 0 0 10px #6a11cb, inset 0 0 10px #2575fc; } 100% { box-shadow: 0 0 20px #2575fc, inset 0 0 15px #6a11cb; } }
+
+        .title-طالب { background: linear-gradient(135deg, #2a2a2a 0%, #111 100%) !important; border: 2px solid #888 !important; }
+        .title-طالب .badge-text { color: #ffd700 !important; text-shadow: 1px 1px 2px #000 !important; }
+        .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 2px solid #b388ff !important; animation: distinctPulse 2s infinite alternate !important;}
+        .title-حافظ { background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), linear-gradient(135deg, #2d1b0d 0%, #4a2e15 50%, #2d1b0d 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px #000, 0 0 15px rgba(255, 215, 0, 0.6) !important; }
+        .title-سيد { background-color: #0288d1 !important; background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.9) 2px, transparent 3px), radial-gradient(circle at 30px 25px, rgba(255,255,255,0.7) 1.5px, transparent 2px), linear-gradient(135deg, #b3e5fc 0%, #4fc3f7 50%, #0288d1 100%) !important; background-size: 40px 40px, 50px 50px, 100% 100% !important; animation: innerSnowFall 3s linear infinite !important; border: 2px solid #fff !important; }
+        .title-حكيم { background-image: url('https://www.transparenttextures.com/patterns/black-scales.png'), linear-gradient(0deg, #300 0%, #900 30%, #f40 70%, #fc0 100%) !important; background-size: 40px, 100% 400% !important; animation: fireMoving 10s ease-in-out infinite !important; border: 2px solid #f40 !important; box-shadow: inset 0 0 20px #000, 0 0 15px #f40 !important; }
+        .title-تاج { background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(270deg, #111 0%, #2a2a2a 50%, #000 100%) !important; background-size: 200% 200% !important; animation: forceBgMove 8s linear infinite alternate !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 30px #000, 0 0 20px rgba(255, 215, 0, 0.7) !important; }
+        .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; background-size: 200% 200% !important; border: 2px solid #ffd700 !important; animation: forceBgMove 15s linear infinite !important; }
+        
+        @keyframes blueWave { 0% { transform: translateX(-100%) skewX(-15deg); } 50% { transform: translateX(100%) skewX(-15deg); } 100% { transform: translateX(-100%) skewX(-15deg); } }
+        .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; position: relative; overflow: hidden; }
+        .title-ذهبي::before { content: ''; position: absolute; top: 0; left: 0; width: 150%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.6), transparent); animation: blueWave 4s ease-in-out infinite; z-index: 1; pointer-events: none; }
+        .title-ذهبي .badge-text { color: #000 !important; text-shadow: 0 0 5px #fff, 0 0 10px #fff !important; font-weight: 900 !important; position: relative; z-index: 2;}
+        
+        @keyframes ledMoving { 0% { border-color: rgba(255, 215, 0, 0.1); } 30% { border-color: rgba(255, 215, 0, 0.8); box-shadow: 0 0 12px #ffd700; } 60% { border-color: rgba(255, 215, 0, 0.1); } 100% { border-color: rgba(255, 215, 0, 0.1); } }
+        .title-لواء { background-image: linear-gradient(rgba(10,15,25,0.4), rgba(10,15,25,0.6)), url('https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?q=80&w=800') !important; background-size: cover !important; background-position: center 30% !important; border: 2px solid rgba(255, 215, 0, 0.4) !important; animation: ledMoving 3s linear infinite !important; }
+        .title-لواء .badge-text { color: #ffd700 !important; text-shadow: 2px 2px 4px #000, 0 0 15px #ffae00, 0 0 25px #ff0000 !important; font-family: "Amiri", serif; font-weight: 900 !important; }
+
+        @keyframes premiumPulse { 0%, 100% { text-shadow: 0 0 5px #ffd700; transform: scale(1); } 50% { text-shadow: 0 0 15px #ffd700, 0 0 25px #ff8c00; transform: scale(1.02); } }
+        .premium-name { background: linear-gradient(45deg, #ffd700, #ffae00, #ffffff, #ffd700); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: forceBgMove 3s linear infinite, premiumPulse 2s ease-in-out infinite !important; font-weight: 900 !important; display: inline-block; }
+        /* =========================================
+           3. النوافذ، الملاحة، والمتصدرين
+           ========================================= */
+        .floating-top-nav { position: fixed; top: 15px; left: 15px; right: 15px; z-index: 10000; pointer-events: none; height: 160px; }
+        .circ-btn { width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 2px solid var(--p); color: var(--p); font-size: 1.4rem; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255,215,0,0.2); pointer-events: auto; margin-bottom: 10px; }
+        .circ-btn:active { transform: scale(0.9); }
+        #profile-img-btn { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--p); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); object-fit: cover; cursor: pointer; pointer-events: auto; background-color: #fff; margin-bottom: 10px; }
+        #profile-img-btn-placeholder { width: 55px; height: 55px; font-size: 1.8rem; margin-bottom: 10px; display:flex; justify-content:center; align-items:center; }
+        
+        .id-badge-container { background: linear-gradient(to bottom, #434343, #1c1c1c); border: 2px solid #b8860b; border-radius: 12px; padding: 10px 15px; margin: 15px auto; display: inline-flex; align-items: center; justify-content: center; min-width: 220px; direction: ltr; gap: 12px; }
+        .id-badge-text { color: #ffd700; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+        .copy-btn { background: rgba(255,215,0,0.2); border: 1px solid #b8860b; color: #ffd700; border-radius: 8px; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; pointer-events: auto;}
+
+        #custom-toast { visibility: hidden; min-width: 250px; background-color: rgba(0,0,0,0.9); color: #ffd700; text-align: center; border-radius: 12px; padding: 16px; position: fixed; z-index: 99999; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 1.1rem; font-weight: bold; border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255,215,0,0.4);}
+        #custom-toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} } 
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 20000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .m-content { background: #111; border: 2px solid var(--p); padding: 25px 20px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; display: none; flex-direction: column; max-height: 85vh; overflow-y: auto; pointer-events: auto;}
+        
+        .theme-opt { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.3s; pointer-events: auto; }
+        .theme-opt:active { transform: scale(0.9); }
+
+        .lb-row { display: flex; justify-content: flex-start; align-items: center; background: rgba(255, 255, 255, 0.05); margin: 6px 0; padding: 8px 10px; border-radius: 10px; gap: 8px; border: 1px solid rgba(255,255,255,0.05); cursor:pointer; transition:0.2s;}
+        .lb-row:active { transform:scale(0.98); }
+        .lb-row .rank-num { font-weight: 900; color: var(--p); font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0;}
+        .lb-avatar { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--p); object-fit: cover; flex-shrink: 0;}
+        .lb-info { flex:1; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; overflow: hidden; margin: 0 5px;}
+        .lb-score { color:var(--p); font-size:1.1rem; font-weight:bold; min-width: 45px; text-align: right; flex-shrink: 0;}
+        .lb-me { background: rgba(255,215,0,0.1); border-color: var(--p); }
+
+        .preset-img-opt { width: 65px !important; height: 65px !important; border-radius: 50%; border: 3px solid rgba(255,255,255,0.1); object-fit: cover; cursor: pointer; background-color: #fff; transition:0.3s;}
+        .preset-img-opt.selected { border-color: var(--p); box-shadow: 0 0 15px var(--p); transform:scale(1.1);}
+        #preset-imgs-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
+
+        .game-helps-circular { display: flex; justify-content: center; gap: 15px; margin-top: 20px; width: 100%; z-index: 20;}
+        .help-circle-btn { width: 65px; height: 65px; border-radius: 50%; background: rgba(0,0,0,0.8); border: 2px solid var(--p); display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--t); cursor: pointer; position: relative; transition: 0.2s;}
+        .help-circle-btn:active { transform: scale(0.9); }
+        .help-circle-btn i { font-size: 1.3rem; margin-bottom: 5px; color: var(--p); }
+        .help-circle-btn span { font-size: 0.65rem; font-weight: bold; color: #fff; }
+        .help-circle-btn .count { position: absolute; top: -5px; right: -5px; background: #ff4d4d; color: #fff; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; font-size: 0.7rem; font-weight: bold; border: 1px solid #fff; }
+
+        .lucky-spin-container { margin: 10px auto; display: flex; flex-direction: column; align-items: center; }
+        .circular-spin-container { position: relative; width: 280px; height: 280px; margin: 10px auto 20px auto; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=800'); background-size: cover; background-position: center; border: 2px solid rgba(0, 212, 255, 0.5); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 50px #000; overflow: hidden; }
+        .spin-item { position: absolute; width: 65px; height: 65px; border-radius: 50%; background: rgba(10, 20, 30, 0.85); border: 2px solid #555; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; font-size: 0.6rem; font-weight: bold; transition: all 0.1s ease; box-shadow: 0 0 10px rgba(0,0,0,0.8); transform: translate(-50%, -50%); text-align: center; line-height: 1.1; z-index: 2; backdrop-filter: blur(3px); }
+        .spin-item.active { transform: translate(-50%, -50%) scale(1.2); border-color: #fff !important; box-shadow: 0 0 20px #fff, inset 0 0 15px rgba(255,255,255,0.5) !important; z-index: 10; background: rgba(0,0,0,0.9); }
+        .item-red { border-color: #ff4d4d !important; color: #ff4d4d !important; }
+        .item-gold { border-color: #ffd700 !important; color: #ffd700 !important; }
+        .item-blue { border-color: #00d4ff !important; color: #00d4ff !important; }
+        .item-green { border-color: #2ecc71 !important; color: #2ecc71 !important; }
+        .item-orange { border-color: #ff9900 !important; color: #ff9900 !important; }
+        
+        @keyframes mythicSpinGlow { 0%, 100% { box-shadow: 0 0 15px #8b0000; } 50% { box-shadow: 0 0 30px #ff0000; } }
+        .mythic-bg { background-color: #4A0000 !important; background-image: radial-gradient(circle, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; font-weight: 900 !important; animation: mythicSpinGlow 2s infinite !important; }
+        /* =========================================
+           4. ستايل الأونلاين (VS Mode) والأسئلة
+           ========================================= */
+        .mythic-room { 
+            background: linear-gradient(rgba(10, 5, 20, 0.7), rgba(10, 5, 20, 0.8)), var(--vs-img) no-repeat center center !important; 
+            background-size: cover !important; border: 2px solid #00d4ff !important; box-shadow: 0 0 30px rgba(0, 212, 255, 0.4) !important; 
+        }
+        
+        #vs-header { 
+            display:none; justify-content:space-between; align-items:flex-start; margin-bottom:15px; 
+            background: linear-gradient(rgba(10, 5, 25, 0.8), rgba(10, 5, 25, 0.9)), var(--vs-img) no-repeat center center !important; 
+            background-size: cover !important; padding:10px 15px; border-radius:15px; border:1px solid #00d4ff; 
+            position: relative; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .p-box { display:flex; flex-direction:column; align-items:center; width:35%; position: relative; text-align: center;}
+        .p-box img { width:60px !important; height:60px !important; border-radius:50%; object-fit:cover; border: 3px solid #555; transition: 0.3s; }
+        
+        #p-left-img { border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.5); }
+        #p-right-img { border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.5); }
+        
+        .turn-timer { 
+            position:absolute; top:-15px; width:30px; height:30px; border-radius:50%; background:var(--p); color:#000; 
+            font-weight:bold; display:flex; justify-content:center; align-items:center; border:2px solid #fff; 
+            opacity:0; transform:scale(0); transition:0.3s; z-index:5; box-shadow: 0 0 15px var(--p);
+        }
+        
+        .active-turn img { border-color: #00d4ff !important; box-shadow: 0 0 15px #00d4ff !important; transform:scale(1.1); }
+        .active-turn .turn-timer { opacity:1; transform:scale(1); background: #00d4ff; color: #fff;}
+        .disabled-opts { pointer-events: none; opacity: 0.6; filter: grayscale(50%); transition: 0.3s;}
+        
+        .vs-center { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 30%; }
+        .vs-huge { font-size: 2.2rem; color: #ff4d4d; font-weight: 900; text-shadow: 0 0 15px #ff0000; font-family: Impact, sans-serif; animation: pulseG 1s infinite; margin-bottom: 5px;}
+        
+        @keyframes popScale { 0% {transform:scale(0.5); opacity:0;} 70% {transform:scale(1.3); opacity:1;} 100% {transform:scale(1); opacity:1;} }
+        .countdown-num { font-size: 2.5rem; color: #00d4ff; font-weight: 900; animation: popScale 0.5s ease; text-shadow: 0 0 15px #00d4ff; margin:0;}
+        
+        @keyframes popInGo { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.5); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        .go-text { font-size: 2rem; color: #ffd700; font-weight: 900; animation: popInGo 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; text-shadow: 0 0 15px #ff8c00, 0 0 30px #ff0000; margin:0;}
+        
+        .ready-btn { padding: 5px 15px; font-size: 0.9rem; border-radius: 20px; animation: pulseG 1.5s infinite; border: none; background: #2ecc71; color: #000; font-weight: bold; cursor: pointer; white-space: nowrap; width: 100%; margin-bottom:5px;}
+        
+        .match-status-text { position: absolute; top: -25px; font-weight: 900; font-size: 1.1rem; text-shadow: 1px 1px 3px #000; white-space: nowrap; display: none; animation: popScale 0.5s ease; z-index: 10;}
+        .status-win { color: #ffd700; display: block;}
+        .status-lose { color: #ff4d4d; display: block;}
+        
+        #match-result-overlay { 
+            position:absolute; inset:0; background:rgba(0,0,0,0.85); z-index:100; display:none; 
+            justify-content:center; align-items:center; flex-direction:column; border-radius:13px; 
+            backdrop-filter: blur(5px); animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;}}
+        .result-card { text-align: center; color:#fff; width: 90%; }
+        
+        .vs-option-btn { background: rgba(30, 20, 45, 0.9); border: 2px solid #555; border-radius: 12px; color: #fff; padding: 15px; font-weight: bold; margin: 6px 0; width: 100%; transition: 0.3s ease; text-align: center; cursor: pointer; position: relative; z-index: 20;}
+        .vs-option-btn:hover { border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.4); }
+        .vs-option-btn.selected { border-color: #00d4ff !important; box-shadow: 0 0 15px rgba(0, 212, 255, 0.6) !important; background: rgba(0, 212, 255, 0.2) !important; }
+        .vs-option-btn.correct { border-color: #fff !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.6) !important; background: #2ecc71 !important; color:#000 !important;}
+        .vs-option-btn.wrong { border-color: #ff4d4d !important; box-shadow: 0 0 15px rgba(255, 77, 77, 0.6) !important; background: #ff4d4d !important; }
+    </style>
+</head>
+<body dir="rtl">
+    <div class="snow-overlay"></div>
+    <div id="top-glow"><span id="glow-msg" class="fire-banner">سبحان الله</span></div>
+    <div id="global-toast">🚫 لقد تم حظر هذا اللاعب!</div>
+
+    <div id="loading-screen" style="position:fixed; inset:0; background:#05050a; z-index:9999999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:var(--p);">
+        <i class="fas fa-bolt fa-spin" style="font-size:4rem; margin-bottom:20px; color:#00d4ff;"></i>
+        <h2 style="margin:0; font-weight:900;">جاري الاتصال...</h2>
+    </div>
+
+    <div id="banned-screen" style="position:fixed; inset:0; background:#000; z-index:99999999; display:none; flex-direction:column; justify-content:center; align-items:center; color:#ff4d4d; text-align:center; padding:20px;">
+        <i class="fas fa-skull-crossbones" style="font-size:6rem; margin-bottom:20px;"></i>
+        <h1 style="font-weight:900; margin:0;">لقد تم حظرك!</h1>
+        <p style="color:#aaa; font-size:1.2rem; margin-top:10px;">لا يمكنك الدخول إلى اللعبة.</p>
+    </div>
+
+    <div id="custom-toast"></div>
+    <audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="sfx-win" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"></audio>
+    <audio id="sfx-lose" src="https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3"></audio>
+
+    <div class="floating-top-nav" id="main-nav" style="display:none;">
+        <div style="position: absolute; right: 0; top: 0; display:flex; flex-direction:column; align-items:center;">
+            <img src="" id="profile-img-btn" onclick="window.openMod('modal-profile-settings')" style="display:none;" onerror="this.style.display='none'; document.getElementById('profile-img-btn-placeholder').style.display='flex';">
+            <div id="profile-img-btn-placeholder" class="circ-btn" onclick="window.openMod('modal-profile-settings')"><i class="fas fa-user-circle"></i></div>
+            <div class="circ-btn" onclick="window.openTitles()">🎖️</div>
+            <div id="btn-wheel" class="circ-btn" onclick="window.openMod('modal-luckyspin'); window.renderLuckySpin();">🎁</div>
+        </div>
+        <div style="position: absolute; left: 0; top: 0; display:flex; flex-direction:column; align-items:center;">
+            <div class="circ-btn" onclick="window.openMod('modal-add-friend')"><i class="fas fa-user-plus"></i></div>
+            <div class="circ-btn" onclick="window.openMod('modal-requests')" style="position:relative;"><i class="fas fa-bell"></i><span id="req-badge-ui" style="position:absolute; top:-3px; left:-3px; background:#ff4d4d; color:#fff; font-size:0.7rem; width:18px; height:18px; border-radius:50%; display:none; justify-content:center; align-items:center; font-weight:bold;">0</span></div>
+            <div class="circ-btn" onclick="window.openMod('modal-online-friends')"><i class="fas fa-users"></i><span id="online-badge-ui" style="position:absolute; top:-2px; right:-2px; background:#2ecc71; width:12px; height:12px; border-radius:50%; border:2px solid #000; display:none;"></span></div>
+        </div>
+    </div>
+
+    <div id="screen-login" class="box" style="display:none; flex-direction:column; align-items:center;">
+        <h1 style="color:var(--p); font-size:2.5rem; margin-bottom:10px;">تحدي العباقرة</h1>
+        <p style="color:#fff; margin-bottom:30px; font-size:1.2rem;">سجل اسمك لتبدأ المنافسة</p>
+        <input type="text" id="guest-name-input" placeholder="أدخل اسمك هنا" maxlength="15" style="width:80%; padding:15px; border-radius:12px; border:2px solid var(--p); background:rgba(0,0,0,0.8); color:#fff; font-size:1.2rem; margin-bottom:20px; text-align:center;">
+        <button onclick="window.loginGuest()" class="q-btn primary" style="width:80%;">دخول كضيف ➔</button>
+        <div style="margin: 20px 0; color: #aaa; font-weight:bold;">أو</div>
+        <button id="btn-google-login" onclick="window.loginGoogle()" class="q-btn" style="background:#fff; color:#444; border:none; display:flex; gap:10px; padding:12px 25px; border-radius:15px; width:auto; font-weight:900;"><i class="fab fa-google" style="color:#DB4437; font-size:1.4rem;"></i> <span>تسجيل بحساب جوجل</span></button>
+    </div>
+
+    <div id="screen-start" class="box" style="display:none; padding-top:35px;">
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; gap:8px; margin:15px 0 20px 0; position:relative; z-index:20;"><span id="welcome-msg"></span><div id="dev-badge-container" style="display:none;"></div></div>
+        <div id="user-title-display" style="margin-bottom:25px; overflow:visible;"></div>
+        <div class="id-badge-container"><span style="color:#aaa; font-size:1rem; font-weight:bold;">ID:</span><span id="user-id-display" class="id-badge-text">--</span><button class="copy-btn" onclick="window.copyMyID()"><i class="fas fa-copy"></i></button></div>
+        <div style="background: rgba(255,215,0,0.1); border: 1px solid var(--p); color: var(--p); padding: 8px 25px; border-radius: 20px; font-weight: bold; display: inline-block; margin: 15px 0; font-size: 1.3rem;">النقاط: <span id="ui-pts">0</span></div>
+        <div style="font-size:1rem; color:#2ecc71; margin-bottom: 20px; font-weight:bold;">رصيد التلميحات: <span id="saved-hints-ui">0</span> 💡</div>
+        <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 12px;">
+            <button class="q-btn primary" onclick="window.startG()" style="flex: 1; font-size: 1.1rem; margin: 0; padding: 12px;">التحدي العادي 🔥</button>
+            <button class="q-btn" style="flex: 1; border-color: var(--p); color: var(--p); background: rgba(255,215,0,0.05); margin: 0; font-size: 1.1rem; padding: 12px;" onclick="window.openLB()">🏆 المتصدرين</button>
+        </div>
+        <button class="q-btn" style="width: 100%; border-color: #ff4d4d; color: #fff; background: linear-gradient(135deg, #8a0303 0%, #ff4d4d 100%); margin: 0; font-size: 1.3rem; text-shadow: 1px 1px 3px #000; box-shadow: 0 0 15px rgba(255, 77, 77, 0.4); padding: 15px;" onclick="window.openMod('modal-challenge-menu')">⚔️ تحدي مباشر (أونلاين) ⚔️</button>
+    </div>
+
+    <div id="screen-game" class="box" style="display:none; width:95%; max-width:480px; padding: 15px; transition: none;">
+        <div id="vs-header">
+            <div id="match-result-overlay">
+                <div class="result-card">
+                    <div id="mr-icon" style="font-size:3.5rem; margin-bottom:5px;">🏆</div>
+                    <h2 id="mr-title" style="color:var(--p); font-size:2rem; margin:0 0 5px 0;">--</h2>
+                    <p id="mr-desc" style="font-size:0.9rem; margin-bottom:15px; color:#eee;">--</p>
+                    <div style="display:flex; gap:10px;">
+                        <button class="q-btn primary" style="flex:1; margin:0; padding:10px; color:#000;" onclick="window.closeMatchResult()">الرئيسية 🏠</button>
+                        <button class="q-btn" style="flex:1; margin:0; padding:10px; background:#3498db; border-color:#3498db; color:#fff;" onclick="window.rematchFriend()" id="btn-rematch">تحدي جديد 🔄</button>
+                    </div>
+                </div>
+            </div>
+            <div class="p-box" id="p-left-box">
+                <div class="match-status-text" id="vs-left-status"></div>
+                <div class="turn-timer" id="p-left-timer">25</div>
+                <img id="p-left-img" src="">
+                <span id="vs-left-name" class="premium-name" style="font-size:0.9rem; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">أنت</span>
+                <div id="ready-area-left" style="margin-top:10px; width:100%;"><button id="btn-ready-me" class="ready-btn" onclick="window.setReady()">استعداد</button></div>
+            </div>
+            <div class="vs-center">
+                <div class="vs-huge">VS</div>
+                <div id="match-status-area" style="display:flex; flex-direction:column; align-items:center; gap:5px;">
+                    <button id="btn-cancel-ready" class="q-btn danger" style="background:transparent; border-color:#ff4d4d; color:#ff4d4d; padding:2px 8px; font-size:0.7rem; margin:0;" onclick="window.openMod('modal-confirm-surrender')">انسحاب 🏳️</button>
+                    <div id="vs-countdown" style="display:none; margin-top:5px;"></div>
+                </div>
+            </div>
+            <div class="p-box" id="p-right-box">
+                <div class="match-status-text" id="vs-right-status"></div>
+                <div class="turn-timer" id="p-right-timer">25</div>
+                <img id="p-right-img" src="">
+                <span id="vs-right-name" class="premium-name" style="font-size:0.9rem; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">الخصم</span>
+                <div id="ready-area-right" style="margin-top:10px; width:100%;"><span id="opp-status-text" style="color:#ffd700; font-size:0.8rem; font-weight:bold;">ينتظر ⏳</span></div>
+            </div>
+        </div>
+
+        <div id="normal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button class="q-btn" style="width:auto; padding:8px 15px; border-color:var(--p); color:var(--p); margin:0; font-size:1rem; background:rgba(0,0,0,0.5);" onclick="window.openMod('modal-game-menu')">القائمة</button>
+            <div style="color: var(--p); font-weight: bold; font-size: 1.1rem; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 10px; border:1px solid #333;" id="ui-prog">1 / 0</div>
+        </div>
+        
+        <div style="min-height: 80px; display:flex; align-items:center; justify-content:center; margin-bottom:15px;"><div id="q-txt" style="font-weight: bold; font-size: 1.2rem; line-height: 1.4; color: #fff; text-align:center;">جاري التحميل...</div></div>
+        
+        <div id="opts-container" style="display:none; position:relative; z-index:20;">
+            <button class="q-btn vs-option-btn" id="opt0" onclick="window.checkAns(0)"></button>
+            <button class="q-btn vs-option-btn" id="opt1" onclick="window.checkAns(1)"></button>
+            <button class="q-btn vs-option-btn" id="opt2" onclick="window.checkAns(2)"></button>
+            <button class="q-btn vs-option-btn" id="opt3" onclick="window.checkAns(3)"></button>
+            <button id="btn-surrender" class="q-btn danger" style="background:transparent; border-color:#ff4d4d; color:#ff4d4d; margin-top:15px; display:none;" onclick="window.openMod('modal-confirm-surrender')">الانسحاب من التحدي 🏳️</button>
+        </div>
+        
+        <div id="explanation-box" style="text-align:center; display:none; background: rgba(46, 204, 113, 0.1); border: 1px solid #2ecc71; padding: 15px; border-radius: 10px; margin-top: 15px; color: #fff; font-size: 1rem; line-height: 1.5; text-align: right;"></div>
+        <div id="post-ans-actions" style="display:none; margin-top:15px; position:relative; z-index:20;"><button class="q-btn primary" style="font-size:1.2rem; padding:12px;" onclick="window.handleContinue()">متابعة ➔</button></div>
+        
+        <div id="normal-helps" class="game-helps-circular">
+            <div class="help-circle-btn" onclick="window.useAud()"><i class="fas fa-users"></i><span>جمهور</span><div class="count" id="c-aud">0</div></div>
+            <div class="help-circle-btn" onclick="window.use50()"><i class="fas fa-cut" style="color:#ff4d4d;"></i><span>حذف 2</span><div class="count" id="c-50">0</div></div>
+            <div class="help-circle-btn" onclick="window.useHint()"><i class="fas fa-lightbulb" style="color:var(--p);"></i><span>تلميح</span><div class="count" id="c-hint">0</div></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="custom-modal">
+        <div class="m-content" id="modal-custom-confirm" style="border-color:#ff8c00;">
+            <div style="font-size: 3.5rem; margin-bottom: 10px;" id="confirm-icon">⚠️</div>
+            <h3 id="confirm-title" style="color:var(--p); margin-top:0; font-size:1.8rem;">تأكيد</h3>
+            <p id="confirm-msg" style="color:#fff; font-size:1.1rem; margin-bottom:20px;">هل أنت متأكد من هذا الإجراء؟</p>
+            <div style="display:flex; gap:10px;">
+                <button class="q-btn danger" id="confirm-btn-yes" style="flex:1;">نعم، متأكد</button>
+                <button class="q-btn primary" onclick="window.closeMod()" style="flex:1;">إلغاء</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-confirm-surrender" style="border-color:#ff4d4d;">
+            <h3 style="color:#ff4d4d; margin-top:0;">⚠️ تأكيد الانسحاب</h3>
+            <p style="color:#fff; font-size:1.1rem; margin-bottom:20px;">الخروج الآن يعني خسارة المباراة تلقائياً!</p>
+            <div style="display:flex; gap:10px;">
+                <button class="q-btn danger" onclick="window.confirmSurrender()">نعم، انسحاب</button>
+                <button class="q-btn primary" onclick="window.closeMod()">تراجع</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-challenge-menu">
+            <h3 style="color:#ff4d4d; margin-top:0; font-size:1.8rem; text-shadow: 0 0 10px rgba(255,77,77,0.5);">⚔️ ساحة التحدي</h3>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="q-btn" style="background:linear-gradient(135deg, #005c97 0%, #363795 100%); border:1px solid #00d4ff; color:#fff; font-size:1.2rem;" onclick="window.startMatchmaking('random', null)">🌍 تحدي عام (عشوائي)</button>
+                <button class="q-btn" style="background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%); border:1px solid #2ecc71; color:#fff; font-size:1.2rem;" onclick="window.openMod('modal-online-friends')">👥 تحدي صديق متصل</button>
+                <button class="q-btn danger" onclick="window.closeMod()" style="background:transparent; border-color:#aaa; color:#aaa; margin-top:10px;">رجوع</button>
+            </div>
+        </div>
+
+        <div class="m-content mythic-room" id="modal-loading-online" style="padding:40px 20px;">
+            <i class="fas fa-bolt" style="font-size:3rem; color:#00d4ff; margin-bottom:15px; text-shadow:0 0 15px #00d4ff;"></i>
+            <h3 style="color:#fff; margin:0 0 20px 0; text-shadow: 0 0 10px #000;">غرفة التحدي</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; width:100%; margin:30px 0; position:relative; z-index:2;">
+                <div style="display:flex; flex-direction:column; align-items:center; width:40%;">
+                    <img id="wait-my-img" src="" style="width:70px; height:70px; border-radius:50%; border:3px solid #2ecc71; box-shadow:0 0 15px #2ecc71; object-fit:cover;">
+                    <span id="wait-my-name" class="premium-name" style="font-size:0.9rem; margin-top:8px;">أنت</span>
+                </div>
+                <div class="vs-huge" style="color:#00d4ff; text-shadow: 0 0 15px #00d4ff;">VS</div>
+                <div style="display:flex; flex-direction:column; align-items:center; width:40%;">
+                    <div style="width:70px; height:70px; border-radius:50%; border:3px dashed #ff4d4d; display:flex; justify-content:center; align-items:center; font-size:2rem; color:#ff4d4d; box-shadow:0 0 15px rgba(255, 77, 77, 0.5);">❓</div>
+                    <span style="color:#fff; font-size:0.9rem; margin-top:8px; opacity:0.7;">الخصم</span>
+                </div>
+            </div>
+            <p id="wait-msg-ui" style="color:#00d4ff; font-weight:bold; text-shadow:0 0 5px #000; position:relative; z-index:2;">جاري البحث عن منافس...</p>
+            <button class="q-btn danger" onclick="window.cancelMatchmaking()" style="background:rgba(255, 77, 77, 0.2); border-color:#ff4d4d; color:#ff4d4d; margin-top:15px; width:auto; padding:8px 20px; position:relative; z-index:2;">إلغاء وانسحاب</button>
+        </div>
+
+        <div class="m-content" id="modal-user-action" style="border-color:#ff8c00;">
+            <img id="action-user-img" src="" style="width:80px; height:80px; border-radius:50%; border:2px solid #ff8c00; margin:0 auto 10px; object-fit:cover;">
+            <h3 id="action-user-name" style="color:#fff; margin-top:0; font-size:1.4rem;">--</h3>
+            <p id="action-user-id" style="color:#aaa; font-size:0.9rem; margin-bottom:15px;">ID: --</p>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button id="btn-ban-user" class="q-btn danger" style="background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.banSelectedUser()">حظر اللاعب 🚫</button>
+                <button id="btn-promote-user" class="q-btn" style="background:rgba(0, 212, 255, 0.2); border-color:#00d4ff; color:#00d4ff; display:none;" onclick="window.promoteSelectedUser()">إعطاء إشراف ⭐️</button>
+                <button class="q-btn primary" onclick="window.closeMod()">إلغاء</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-ban-list">
+            <h2 style="color:#ff4d4d; margin:0 0 15px 0;">قائمة المحظورين 🚫</h2>
+            <div id="ban-list-container" style="max-height:50vh; overflow-y:auto; padding-right:5px;"></div>
+            <button class="q-btn primary" onclick="window.openMod('modal-profile-settings')" style="margin-top:15px;">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-mod-list">
+            <h2 style="color:#00d4ff; margin:0 0 15px 0;">قائمة المشرفين ⭐️</h2>
+            <div id="mod-list-container" style="max-height:50vh; overflow-y:auto; padding-right:5px;"></div>
+            <button class="q-btn primary" onclick="window.openMod('modal-profile-settings')" style="margin-top:15px;">رجوع</button>
+        </div>
+        <div class="m-content" id="modal-profile-settings">
+            <h3 style="color:var(--p); margin-top:0; font-size:1.8rem;">✏️ ملفك الشخصي</h3>
+            <div style="margin:10px 0 20px 0; position:relative; display:inline-block;">
+                <img src="" id="current-profile-preview" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--p); object-fit: cover;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                <label for="avatar-uploader" style="position:absolute; bottom:0; right:0; background:#fff; color:#000; width:35px; height:35px; border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; font-size:1.2rem; border:2px solid var(--p);"><i class="fas fa-camera"></i></label>
+                <input type="file" id="avatar-uploader" accept="image/*" style="display:none;" onchange="window.handleImageUpload(event)">
+            </div>
+            
+            <div style="display:flex; justify-content:center; align-items:center; margin-bottom:10px;">
+                <span id="welcome-msg-settings" class="premium-name" style="font-size:1.4rem;">--</span>
+                <span id="profile-role-badge" style="margin-left:8px; margin-right:8px;"></span>
+            </div>
+            
+            <button class="q-btn" onclick="window.openMod('modal-edit-name')" style="background:transparent; border-color:#555; margin-bottom:10px; width:auto; padding:6px 15px; display:inline-flex;">تعديل الاسم <i class="fas fa-pencil-alt" style="font-size:0.8rem; margin-right:8px;"></i></button>
+            <div style="font-size:1.2rem; color:#fff; font-weight:bold; margin-bottom:15px; background:rgba(255,215,0,0.1); padding:5px 15px; border-radius:10px; border:1px dashed var(--p);">ID: <span id="settings-id" style="color:var(--p); letter-spacing:1px;">--</span></div>
+            
+            <div id="admin-buttons-container" style="display:none; justify-content:center; gap:10px; margin-bottom:15px;">
+                <button id="btn-ban-list" class="q-btn danger" style="margin:0; padding:10px; background:rgba(255, 77, 77, 0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.openBanList()">المحظورين 🚫</button>
+                <button id="btn-mod-list" class="q-btn" style="margin:0; padding:10px; background:rgba(0, 212, 255, 0.2); border-color:#00d4ff; color:#00d4ff; display:none;" onclick="window.openModList()">المشرفين ⭐️</button>
+            </div>
+
+            <button class="q-btn primary" onclick="window.openMod('modal-preset-avatars')" style="background:#111; border:1px solid var(--p); color:var(--p); margin-bottom:15px;"><i class="fas fa-images"></i> اختيار شخصية جاهزة</button>
+            <button class="q-btn primary" id="st-snd" onclick="window.togSnd()" style="background:#2a2a2a; color:#fff; border:1px solid rgba(255,255,255,0.2);">الصوت: مفعل 🔊</button>
+            
+            <div style="margin: 15px 0 20px 0; border-top:1px solid #333; padding-top:15px;">
+                <p style="color:#aaa; margin-bottom:10px; font-weight:bold;">السمات 🎨</p>
+                <div style="display:flex; justify-content:center; gap:15px;">
+                    <div class="theme-opt" onclick="window.setThm('')" style="background:#ffd700;"></div>
+                    <div class="theme-opt" onclick="window.setThm('theme-red')" style="background:#ff4d4d;"></div>
+                    <div class="theme-opt" onclick="window.setThm('theme-blue')" style="background:#00d4ff;"></div>
+                    <div class="theme-opt" onclick="window.setThm('theme-pink')" style="background:#ff66b2;"></div>
+                </div>
+            </div>
+            <button class="q-btn danger" onclick="window.logout()" style="background:transparent; margin-bottom:15px;">تسجيل خروج 🚪</button>
+            <button class="q-btn primary" onclick="window.closeMod()">رجوع ✔️</button>
+        </div>
+
+        <div class="m-content" id="modal-preset-avatars">
+            <h3 style="color:var(--p); margin-top:0;">الصور الجاهزة 🖼️</h3>
+            <div id="preset-imgs-grid">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140039.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140051.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140044.png" class="preset-img-opt" onclick="window.setPresetAvatar(this.src, this)">
+            </div>
+            <button class="q-btn danger" onclick="window.openMod('modal-profile-settings')" style="background:transparent;">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-challenge-invite">
+            <h3 style="color:#ff4d4d; margin-top:0; font-size:1.5rem;">⚔️ تحدي جديد!</h3>
+            <p style="color:#fff; font-size:1.2rem; margin:15px 0;"><span id="challenger-name-ui" class="premium-name">--</span> يتحداك في مباراة مباشرة!</p>
+            <div style="display:flex; gap:10px;">
+                <button class="q-btn" style="background:#2ecc71; color:#000;" onclick="window.acceptChallenge()">قبول التحدي 🔥</button>
+                <button class="q-btn danger" style="background:transparent;" onclick="window.rejectChallenge()">رفض</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-action-success">
+            <div style="font-size: 4rem; margin-bottom: 10px;" id="action-icon-ui">✅</div>
+            <div class="grand-prize-title" id="action-title-ui" style="font-size:2rem;">تم بنجاح!</div>
+            <div class="grand-prize-desc" id="action-desc-ui" style="font-size:1.2rem; color:#fff; font-weight:bold; margin-bottom:20px;">--</div>
+            <button class="q-btn primary" id="action-btn-ui">متابعة</button>
+        </div>
+
+        <div class="m-content" id="modal-title-info">
+            <h3 style="color:var(--p); margin-top:0; font-size:1.8rem;" id="title-info-name">--</h3>
+            <p style="color:#fff; font-size:1.2rem; line-height:1.6; margin:20px 0;" id="title-info-desc">--</p>
+            <button class="q-btn primary" onclick="window.openMod('modal-titles')">متابعة ✔️</button>
+        </div>
+
+        <div class="m-content" id="modal-luckyspin" style="width:95%; max-width:450px; padding: 20px 0; background:transparent; border:none; box-shadow:none;">
+            <h2 style="color:var(--p); margin:0 0 5px 0; font-size:3rem; text-shadow: 0 0 15px var(--p);">سحب الحظ</h2>
+            <div class="lucky-spin-container">
+                <p style="color:#fff; margin:0 0 15px 0; text-align:center; position:relative; z-index:2;">
+                    <span>لديك</span> <span id="spin-count" style="color:var(--p); font-weight:bold; font-size:1.2rem;">0</span> <span>محاولات مجانية</span>
+                </p>
+                <div class="circular-spin-container" id="spin-circular-grid"></div>
+            </div>
+            <div style="width: 100%; max-width: 300px; margin: 15px auto 0;">
+                <button class="q-btn primary" id="spin-btn" style="font-size: 1.4rem; padding: 12px; border-radius: 30px; box-shadow: 0 0 20px rgba(255,215,0,0.5);" onclick="window.startLuckySpin()">سحب الآن</button>
+                <button class="q-btn danger" style="background:transparent; border:1px solid #aaa; color:#aaa; margin-top:10px; border-radius: 30px;" onclick="window.closeMod()">إلغاء</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-grand-prize">
+            <div class="grand-prize-title" id="grand-prize-title-ui">مبروك! 🎉</div>
+            <div class="grand-prize-desc" id="grand-prize-desc-ui">--</div>
+            <div style="font-size: 4rem; margin-bottom: 20px;" id="grand-prize-icon-ui">🎁</div>
+            <button class="q-btn primary" onclick="window.closeGrandPrize()">متابعة</button>
+        </div>
+
+        <div class="m-content" id="modal-titles">
+            <h2 style="color:var(--p); margin:0 0 15px 0;">ألقابي ⭐</h2>
+            <div id="titles-list" style="max-height:55vh; overflow-y:auto; padding-right:5px;"></div>
+            <button class="q-btn primary" onclick="window.closeMod()" style="margin-top:15px;">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-add-friend">
+            <h3 style="color:var(--p); margin-top:0;">إضافة صديق أو بحث 👤</h3>
+            <input type="text" id="friend-id-input" placeholder="أدخل ID اللاعب" maxlength="8" style="width:100%; padding:15px; border-radius:12px; border:1px solid var(--p); background:rgba(0,0,0,0.8); color:#fff; text-align:center; font-size:1.2rem; margin-bottom:15px; font-weight:bold; letter-spacing:2px;">
+            <button class="q-btn primary" onclick="window.searchFriend()">بحث 🔍</button>
+            <div id="search-result-container" style="margin-top:15px; display:none;"></div>
+            <button class="q-btn danger" onclick="window.closeMod()" style="background:transparent; margin-top:10px;">إلغاء</button>
+        </div>
+
+        <div class="m-content" id="modal-requests">
+            <h3 style="color:var(--p); margin-top:0;">طلبات الصداقة 🔔</h3>
+            <div id="requests-list" style="max-height:40vh; overflow-y:auto; color:#aaa; margin:20px 0; font-size:1.1rem; text-align:right;"><span>لا يوجد طلبات صداقة حالياً.</span></div>
+            <button class="q-btn primary" onclick="window.closeMod()">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-online-friends">
+            <h3 style="color:#2ecc71; margin-top:0;">الأصدقاء المتصلين 🟢</h3>
+            <div id="online-friends-list" style="max-height:40vh; overflow-y:auto; color:#aaa; margin:20px 0; font-size:1.1rem; text-align:right;"><span>لا يوجد أصدقاء متصلين حالياً.</span></div>
+            <button class="q-btn primary" onclick="window.closeMod()">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-leaderboard">
+            <h2 style="color:var(--p); margin:-10px 0 15px 0;">🏆 المتصدرين</h2>
+            <div id="lb-list-container" style="display:flex; flex-direction:column; gap:5px;"></div>
+            <button class="q-btn primary" onclick="window.closeMod()" style="margin-top:10px;">رجوع</button>
+        </div>
+
+        <div class="m-content" id="modal-edit-name">
+            <h3 style="color:var(--p);">✏️ تغيير الاسم</h3>
+            <input type="text" id="new-name-input" placeholder="اسمك..." maxlength="15" style="width:100%; padding:15px; border-radius:12px; border:1px solid #555; background:rgba(0,0,0,0.8); color:#fff; text-align:center; font-size:1.1rem; margin-bottom:15px;">
+            <button class="q-btn primary" onclick="window.saveNewName()">حفظ ✔️</button>
+            <button class="q-btn danger" onclick="window.openMod('modal-profile-settings')" style="background:transparent;">إلغاء</button>
+        </div>
+
+        <div class="m-content" id="modal-lose-menu">
+            <h3 style="color:#ff4d4d; margin-top:0; font-size:1.8rem;">إجابة خاطئة! 💔</h3>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+                <button class="q-btn" style="background:#2ecc71; border-color:#2ecc71; color:#000;" onclick="window.saveAndExitG()">حفظ 💾</button>
+                <button class="q-btn primary" style="color:#000;" onclick="window.skipQMenu()">تجاوز ⏩</button>
+                <button class="q-btn" style="background:transparent; border-color:#e74c3c; color:#e74c3c;" onclick="window.goHomeG()">خروج 🚪</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-game-menu">
+            <h3 style="color:var(--p); margin-top:0; font-size:1.5rem;">القائمة</h3>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+                <button class="q-btn" style="background:#2ecc71; border-color:#2ecc71; color:#000;" onclick="window.saveAndExitG()">حفظ 💾</button>
+                <button class="q-btn primary" style="color:#000;" onclick="window.goHomeG()">خروج 🚪</button>
+                <button class="q-btn danger" onclick="window.closeMod()" style="background:transparent;">إلغاء</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-win">
+            <h2 style="color:var(--p); margin:0; font-size:2rem;">ألف مبروك! 🎉</h2>
+            <p style="color:#fff; font-size:1.1rem; margin-bottom:20px;">لقد أتممت جميع الأسئلة بنجاح!</p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="q-btn primary" style="color:#000;" onclick="window.goHomeG()">الرئيسية 🏠</button>
+                <button class="q-btn" style="background:#2ecc71; color:#000;" onclick="window.saveAndExitG()">حفظ 💾</button>
+                <button class="q-btn" style="background:#3498db; color:#fff;" onclick="window.shareResult()">شارك 🔗</button>
+            </div>
+        </div>
+
+        <div class="m-content" id="modal-aud">
+            <h3 style="color:var(--p);">رأي الجمهور 👥</h3>
+            <b style="color:#fff; font-size:1.3rem; display:block; margin:15px 0; text-align:center;" id="aud-pop-ans"></b>
+            <button class="q-btn primary" onclick="window.closeMod()">حسناً</button>
+        </div>
+    </div>
+    <script>
+        // ==========================================
+        // 1. الاتصال بقاعدة البيانات
+        // ==========================================
+        window.db = null; 
+        window.auth = null;
+        try { 
+            var firebaseConfig = { 
+                apiKey: "AIzaSyB5aIAXxxtpVCyvu4aveECY3CtfU0kQlAg", 
+                authDomain: "islamicquiz-94.firebaseapp.com", 
+                projectId: "islamicquiz-94", 
+                storageBucket: "islamicquiz-94.appspot.com" 
+            }; 
+            if (typeof firebase !== 'undefined') { 
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig); 
+                }
+                window.db = firebase.firestore(); 
+                window.auth = firebase.auth(); 
+            } 
+        } catch(e) { console.error(e); }
+
+        // ==========================================
+        // 2. المتغيرات والبيانات
+        // ==========================================
+        var DEVELOPER_EMAIL = "fri-man07@hotmail.com"; 
+        var currentUserRole = 'user'; 
+        
+        function isOwner(email) { return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); }
+        function isMod() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); }
+
+        function lsGet(k, d) { try { var v = localStorage.getItem(k); return v===null ? d : v; } catch(e) { return d; } }
+        function lsSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+        function generateNumID() { return Math.floor(10000000 + Math.random() * 89999999).toString(); }
+        
+        var authUid = null;
+        var pID = lsGet('ULT_PRO_ID_V4', generateNumID()); 
+        var loggedUser = lsGet('ULT_USER', ''); 
+        var isGoogle = lsGet('ULT_FB', 'false') === 'true'; 
+        var pts = parseInt(lsGet('ULT_P', 0)); if(isNaN(pts)) pts = 0;
+        var totalHints = parseInt(lsGet('ULT_TOTAL_HINTS', 3)); if(isNaN(totalHints)) totalHints = 3;
+        var spins = parseInt(lsGet('ULT_SPINS', 1)); if(isNaN(spins)) spins = 1;
+        var activeTitleId = lsGet('ULT_TITLE_ID', 't1'); 
+        var currentAvatar = lsGet('ULT_AVATAR', ''); 
+        
+        var ownedTitles = ['t1'];
+        try { ownedTitles = JSON.parse(lsGet('ULT_OWNED_TITLES', '["t1"]')); } catch(e) {}
+        
+        var answeredQs = [];
+        try { answeredQs = JSON.parse(lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
+        
+        var randomWinStreak = parseInt(lsGet('ULT_STREAK', 0)); if(isNaN(randomWinStreak)) randomWinStreak = 0;
+        var newTitlesList = [];
+        try { newTitlesList = JSON.parse(lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
+        
+        lsSet('ULT_PRO_ID_V4', pID);
+
+        function getWeekString() { 
+            var d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+4-(d.getDay()||7)); 
+            var y = new Date(d.getFullYear(),0,1); return d.getFullYear()+"_W"+Math.ceil((((d-y)/86400000)+1)/7); 
+        }
+
+        var titlesData = { 
+            't1': {n:'طالب علم', c:'title-طالب'}, 
+            't2': {n:'المتميز', c:'title-متميز', msg: 'سجل دخول بجوجل للحصول على اللقب المتميز مجاناً 📧'}, 
+            't4': {n:'حافظ الحديث', c:'title-حافظ', shine: 'silver', msg: 'للحصول على هذا اللقب يجب أن تكون في المركز الأول لمدة أسبوع 🥇'}, 
+            't5': {n:'سيد المعرفة', c:'title-سيد', shine: 'silver', msg: 'أجب على 250 سؤال صح للحصول عليه ❄️'}, 
+            't6': {n:'حكيم الأمة', c:'title-حكيم', shine: 'silver', msg: 'أجب على 350 سؤال صح للحصول عليه 🌋'}, 
+            't_تاج': {n:'تاج العلم', c:'title-تاج', extraIcon: '👑 ', shine: 'silver', msg: 'لقب نادر، يمكن الحصول عليه فقط من سحب الحظ 🎁'}, 
+            't_نجم': {n:'النجم الذهبي', c:'title-نجم', extraIcon: '⭐ ', shine: 'silver', msg: 'لقب نادر، يمكن الحصول عليه فقط من سحب الحظ 🎁'}, 
+            't_ذهبي': {n:'العقل الذهبي', c:'title-ذهبي', extraIcon: '💎 ', shine: 'blue', msg: 'اربح 12 تحدي أونلاين متتالي بدون خسارة للحصول عليه ⚔️'}, 
+            't_لواء': {n:'لِـوَاءُ الإِسْـلَام', c:'title-لواء', isDevOnly: true, shine: 'gold', msg: 'هذا اللقب خاص بالمطور حصرآ 🔒'} 
+        };
+
+        var spinPrizes = [ 
+            { tAR: 'تاج العلم', type: 'title', v: 't_تاج', p: 0.7, icon: '<i class="fas fa-crown" style="color:#ffd700;"></i>', c: 'mythic-bg', perc: '0.7%' }, 
+            { tAR: '1 تلميح', type: 'h', v: 1, p: 20, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '20%' }, 
+            { tAR: '100 نقطة', type: 'p', v: 100, p: 25, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '25%' }, 
+            { tAR: 'صندوق الجائزة', type: 'box', v: 't_نجم', p: 0.7, icon: '<i class="fas fa-gift"></i>', c: 'mythic-bg', perc: '0.7%' }, 
+            { tAR: '500 نقطة', type: 'p', v: 500, p: 10, icon: '<i class="fas fa-coins"></i>', c: 'item-green', perc: '10%' }, 
+            { tAR: '3 تلميح', type: 'h', v: 3, p: 10, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-orange', perc: '10%' }, 
+            { tAR: '2 تلميح', type: 'h', v: 2, p: 15, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '15%' }, 
+            { tAR: '300 نقطة', type: 'p', v: 300, p: 15, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '15%' } 
+        ];
+
+        var qList = []; 
+        var aud=5, f50=5, cur=0, locked=false, qOrder=[], optsOrder=[], sndOn=true, currentRunCorrect = 0, lastAnswerCorrect = false;
+        
+        var qDataRaw = [
+            ["من هو أول من آمن برسول الله ﷺ من الرجال؟","أبو بكر الصديق","عمر بن الخطاب","علي بن أبي طالب","عثمان بن عفان", "أبو بكر الصديق رضي الله عنه هو أول من آمن برسول الله ﷺ من الرجال الأحرار."],
+            ["من هو الصحابي الذي أرسله النبي ﷺ لاكتشاف خبر بني قريظة يوم الخندق وتأكد من غدرهم؟","الزبير بن العوام","حذيفة بن اليمان","سعد بن معاذ","المقداد بن عمرو","الزبير بن العوام رضي الله عنه، فقال النبي: (لكل نبي حواري، وحواريي الزبير)."]
+        ]; 
+        try { for(var j=0; j<qDataRaw.length; j++) { qList.push({ q:qDataRaw[j][0], o:[qDataRaw[j][1],qDataRaw[j][2],qDataRaw[j][3],qDataRaw[j][4]], exp:qDataRaw[j][5] || "" }); } } catch (error) {}
+
+        // ==========================================
+        // 3. دوال الحماية الأساسية
+        // ==========================================
+        function safeShow(id, displayType) { var el = document.getElementById(id); if(el) el.style.display = displayType || 'block'; }
+        function safeHide(id) { var el = document.getElementById(id); if(el) el.style.display = 'none'; }
+
+        // ==========================================
+        // 4. النوافذ والتأكيد
+        // ==========================================
+        window.showCustomConfirm = function(title, msg, onConfirm) {
+            window.playSndSafe('sfx-click');
+            var ct = document.getElementById('confirm-title'); if(ct) ct.innerText = title;
+            var cm = document.getElementById('confirm-msg'); if(cm) cm.innerText = msg;
+            var btnYes = document.getElementById('confirm-btn-yes');
+            if(btnYes) {
+                btnYes.onclick = function() {
+                    window.playSndSafe('sfx-click');
+                    window.closeMod();
+                    if(onConfirm) onConfirm();
+                };
+            }
+            window.openMod('modal-custom-confirm');
+        };
+
+        window.confirmSurrender = function() {
+            window.closeMod();
+            if(!isOnlineMode) return;
+            if(onlineData.status === 'waiting_ready') { 
+                window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); 
+            } else { 
+                window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); 
+            }
+        };
+
+        window.openMod = function(id) { 
+            window.playSndSafe('sfx-click');
+            var els = document.querySelectorAll('.m-content');
+            for(var i=0; i<els.length; i++) { els[i].style.display = 'none'; }
+            safeShow('custom-modal', 'flex'); 
+            safeShow(id, 'flex'); 
+            
+            if(id === 'modal-profile-settings') {
+                var wms = document.getElementById('welcome-msg-settings'); if(wms) wms.innerText = loggedUser;
+                var sid = document.getElementById('settings-id'); if(sid) sid.innerText = pID;
+                
+                var isOwn = false;
+                if (window.auth && window.auth.currentUser && window.auth.currentUser.email) {
+                    isOwn = isOwner(window.auth.currentUser.email);
+                }
+                var isMd = isMod();
+                
+                var badgeEl = document.getElementById('profile-role-badge');
+                if(badgeEl) { 
+                    if(isOwn) badgeEl.innerHTML = '<span class="owner-badge"><i class="fas fa-star"></i><i class="fas fa-star"></i></span> <span class="dev-badge" style="font-size:0.7rem; margin-right:5px;"><i class="fas fa-laptop-code"></i> المطور</span>'; 
+                    else if(isMd) badgeEl.innerHTML = '<span class="mod-badge"><i class="fas fa-star"></i></span>'; 
+                    else badgeEl.innerHTML = ''; 
+                }
+                
+                if(isOwn || isMd) { 
+                    safeShow('admin-buttons-container', 'flex'); 
+                    if(isOwn) { safeShow('btn-mod-list', 'block'); } else { safeHide('btn-mod-list'); }
+                } else { 
+                    safeHide('admin-buttons-container'); 
+                }
+
+                if(!isGoogle) { safeShow('guest-upgrade-container', 'block'); } else { safeHide('guest-upgrade-container'); }
+            }
+        };
+        
+        window.closeMod = function() { window.playSndSafe('sfx-click'); safeHide('custom-modal'); };
+        
+        window.openTitles = function() { 
+            var html = ''; 
+            for(var id in titlesData){ var t = titlesData[id]; var isActive = (id === activeTitleId); var isOwned = false; if(ownedTitles.indexOf(id) !== -1) isOwned = true; html += window.generateTitleHtml(id, t, isActive, isOwned, true, false); } 
+            var tl = document.getElementById('titles-list'); if(tl) tl.innerHTML = html; 
+            newTitlesList = []; lsSet('ULT_NEW_TITLES', '[]'); window.openMod('modal-titles'); 
+        };
+
+        window.backToTitles = function() { window.openTitles(); }; 
+        window.showTitleMsg = function(id) { 
+            var t = titlesData[id]; if(!t) return; 
+            document.getElementById('title-info-name').innerHTML = (t.extraIcon || '') + t.n; 
+            document.getElementById('title-info-desc').innerText = t.msg || 'هذا اللقب مقفول.'; 
+            window.openMod('modal-title-info'); 
+        };
+
+        // ==========================================
+        // 5. الإشعارات والصوت
+        // ==========================================
+        window.showGlobalToast = function(msg) { var gt = document.getElementById("global-toast"); if(gt) { gt.innerHTML = "🚫 " + msg; gt.className = "show"; setTimeout(function() { gt.className = gt.className.replace("show", ""); }, 4900); } };
+        window.showToast = function(msg) { var x = document.getElementById("custom-toast"); if(!x) return; x.innerHTML = '<i class="fas fa-info-circle" style="color:#2ecc71; margin-left:8px;"></i>' + msg; x.className = "show"; setTimeout(function() { x.className = x.className.replace("show", ""); }, 2900); };
+        window.playSndSafe = function(id) { if (!sndOn) return; try { var el = document.getElementById(id); if(el) { el.currentTime = 0; el.play().catch(function(){}); } } catch(e) {} };
+        window.togSnd = function() { sndOn = !sndOn; var stSnd = document.getElementById('st-snd'); if(stSnd) stSnd.innerText = sndOn ? "الصوت: مفعل 🔊" : "الصوت: معطل 🔇"; window.playSndSafe('sfx-click'); };
+        window.setThm = function(t) { document.body.className = t; window.playSndSafe('sfx-click'); lsSet('ULT_THEME', t); };
+
+        window.copyMyID = function() { window.playSndSafe('sfx-click'); navigator.clipboard.writeText(pID).then(function() { window.showToast("تم نسخ ID بنجاح!"); }).catch(function(){}); };
+        window.shareResult = function() { window.playSndSafe('sfx-click'); var shareTxt = "أكملت التحدي وحصلت على " + pts + " نقطة! 🔥 ID: " + pID; if (navigator.share) navigator.share({ title: 'Islamic Quiz PRO', text: shareTxt }).catch(function(){}); else window.copyMyID(); };
+
+        window.updateAvatarUI = function() {
+            var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); 
+            var btnImg = document.getElementById('profile-img-btn'); 
+            var settingsPreview = document.getElementById('current-profile-preview'); 
+            var opts = document.querySelectorAll('.preset-img-opt'); 
+            for(var i=0; i<opts.length; i++) { opts[i].classList.remove('selected'); }
+            
+            if (currentAvatar && currentAvatar !== '') { 
+                if(btnPlaceholder) btnPlaceholder.style.display = 'none'; 
+                if(btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } 
+                if(settingsPreview) settingsPreview.src = currentAvatar; 
+                for(var j=0; j<opts.length; j++) { if(opts[j].getAttribute('src') === currentAvatar) opts[j].classList.add('selected'); }
+            } else { 
+                if(btnPlaceholder) btnPlaceholder.style.display = 'flex'; 
+                if(btnImg) btnImg.style.display = 'none'; 
+                if(settingsPreview) settingsPreview.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; 
+            }
+        };
+
+        window.handleImageUpload = function(event) { 
+            var file = event.target.files[0]; if (!file) return; 
+            if (!file.type.startsWith('image/')) { window.showToast("رجاءً اختر صورة فقط!"); return; } 
+            if (file.size > 2 * 1024 * 1024) { window.showToast("الصورة كبيرة جداً! (الحد الأقصى 2MB)"); return; } 
+            var reader = new FileReader(); 
+            reader.onload = function(e) { currentAvatar = e.target.result; lsSet('ULT_AVATAR', currentAvatar); window.saveProgress(false); window.updateAvatarUI(); window.showToast("تم تحديث الصورة من الجهاز! ✅"); window.openMod('modal-profile-settings'); }; 
+            reader.readAsDataURL(file); 
+        };
+
+        window.setPresetAvatar = function(url, el) { window.playSndSafe('sfx-click'); currentAvatar = url; lsSet('ULT_AVATAR', currentAvatar); window.saveProgress(false); window.updateAvatarUI(); window.showToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); };
+        window.checkDailyReward = function() { var today = new Date().toDateString(); var lastLogin = lsGet('ULT_LAST_LOGIN', ''); if (lastLogin !== today && loggedUser !== '') { spins++; totalHints += 2; lsSet('ULT_LAST_LOGIN', today); window.saveProgress(false); setTimeout(function(){window.showToast("🎁 مكافأة يومية: +1 سحب، +2 تلميح!");}, 1500); } };
+        window.updateStatsUI = function() { var uiPts = document.getElementById('ui-pts'); if(uiPts) uiPts.innerText = pts; var savedHintsUI = document.getElementById('saved-hints-ui'); if(savedHintsUI) savedHintsUI.innerText = totalHints; var spinCount = document.getElementById('spin-count'); if(spinCount) spinCount.innerText = spins; window.updateTitleDisplay(); };
+        window.showSuccessModal = function(t, d, i, b) { var aTitle = document.getElementById('action-title-ui'); if(aTitle) aTitle.innerText = t; var aDesc = document.getElementById('action-desc-ui'); if(aDesc) aDesc.innerText = d; var aIcon = document.getElementById('action-icon-ui'); if(aIcon) aIcon.innerHTML = i; var aBtn = document.getElementById('action-btn-ui'); if(aBtn) aBtn.onclick = function() { window.openMod(b); window.playSndSafe('sfx-click'); }; window.openMod('modal-action-success'); window.playSndSafe('sfx-win'); };
+
+        // ==========================================
+        // 6. التحكم بالشاشات (تسجيل الدخول / الخروج)
+        // ==========================================
+        window.showStartScreen = function() {
+            safeHide('screen-login'); 
+            safeHide('screen-game'); 
+            safeShow('screen-start', 'block'); 
+            safeShow('main-nav', 'flex');
+            
+            var welcomeMsg = document.getElementById('welcome-msg'); 
+            var isDev = false;
+            if(window.auth && window.auth.currentUser && window.auth.currentUser.email) {
+                isDev = window.isOwner(window.auth.currentUser.email);
+            }
+            
+            if (welcomeMsg) { 
+                welcomeMsg.innerText = loggedUser; 
+                if (isGoogle || isDev) { 
+                    welcomeMsg.className = "premium-name"; 
+                    welcomeMsg.style.fontSize = "2.2rem"; 
+                    welcomeMsg.style.color = "transparent"; 
+                } else { 
+                    welcomeMsg.className = ""; 
+                    welcomeMsg.style.fontWeight = "bold"; 
+                    welcomeMsg.style.fontSize = "1.8rem"; 
+                    welcomeMsg.style.color = "#fff"; 
+                } 
+            }
+            
+            var devCont = document.getElementById('dev-badge-container'); 
+            if (devCont) { 
+                if(isDev) { 
+                    devCont.innerHTML = '<span class="dev-badge" style="font-size:0.9rem;"><i class="fas fa-laptop-code"></i> المطور</span>'; 
+                    safeShow('dev-badge-container', 'inline-flex'); 
+                } else { safeHide('dev-badge-container'); } 
+            }
+            
+            var uidDisplay = document.getElementById('user-id-display'); if(uidDisplay) uidDisplay.innerText = pID;
+            window.updateStatsUI(); window.updateAvatarUI(); window.saveProgress(false);
+        };
+
+        window.loginGuest = function() { 
+            window.playSndSafe('sfx-click');
+            var n = document.getElementById('guest-name-input'); if(!n) return;
+            var val = n.value.trim(); loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; 
+            lsSet('ULT_USER', loggedUser); lsSet('ULT_FB', 'false'); 
+            safeHide('loading-screen');
+            window.showStartScreen(); window.checkDailyReward();
+        };
+
+        window.loginGoogle = function() { 
+            window.playSndSafe('sfx-click'); 
+            if(window.auth) { 
+                var provider = new firebase.auth.GoogleAuthProvider(); 
+                provider.setCustomParameters({ prompt: 'select_account' }); 
+                // تم التغيير إلى Redirect ليعمل بنجاح داخل تطبيقات الجوال 
+                window.auth.signInWithRedirect(provider).catch(function(error){ window.showToast("حدث خطأ، حاول مجدداً"); }); 
+            } 
+        };
+
+        window.logout = function() { 
+            window.playSndSafe('sfx-click'); 
+            if(window.auth) { window.auth.signOut().then(function() { localStorage.clear(); location.reload(); }); } 
+            else { localStorage.clear(); location.reload(); } 
+        };
+
+        window.saveNewName = function() { 
+            window.playSndSafe('sfx-click'); 
+            var n = document.getElementById('new-name-input'); 
+            if(n) { var val = n.value.trim(); if(val !== "") { loggedUser = val; lsSet('ULT_USER', val); window.saveProgress(false); window.showStartScreen(); } } 
+            window.closeMod(); 
+        };
+
+        window.addPoints = function(amount) { pts = parseInt(pts) + parseInt(amount); };
+        window.addHints = function(amount) { totalHints = parseInt(totalHints) + parseInt(amount); if(totalHints > 25) totalHints = 25; };
+        
+        window.saveProgress = function(skipFirebase) { 
+            lsSet('ULT_P', pts); lsSet('ULT_TOTAL_HINTS', totalHints); lsSet('ULT_SPINS', spins); lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); lsSet('ULT_AVATAR', currentAvatar); lsSet('ULT_STREAK', randomWinStreak);
+            if(!skipFirebase && isGoogle && authUid && window.db) { 
+                var data = { name: loggedUser, score: pts, title: activeTitleId, numId: pID, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak };
+                if(window.auth.currentUser && window.auth.currentUser.email) { data.email = window.auth.currentUser.email; }
+                if(currentUserRole !== 'user') data.role = currentUserRole;
+                window.db.collection("leaderboard_" + getWeekString()).doc(authUid).set(data, {merge: true}).catch(function(){}); 
+                window.db.collection("users_v4").doc(authUid).set(data, {merge: true}).catch(function(){}); 
+            } 
+        };
+        
+        window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { 
+            var titleName = t.n; var lockColor = "#ff4d4d"; 
+            var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:'+lockColor+'; z-index:10;"></i>' : ''; 
+            var checkSpan = (isActive && inList && !isSmall) ? '<i class="fas fa-check" style="color:#2ecc71; font-size:1.2rem; font-weight:bold; position:absolute; right:15px; top:50%; transform:translateY(-50%); z-index:10;"></i>' : ''; 
+            
+            var newBadge = '';
+            if(inList && !isSmall && newTitlesList.indexOf(id) !== -1) { newBadge = '<span style="position:absolute; top:-5px; right:-5px; background:#2ecc71; color:#000; font-size:0.65rem; padding:2px 6px; border-radius:8px; z-index:10; border:1px solid #000; font-weight:bold;">جديد</span>'; }
+
+            var clickEv = ''; var cursor = ''; 
+            if (inList && !isSmall) { 
+                var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+                if (id === 't_لواء') { 
+                    if (window.isOwner(em)) { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } 
+                    else { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; lockSpan = '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#ff0000; z-index:10;"></i>'; } 
+                } 
+                else if (!isOwned) { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; } 
+                else { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } 
+            } 
+            
+            var wrapperStyle = ''; var fontSize = '';
+            if(isSmall) { wrapperStyle = 'padding:2px 8px; min-width:80px; width:auto; display:inline-flex; border-radius:6px; margin:0;'; fontSize = '0.65rem'; lockSpan = ''; checkSpan = ''; } 
+            else if(inList) { wrapperStyle = 'width:100%; min-height:70px; margin-bottom:12px; padding:10px; ' + cursor; fontSize = '1.2rem'; } 
+            else { wrapperStyle = 'padding:5px 15px; min-width:140px; margin-top:5px; border-radius:10px; display:inline-flex;'; fontSize = '0.9rem'; }
+            
+            var innerContent = titleName; if (id === 't_لواء') { innerContent = '<span class="sword-icon">⚔️</span><span class="fire-text">' + titleName + '</span><span class="sword-icon">⚔️</span>'; } 
+            var shineCls = ''; if(t.shine) { if(t.shine === 'silver') shineCls = 'has-shine shine-silver'; else if(t.shine === 'blue') shineCls = 'has-shine shine-blue'; else if(t.shine === 'gold') shineCls = 'has-shine shine-gold'; }
+            return '<div class="legendary-badge ' + t.c + ' ' + shineCls + '" ' + clickEv + ' style="' + wrapperStyle + '">' + newBadge + lockSpan + '<div class="badge-text" style="font-size:'+fontSize+'; margin:0;">' + (t.extraIcon || '') + innerContent + '</div>' + checkSpan + '</div>'; 
+        };
+        
+        window.updateTitleDisplay = function() { var t = titlesData[activeTitleId] || titlesData['t1']; var utd = document.getElementById('user-title-display'); if(utd) utd.innerHTML = window.generateTitleHtml(activeTitleId, t, true, true, false, false); };
+        window.selectTitle = function(id) { window.playSndSafe('sfx-click'); activeTitleId = id; lsSet('ULT_TITLE_ID', id); window.updateTitleDisplay(); window.saveProgress(false); window.openTitles(); };
+
+        // ==========================================
+        // 7. نظام الإدارة المطور (الحظر والترقية)
+        // ==========================================
+        window.selectedActionUser = null;
+        window.openUserAction = function(uid, name, numId, role, avatar) {
+            if(!window.isMod() || uid === authUid) return; 
+            window.selectedActionUser = {uid: uid, name: name, numId: numId, role: role};
+            document.getElementById('action-user-name').innerText = name; document.getElementById('action-user-id').innerText = "ID: " + numId; document.getElementById('action-user-img').src = avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            var promoteBtn = document.getElementById('btn-promote-user');
+            var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+            if(window.isOwner(em)) { safeShow('btn-promote-user', 'block'); promoteBtn.innerText = (role === 'mod') ? 'إزالة الإشراف 🔻' : 'إعطاء إشراف ⭐️'; } else { safeHide('btn-promote-user'); }
+            window.openMod('modal-user-action');
+        };
+
+        window.banSelectedUser = function() {
+            if(!window.selectedActionUser) return; var u = window.selectedActionUser;
+            var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+            if(u.role === 'owner' || (u.role === 'mod' && !window.isOwner(em))) { window.showToast("لا تملك صلاحية حظر هذا الشخص!"); return; }
+            
+            window.showCustomConfirm("حظر اللاعب 🚫", "هل أنت متأكد من حظر " + u.name + " وطرده من اللعبة؟", function() {
+                window.db.collection('users_v4').doc(u.uid).update({isBanned: true, bannedBy: loggedUser}).then(function(){ 
+                    window.db.collection('system').doc('announcements').set({latestBanMsg: "تم حظر اللاعب: " + u.name, timestamp: firebase.firestore.FieldValue.serverTimestamp()}); 
+                    window.showToast("تم الحظر بنجاح!"); window.closeMod(); 
+                }).catch(function(){});
+            });
+        };
+
+        window.promoteSelectedUser = function() {
+            var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+            if(!window.selectedActionUser || !window.isOwner(em)) return; 
+            var u = window.selectedActionUser; var newRole = (u.role === 'mod') ? 'user' : 'mod';
+            var msg = (newRole === 'mod') ? "هل أنت متأكد من ترقية " + u.name + " إلى مشرف؟" : "هل أنت متأكد من إزالة الإشراف عن " + u.name + "؟";
+            window.showCustomConfirm("إدارة الصلاحيات ⭐️", msg, function() {
+                window.db.collection('users_v4').doc(u.uid).update({role: newRole}).then(function(){ window.showToast("تم التعديل بنجاح!"); window.closeMod(); }).catch(function(){});
+            });
+        };
+
+        window.openBanList = function() {
+            var container = document.getElementById('ban-list-container'); container.innerHTML = "جاري التحميل..."; window.openMod('modal-ban-list');
+            window.db.collection('users_v4').where('isBanned', '==', true).get().then(function(snap) {
+                var html = ''; 
+                var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+                snap.forEach(function(doc) {
+                    var d = doc.data(); 
+                    var unbanBtn = window.isOwner(em) ? `<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser('${doc.id}', '${d.name}')">فك الحظر</button>` : '';
+                    html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"> <div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">${d.name}</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ${d.bannedBy || 'مجهول'}</span></div> ${unbanBtn} </div>`;
+                }); container.innerHTML = html || "<p style='color:#2ecc71;'>لا يوجد لاعبين محظورين.</p>";
+            }).catch(function(){});
+        };
+
+        window.unbanUser = function(uid, name) { 
+            window.showCustomConfirm("فك الحظر", "هل تريد فك الحظر عن " + name + "؟", function() {
+                window.db.collection('users_v4').doc(uid).update({isBanned: false}).then(function(){ window.showToast("تم فك الحظر!"); window.openBanList(); }).catch(function(){}); 
+            });
+        };
+
+        window.openModList = function() {
+            var container = document.getElementById('mod-list-container'); container.innerHTML = "جاري التحميل..."; window.openMod('modal-mod-list');
+            window.db.collection('users_v4').where('role', '==', 'mod').get().then(function(snap) {
+                var html = ''; 
+                var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+                snap.forEach(function(doc) {
+                    var d = doc.data(); 
+                    var removeBtn = window.isOwner(em) ? `<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect('${doc.id}', '${d.name}')">إزالة</button>` : '';
+                    html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"> <div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="${d.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;"><span class="premium-name" style="font-size:1.1rem;">${d.name}</span></div> ${removeBtn} </div>`;
+                }); container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد مشرفين حالياً.</p>";
+            }).catch(function(){});
+        };
+
+        window.removeModDirect = function(uid, name) {
+            window.showCustomConfirm("إزالة إشراف", "هل أنت متأكد من إزالة المشرف " + name + "؟", function() {
+                window.db.collection('users_v4').doc(uid).update({role: 'user'}).then(function(){ window.showToast("تم الإزالة!"); window.openModList(); }).catch(function(){}); 
+            });
+        };
+
+        // ==========================================
+        // 8. المتصدرين وعجلة الحظ واللعب
+        // ==========================================
+        window.openLB = function() { 
+            var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); if(!window.db) return; 
+            window.db.collection("leaderboard_" + getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { 
+                var html = ''; if (!isGoogle) html += '<div class="guest-warning">سجل دخول بجوجل لتنافس 🔒</div>'; var rank = 1; 
+                qSnap.forEach(function(doc) { 
+                    var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; 
+                    var roleBadge = ''; 
+                    if(d.role === 'owner' || window.isOwner(d.email)) { roleBadge = '<span class="owner-badge"><i class="fas fa-star"></i><i class="fas fa-star"></i></span> <span class="dev-badge" style="font-size:0.6rem; padding:2px 4px; margin-right:5px;"><i class="fas fa-laptop-code"></i> المطور</span>'; } 
+                    else if(d.role === 'mod') { roleBadge = '<span class="mod-badge"><i class="fas fa-star"></i></span>'; }
+                    var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                    var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); 
+                    var clickEvent = window.isMod() ? `onclick="window.openUserAction('${doc.id}', '${d.name}', '${d.numId}', '${d.role || 'user'}', '${av}')"` : '';
+                    html += '<div class="lb-row' + isMe + '" ' + clickEvent + '><div class="rank-num">' + rank + '</div><img src="'+av+'" class="lb-avatar"><div class="lb-info"><div style="display:flex; align-items:center; margin-bottom:3px;"><span class="'+nameCls+'" style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; 
+                }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; 
+            }).catch(function(){}); 
+        };
+
+        window.shuffle = function(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var temp=a[i]; a[i]=a[j]; a[j]=temp; } return a; };
+        window.useAud = function() { if(aud<=0||locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if(cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if(apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
+        window.use50 = function() { if(f50<=0||locked) return; f50--; var c50 = document.getElementById('c-50'); if(c50) c50.innerText = f50; var h=0; for(var i=0; i<4; i++){ if(optsOrder[i] !== 0 && h<2){ var btn = document.getElementById('opt'+i); if(btn) btn.style.visibility='hidden'; h++; } } };
+        window.useHint = function() { if(totalHints<=0||locked) return; totalHints--; var ch = document.getElementById('c-hint'); if(ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if(btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
+
+        window.renderLuckySpin = function() { 
+            var sc = document.getElementById('spin-count'); if(sc) sc.innerText = spins; 
+            var container = document.getElementById('spin-circular-grid'); if(!container) return; 
+            var html = ''; var radius = 105; 
+            for(var i=0; i<spinPrizes.length; i++) { 
+                var p = spinPrizes[i]; var angle = (i * (2 * Math.PI) / spinPrizes.length) - (Math.PI / 2); 
+                var x = radius * Math.cos(angle) + 140; var y = radius * Math.sin(angle) + 140; 
+                html += '<div class="spin-item ' + p.c + '" id="spin-item-' + i + '" style="left: ' + x + 'px; top: ' + y + 'px;"><span class="icon">' + p.icon + '</span><span>' + p.tAR + '</span><span class="perc">' + p.perc + '</span></div>'; 
+            } 
+            container.innerHTML = html; 
+        };
+
+        window.startLuckySpin = function() { 
+            if(spins <= 0 || locked) return; locked = true; spins--; lsSet('ULT_SPINS', spins); var sc = document.getElementById('spin-count'); if(sc) sc.innerText = spins; 
+            var rand = Math.random() * 100, sum = 0, wonIdx = 0; 
+            for(var i=0; i<spinPrizes.length; i++){ sum += spinPrizes[i].p; if(rand <= sum){ wonIdx = i; break; } } 
+            var currentIndex = 0; var steps = 0; 
+            function jumpHighlight() { 
+                var items = document.querySelectorAll('.spin-item'); for(var k=0; k<items.length; k++){ items[k].classList.remove('active'); } 
+                var activeItem = document.getElementById('spin-item-' + currentIndex); if(activeItem) activeItem.classList.add('active'); window.playSndSafe('sfx-click'); steps++; 
+                if (steps > 40 && currentIndex === wonIdx) { 
+                    var won = spinPrizes[wonIdx]; 
+                    if(won.type === 'h') { window.addHints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
+                    else if (won.type === 'p') { window.addPoints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
+                    else if (won.type === 'title' || won.type === 'box') { 
+                        if(ownedTitles.indexOf(won.v) === -1) { 
+                            ownedTitles.push(won.v); newTitlesList.push(won.v); lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList));
+                            activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; window.showGrandPrize('لقب ' + titleName, titleIcon); 
+                        } else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } 
+                    } 
+                    locked = false; window.saveProgress(false); window.updateStatsUI(); 
+                } else { currentIndex = (currentIndex + 1) % spinPrizes.length; setTimeout(jumpHighlight, steps > 30 ? 200 : 100); } 
+            } jumpHighlight(); 
+        };
+
+        window.showGrandPrize = function(titleAr, icon) { var gt = document.getElementById('grand-prize-title-ui'); if(gt) gt.innerText = 'مبروك! 🎉'; var gd = document.getElementById('grand-prize-desc-ui'); if(gd) gd.innerText = titleAr; var gi = document.getElementById('grand-prize-icon-ui'); if(gi) gi.innerHTML = icon; window.openMod('modal-grand-prize'); window.playSndSafe('sfx-win'); };
+        window.closeGrandPrize = function() { window.openMod('modal-luckyspin'); window.updateStatsUI(); };
+
+        window.startG = function() { 
+            isOnlineMode = false; if(qList.length===0) return; 
+            safeHide('screen-start'); safeHide('main-nav'); safeShow('screen-game', 'block'); safeHide('vs-header'); safeShow('normal-header', 'flex'); safeShow('normal-helps', 'flex'); safeShow('opts-container', 'block'); safeShow('q-txt', 'flex'); 
+            var thm = lsGet('ULT_THEME', ''); if(thm) document.body.className = thm;
+            cur=0; aud=5; f50=5; currentRunCorrect = 0; qOrder = []; 
+            for(var i=0; i<qList.length; i++) { if(answeredQs.indexOf(i) === -1) qOrder.push(i); } 
+            if(qOrder.length === 0) { answeredQs = []; lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); for(var i=0; i<qList.length; i++) qOrder.push(i); window.showToast("تمت إعادة التحدي من جديد."); } 
+            window.shuffle(qOrder); window.loadQ(); 
+        };
+
+        window.loadQ = function() { 
+            locked = false; safeHide('post-ans-actions'); safeHide('explanation-box'); 
+            if(cur >= qList.length) { window.openMod('modal-win'); return; } 
+            var q = qList[qOrder[cur]]; 
+            document.getElementById('ui-prog').innerText = (cur+1) + " / " + qList.length; document.getElementById('q-txt').innerText = q.q; 
+            optsOrder = window.shuffle([0,1,2,3]); 
+            for(var i=0; i<4; i++){ var btn = document.getElementById('opt'+i); if(btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.innerText = q.o[optsOrder[i]]; } } 
+            document.getElementById('c-aud').innerText = aud; document.getElementById('c-50').innerText = f50; document.getElementById('c-hint').innerText = totalHints; 
+        };
+
+        window.checkAns = function(idx) { 
+            if(locked) return; locked = true; 
+            if(isOnlineMode) { if(currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
+            var isCorrect = (optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; var btn = document.getElementById('opt'+idx); if(!btn) return; 
+            if(isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; if(answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } } else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if(co) co.classList.add('correct'); } 
+            var eb = document.getElementById('explanation-box'); if(eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; safeShow('explanation-box', 'block'); } 
+            safeShow('post-ans-actions', 'block'); 
+        };
+        
+        window.handleContinue = function() { if(lastAnswerCorrect) { cur++; window.loadQ(); } else { window.openMod('modal-lose-menu'); } };
+        window.skipQMenu = function() { locked = false; cur++; window.closeMod(); window.loadQ(); };
+        window.goHomeG = function() { window.closeMod(); safeHide('match-result-overlay'); document.body.classList.remove('vs-mode-active'); window.showStartScreen(); };
+        window.saveAndExitG = function() { window.saveProgress(false); window.showToast("تم الحفظ!"); window.goHomeG(); };
+        // ==========================================
+        // 9. الأونلاين (VS)
+        // ==========================================
+        var matchRef = null, matchmakingUnsubscribe = null, onlineMatchId = null, myMatchRole = null, onlineTimerInterval = null, currentTurnUid = null, isOnlineMode = false, onlineData = {};
+
+        window.startMatchmaking = function(type, friendUid, friendName) {
+            if(!authUid) { window.showToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; }
+            if(qList.length < 10) { window.showToast("خطأ: الأسئلة غير كافية لبدء تحدي!"); return; }
+            window.openMod('modal-loading-online'); var waitMsg = document.getElementById('wait-msg-ui');
+            if(type === 'friend') { if(waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if(waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; }
+            var waitMyImg = document.getElementById('wait-my-img'); if(waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            var waitMyName = document.getElementById('wait-my-name'); if(waitMyName) waitMyName.innerText = loggedUser;
+            var matchQs = []; var tempQ = []; for(var i=0; i<qList.length; i++) tempQ.push(i); window.shuffle(tempQ); for(var i=0; i<10; i++) matchQs.push(tempQ[i]);
+            var matchData = { p1_id: authUid, p1_name: loggedUser, p1_avatar: currentAvatar, p1_score: 0, p1_ready: false, p2_id: (type === 'friend') ? friendUid : null, p2_name: (type === 'friend') ? friendName : '', p2_avatar: '', p2_score: 0, p2_ready: false, status: 'waiting', type: type, current_turn: authUid, questions: matchQs, current_q_index: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp() };
+
+            if(type === 'friend') { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.db.collection("users_v4").doc(friendUid).update({ challenges: firebase.firestore.FieldValue.arrayUnion({ matchId: ref.id, fromUid: authUid, fromName: loggedUser }) }); window.listenToMatch(ref.id); }).catch(function(){}); } 
+            else { window.db.collection("matches_v4").where("status", "==", "waiting").where("type", "==", "random").limit(1).get().then(function(snap) { if (snap.empty) { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); } else { var matchDoc = snap.docs[0]; matchDoc.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, status: 'waiting_ready' }).then(function() { window.startVSGame(matchDoc.id, "p2"); }); } }).catch(function(){}); }
+        };
+
+        window.acceptChallenge = function() { if(!window.incomingChallengeId) return; window.showToast("جاري الدخول للمباراة... ⚔️"); window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ p2_avatar: currentAvatar, status: 'waiting_ready' }).then(function() { window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.startVSGame(window.incomingChallengeId, "p2"); }).catch(function(){}); };
+        window.rejectChallenge = function() { if(!window.incomingChallengeId) return; window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ status: 'cancelled' }); window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.closeMod(); };
+        window.listenToMatch = function(matchId) { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { if (!doc.exists) return; var d = doc.data(); if (d.status === 'waiting_ready' && d.p2_id) { if(matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } else if (d.status === 'cancelled') { if(matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } }); };
+        window.cancelMatchmaking = function() { if(matchmakingUnsubscribe) matchmakingUnsubscribe(); if(matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
+        
+        window.startVSGame = function(matchId, myRole) { 
+            window.closeMod(); window.showToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true;
+            safeHide('screen-start'); safeHide('main-nav'); safeShow('screen-game', 'block'); safeHide('normal-header'); safeHide('normal-helps'); safeHide('opts-container'); safeHide('q-txt'); safeShow('vs-header', 'flex'); 
+            document.body.classList.add('vs-mode-active');
+            safeHide('match-result-overlay'); safeHide('vs-left-status'); safeHide('vs-right-status');
+            document.getElementById('p-left-box').className = 'p-box'; document.getElementById('p-right-box').className = 'p-box';
+            
+            var btnR = document.getElementById('btn-ready-me'); if(btnR) { safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; }
+            safeShow('btn-cancel-ready', 'inline-block'); safeHide('vs-countdown');
+            var oppStatus = document.getElementById('opp-status-text'); if(oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; }
+
+            window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
+                var d = doc.data(); var myImg = document.getElementById('p-left-img'), myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'), oppName = document.getElementById('vs-right-name');
+                if(myRole === "p1") { if(myImg) myImg.src = d.p1_avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; if(myName) myName.innerText = d.p1_name; if(oppImg) oppImg.src = d.p2_avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; if(oppName) oppName.innerText = d.p2_name || 'الخصم'; } 
+                else { if(myImg) myImg.src = d.p2_avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; if(myName) myName.innerText = d.p2_name; if(oppImg) oppImg.src = d.p1_avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; if(oppName) oppName.innerText = d.p1_name; } 
+            }).catch(function(){}); 
+            cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); 
+        };
+
+        window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if(btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
+
+        window.listenToOnlineMatch = function() {
+            matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) {
+                if(!doc.exists) return; onlineData = doc.data();
+                var oppReady = (myMatchRole === 'p1') ? onlineData.p2_ready : onlineData.p1_ready; var oppStatus = document.getElementById('opp-status-text');
+                if(oppStatus) { if(oppReady) { oppStatus.innerText = "جاهز ✔️"; oppStatus.style.color = "#2ecc71"; } else { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } }
+                if (onlineData.status === 'cancelled') { if(matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; }
+                if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); }
+                if(onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); }
+            });
+        };
+
+        window.startVSCountdown = function() {
+            safeHide('ready-area-left'); safeHide('btn-cancel-ready'); safeHide('ready-area-right'); safeShow('vs-countdown', 'block');
+            var cdDiv = document.getElementById('vs-countdown'); var count = 3; if(cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click');
+            var cdInt = setInterval(function() {
+                count--;
+                if(count > 0) { if(cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click'); } 
+                else if (count === 0) { if(cdDiv) cdDiv.innerHTML = '<div class="go-text">انطلق!</div>'; window.playSndSafe('sfx-win'); } 
+                else { clearInterval(cdInt); safeHide('vs-countdown'); safeShow('opts-container', 'block'); safeShow('q-txt', 'flex'); safeShow('btn-surrender', 'inline-block'); if(myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } }
+            }, 1000);
+        };
+
+        var turnTimeLeft = 25; 
+        window.renderOnlineTurn = function() {
+            locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx];
+            var qt = document.getElementById('q-txt'); if(qt) qt.innerText = q.q; optsOrder = window.shuffle([0,1,2,3]);
+            for(var i=0; i<4; i++){ var btn = document.getElementById('opt'+i); if(btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.innerText = q.o[optsOrder[i]]; } }
+            var optsCont = document.getElementById('opts-container'), pLeft = document.getElementById('p-left-box'), pRight = document.getElementById('p-right-box'), myTimer = document.getElementById('p-left-timer'), oppTimer = document.getElementById('p-right-timer');
+            if(pLeft) pLeft.classList.remove('active-turn'); if(pRight) pRight.classList.remove('active-turn'); turnTimeLeft = 25; if(myTimer) myTimer.innerText = "25"; if(oppTimer) oppTimer.innerText = "25";
+            if (currentTurnUid === authUid) { if(optsCont) optsCont.classList.remove('disabled-opts'); if(pLeft) pLeft.classList.add('active-turn'); } else { if(optsCont) optsCont.classList.add('disabled-opts'); if(pRight) pRight.classList.add('active-turn'); }
+            onlineTimerInterval = setInterval(function() {
+                turnTimeLeft--; if(currentTurnUid === authUid) { if(myTimer) myTimer.innerText = turnTimeLeft; } else { if(oppTimer) oppTimer.innerText = turnTimeLeft; }
+                if (turnTimeLeft <= 0) { clearInterval(onlineTimerInterval); if(currentTurnUid === authUid) window.submitOnlineAnswer(-1); }
+            }, 1000);
+        };
+
+        window.submitOnlineAnswer = function(idx) {
+            locked = true; clearInterval(onlineTimerInterval); var isCorrect = (idx === 0); var btn = document.getElementById('opt'+idx);
+            if(btn) { if(isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if(co) co.classList.add('correct'); } }
+            var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid };
+            if(isCorrect) { if(myMatchRole === 'p1') updateObj.p1_score = onlineData.p1_score + 1; else updateObj.p2_score = onlineData.p2_score + 1; }
+            if(nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; }
+            setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000);
+        };
+
+        window.confirmSurrender = function() { window.closeMod(); if(!isOnlineMode) return; if(onlineData.status === 'waiting_ready') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
+
+        window.endOnlineMatch = function() {
+            clearInterval(onlineTimerInterval); if(matchmakingUnsubscribe) matchmakingUnsubscribe(); safeHide('opts-container'); safeHide('q-txt'); safeHide('btn-surrender');
+            var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; var isWin = false; var isDraw = false;
+            if (onlineData.forfeited_by) { isWin = (onlineData.forfeited_by !== authUid); } else { if (myScore > oppScore) isWin = true; else if (myScore === oppScore) isDraw = true; }
+            var pLeftStatus = document.getElementById('vs-left-status'), pRightStatus = document.getElementById('vs-right-status');
+            if(pLeftStatus) pLeftStatus.className = "match-status-text"; if(pRightStatus) pRightStatus.className = "match-status-text";
+            
+            if (isWin) { if(pLeftStatus) { pLeftStatus.innerText = "فزت 🏆"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.display = "block"; } if(pRightStatus) { pRightStatus.innerText = "خسر 💀"; pRightStatus.classList.add("status-lose"); pRightStatus.style.display = "block"; } } 
+            else if (isDraw) { if(pLeftStatus) { pLeftStatus.innerText = "تعادل 🤝"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.color="#eee"; pLeftStatus.style.display = "block"; } if(pRightStatus) { pRightStatus.innerText = "تعادل 🤝"; pRightStatus.classList.add("status-win"); pRightStatus.style.color="#eee"; pRightStatus.style.display = "block"; } } 
+            else { if(pLeftStatus) { pLeftStatus.innerText = "خسرت 💀"; pLeftStatus.classList.add("status-lose"); pLeftStatus.style.display = "block"; } if(pRightStatus) { pRightStatus.innerText = "فاز 🏆"; pRightStatus.classList.add("status-win"); pRightStatus.style.display = "block"; } }
+
+            var rTitle = document.getElementById('mr-title'), rDesc = document.getElementById('mr-desc'), rIcon = document.getElementById('mr-icon'), rBtn = document.getElementById('btn-rematch');
+            if(rBtn) { if (onlineData.type === 'friend') { rBtn.style.display = 'block'; } else { rBtn.style.display = 'none'; } }
+            var rewardPts = 0; var titleMsg = "";
+            if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if(onlineData.type === 'random') { randomWinStreak++; if(randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='has-shine shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if(rTitle) { rTitle.innerText = "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if(rDesc) rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; if(rIcon) rIcon.innerText = "🏆"; } 
+            else if (isDraw) { window.playSndSafe('sfx-click'); if(rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if(rDesc) rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; if(rIcon) rIcon.innerText = "🤝"; if(onlineData.type === 'random') randomWinStreak = 0; } 
+            else { window.playSndSafe('sfx-lose'); if(rTitle) { rTitle.innerText = "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if(rDesc) rDesc.innerText = "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; if(rIcon) rIcon.innerText = "💀"; if(onlineData.type === 'random') randomWinStreak = 0; }
+            window.saveProgress(false); safeShow('match-result-overlay', 'flex');
+        };
+
+        window.closeMatchResult = function() { safeHide('match-result-overlay'); safeHide('vs-left-status'); safeHide('vs-right-status'); window.goHomeG(); };
+        window.rematchFriend = function() { safeHide('match-result-overlay'); safeHide('vs-left-status'); safeHide('vs-right-status'); var friendUid = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id; var friendName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name; window.goHomeG(); setTimeout(function() { window.startMatchmaking('friend', friendUid, friendName); }, 500); };
+
+        // ==========================================
+        // 10. البحث عن الأصدقاء والإشعارات
+        // ==========================================
+        window.searchFriend = function() { 
+            var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); 
+            if(fId === "" || fId === pID) { window.showToast("ID غير صالح!"); return; } 
+            window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { 
+                if(!snap.empty) { 
+                    var doc = snap.docs[0]; var d = doc.data(); 
+                    var isDev = window.isOwner(d.email); 
+                    var devBadge = isDev ? '<span class="owner-badge"><i class="fas fa-star"></i><i class="fas fa-star"></i></span> <span class="dev-badge" style="font-size:0.6rem; padding:2px 4px; margin-right:5px;"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; 
+                    var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); 
+                    var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; var fAvatar = d.avatar ? '<img src="'+d.avatar+'" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; 
+                    var banBtnHtml = ''; 
+                    var em = ''; if(window.auth && window.auth.currentUser && window.auth.currentUser.email) em = window.auth.currentUser.email;
+                    if(window.isMod() && fId !== pID) { banBtnHtml = `<button class="q-btn danger" style="width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.openUserAction('${doc.id}', '${d.name}', '${d.numId}', '${d.role || 'user'}', '${d.avatar || ''}')">إدارة / حظر 🚫</button>`; }
+                    if(resContainer) { resContainer.innerHTML = `<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">${fAvatar} <span class="${nameCls}" style="font-size:1.6rem !important;">${d.name}</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">${devBadge}</div><div style="margin-top:5px;">${fTitleHtml}</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq('${doc.id}', '${d.name}')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ${banBtnHtml} </div>`; safeShow('search-result-container', 'block'); } 
+                } else { window.showToast("اللاعب غير موجود!"); } 
+            }).catch(function(){}); 
+        };
+        
+        window.sendFriendReq = function(targetUid, fName) { if(!isGoogle) { window.showToast("سجل بجوجل أولاً!"); return; } window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { window.showSuccessModal('تم الإرسال!', 'تم إرسال طلب الصداقة لـ ' + fName, '💌', 'modal-add-friend'); safeHide('search-result-container'); document.getElementById('friend-id-input').value = ""; }).catch(function(){}); };
+        window.acceptFriendReq = function(fUid, fName, fNum) { window.playSndSafe('sfx-click'); var myRef = window.db.collection("users_v4").doc(authUid); var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; var friendObjForMe = { uid: fUid, name: fName, numId: fNum }; var friendObjForThem = { uid: authUid, name: loggedUser, numId: pID }; myRef.update({ requests: firebase.firestore.FieldValue.arrayRemove(reqObj), friends: firebase.firestore.FieldValue.arrayUnion(friendObjForMe) }); window.db.collection("users_v4").doc(fUid).update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); window.showSuccessModal('تم القبول!', 'أصبح ' + fName + ' من أصدقائك الآن 🤝', '👥', 'modal-requests'); };
+
+        // ==========================================
+        // 11. المستمعات وذاكرة تسجيل الدخول (بدون شاشة بيضاء)
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                var lScreen = document.getElementById('loading-screen');
+                if (lScreen && lScreen.style.display !== 'none' && (!window.auth || !authUid)) {
+                    safeHide('loading-screen');
+                    var screenStart = document.getElementById('screen-start');
+                    if (screenStart && screenStart.style.display !== 'block') {
+                        safeShow('screen-login', 'flex');
+                    }
+                }
+            }, 3500);
+
+            if(window.auth) {
+                window.auth.onAuthStateChanged(function(user) {
+                    if(user) {
+                        authUid = user.uid; isGoogle = true; lsSet('ULT_FB', 'true'); 
+                        if(window.db) {
+                            var userRef = window.db.collection("users_v4").doc(authUid);
+                            userRef.get().then(function(doc) {
+                                var needsReward = false;
+                                if (doc.exists) {
+                                    var d = doc.data();
+                                    if(d.isBanned === true) { 
+                                        safeHide('screen-game'); safeHide('screen-start'); safeHide('screen-login'); safeHide('main-nav'); safeHide('custom-modal');
+                                        safeShow('banned-screen', 'flex'); safeHide('loading-screen'); return; 
+                                    }
+                                    if(d.name) { loggedUser = d.name; lsSet('ULT_USER', loggedUser); } else loggedUser = lsGet('ULT_USER', '') || user.displayName || 'أسطورة';
+                                    if(pID !== "11111111" && d.numId) { pID = d.numId; lsSet('ULT_PRO_ID_V4', pID); }
+                                    if(d.score !== undefined) { pts = parseInt(d.score); lsSet('ULT_P', pts); }
+                                    if(d.hints !== undefined) { totalHints = parseInt(d.hints); lsSet('ULT_TOTAL_HINTS', totalHints); }
+                                    if(d.spins !== undefined) { spins = parseInt(d.spins); lsSet('ULT_SPINS', spins); }
+                                    if(d.ownedTitles) { ownedTitles = d.ownedTitles; lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); }
+                                    if(d.title) { activeTitleId = d.title; lsSet('ULT_TITLE_ID', activeTitleId); }
+                                    if(d.answeredQs) { answeredQs = d.answeredQs; lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); }
+                                    if(d.avatar) { currentAvatar = d.avatar; lsSet('ULT_AVATAR', currentAvatar); }
+                                    if(d.randomWinStreak !== undefined) { randomWinStreak = parseInt(d.randomWinStreak); lsSet('ULT_STREAK', randomWinStreak); }
+                                    if(d.role) { currentUserRole = d.role; }
+                                    if(d.rewardClaimed !== true) needsReward = true;
+                                } else { 
+                                    needsReward = true; loggedUser = lsGet('ULT_USER', '') || user.displayName || 'أسطورة'; 
+                                }
+                                
+                                if(window.isOwner(user.email)) { currentUserRole = 'owner'; }
+                                if(ownedTitles.indexOf('t2') === -1) { ownedTitles.push('t2'); }
+                                if(currentUserRole === 'owner') { pID = "11111111"; if(ownedTitles.indexOf('t_لواء') === -1) ownedTitles.push('t_لواء'); }
+                                
+                                userRef.set({ name: loggedUser, numId: pID, email: user.email, title: activeTitleId, role: currentUserRole, rewardClaimed: true, score: pts, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak, isOnline: true }, {merge: true}).catch(function(){});
+                                
+                                if (needsReward) { spins += 5; totalHints += 5; lsSet('ULT_SPINS', spins); window.saveProgress(true); setTimeout(function(){window.showToast("🎁 مكافأة التسجيل: 5 سحبات و 5 تلميحات!");}, 2000); }
+                                
+                                safeHide('loading-screen');
+                                window.showStartScreen(); 
+                            }).catch(function(e) { safeHide('loading-screen'); window.showStartScreen(); });
+                            
+                            window.db.collection("users_v4").doc(authUid).onSnapshot(function(doc) {
+                                if(doc.exists) {
+                                    var data = doc.data();
+                                    if(data.isBanned === true) {
+                                        safeHide('screen-game'); safeHide('screen-start'); safeHide('screen-login'); safeHide('main-nav'); safeHide('custom-modal');
+                                        safeShow('banned-screen', 'flex'); return;
+                                    } else {
+                                        safeHide('banned-screen');
+                                    }
+
+                                    if(data.challenges && data.challenges.length > 0) {
+                                        var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId;
+                                        var chNameUI = document.getElementById('challenger-name-ui'); if(chNameUI) chNameUI.innerText = activeCh.fromName;
+                                        window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win');
+                                    } else if (document.getElementById('modal-challenge-invite').style.display === 'flex') { window.closeMod(); }
+
+                                    if(data.requests) { var reqs = data.requests, badge = document.getElementById('req-badge-ui'); if(badge) { badge.innerText = reqs.length; if(reqs.length > 0) { safeShow('req-badge-ui', 'flex'); } else { safeHide('req-badge-ui'); } } }
+                                    
+                                    if(data.friends && data.friends.length > 0) {
+                                        var frList = document.getElementById('online-friends-list'); safeShow('online-badge-ui', 'flex'); 
+                                        window.db.collection("users_v4").get().then(function(usersSnap) {
+                                            var allUsersStatus = {}; usersSnap.forEach(function(uDoc) { allUsersStatus[uDoc.data().numId] = uDoc.data().isOnline === true; });
+                                            var sortedFriends = data.friends.sort(function(a, b) { return (allUsersStatus[b.numId] === true ? 1 : 0) - (allUsersStatus[a.numId] === true ? 1 : 0); });
+                                            var frHtml = ''; 
+                                            sortedFriends.forEach(function(f){ 
+                                                var isOnline = allUsersStatus[f.numId] === true; var dotColor = isOnline ? '#2ecc71' : '#ff4d4d'; var statusTxt = isOnline ? 'متصل' : 'غير متصل'; var nameCls = (f.name !== "أسطورة") ? 'premium-name' : '';
+                                                frHtml += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1);"> <div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="${nameCls}" style="font-size:1.1rem !important;">${f.name}</span><div style="display:flex; align-items:center; gap:5px; margin-top:3px;"><i class="fas fa-circle" style="color:${dotColor}; font-size:0.6rem;"></i><span style="color:#aaa; font-size:0.75rem;">${statusTxt}</span></div></div> <button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d;" onclick="window.startMatchmaking('friend', '${f.uid}', '${f.name}')">⚔️ تحدي</button> </div>`; 
+                                            }); frList.innerHTML = frHtml; 
+                                        }).catch(function(){});
+                                    } else { safeHide('online-badge-ui'); var ofl = document.getElementById('online-friends-list'); if(ofl) ofl.innerHTML = '<span>لا يوجد أصدقاء حالياً.</span>'; }
+                                }
+                            });
+                            
+                            window.db.collection("system").doc("announcements").onSnapshot(function(doc) {
+                                if(doc.exists) {
+                                    var d = doc.data();
+                                    if(d.latestBanMsg && d.timestamp && (Date.now() - d.timestamp.toDate().getTime() < 10000)) { window.showGlobalToast(d.latestBanMsg); }
+                                }
+                            });
+                        } else { safeHide('loading-screen'); window.showStartScreen(); }
+                    } else { 
+                        safeHide('loading-screen'); 
+                        if(pID && loggedUser && loggedUser !== '' && !isGoogle) { 
+                            window.showStartScreen(); 
+                        } else { 
+                            var screenStart = document.getElementById('screen-start');
+                            if (screenStart && screenStart.style.display !== 'block') {
+                                safeShow('screen-login', 'flex'); 
+                            }
+                        } 
+                    }
+                });
+            } else { 
+                safeHide('loading-screen'); 
+                if(pID && loggedUser && loggedUser !== '' && !isGoogle) { 
+                    window.showStartScreen(); 
+                } else { 
+                    safeShow('screen-login', 'flex'); 
+                } 
+            }
+        });
+
+        // ==========================================
+        // 12. نظام تغيير النص العلوي المتلاشي
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', function() {
+            var glowMessages = [
+                "سبحان الله", 
+                "الحمد لله", 
+                "لا إله إلا الله", 
+                "الله أكبر", 
+                "اللهم صلِّ على محمد",
+                "أستغفر الله العظيم"
+            ];
+            var glowIndex = 0;
+            var glowEl = document.getElementById('glow-msg');
+            
+            if(glowEl) {
+                // تغيير النص كل 4 ثواني (4000 جزء من الثانية)
+                setInterval(function() {
+                    glowIndex = (glowIndex + 1) % glowMessages.length;
+                    glowEl.innerText = glowMessages[glowIndex];
+                }, 4000); 
+            }
+        });
+    </script>
+</body>
+</html>
