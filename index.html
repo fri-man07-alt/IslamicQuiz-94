@@ -16,9 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           1. التنسيق العام والسمات
-           ========================================= */
         :root { 
             --p: #ffd700; 
             --c: rgba(10, 15, 25, 0.95); 
@@ -50,7 +47,6 @@
         }
         @keyframes snowAnim { 0% { transform: translateY(-600px); } 100% { transform: translateY(0px); } }
 
-        /* حركة السيفين فقط */
         @keyframes clash { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(15deg) scale(1.2); } 100% { transform: rotate(-10deg) scale(1); } }
         .sword-anim { display: inline-block; animation: clash 1s infinite alternate ease-in-out; }
 
@@ -58,9 +54,6 @@
         .fire-banner { color: #000 !important; font-weight: 900; font-size: 1.2rem; background: linear-gradient(180deg, var(--p), #ff8c00); padding: 6px 25px; border-radius: 25px; box-shadow: 0 0 15px rgba(255, 140, 0, 0.6); display: inline-block; animation: textFade 4s ease-in-out infinite; }
         @keyframes textFade { 0% { opacity: 0; transform: translateY(-10px) scale(0.9); } 15% { opacity: 1; transform: translateY(0) scale(1); } 85% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(10px) scale(0.9); } }
 
-        /* =========================================
-           2. الصندوق الأساسي والألقاب (مع الخلفيات)
-           ========================================= */
         .box { 
             position: relative; z-index: 10; width: 95%; max-width: 400px; 
             background: var(--c); padding: 20px 15px; border-radius: 20px; 
@@ -77,7 +70,6 @@
 
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; position: relative; overflow: hidden; }
         .title-ذهبي .badge-text { color: #000 !important; text-shadow: 0 0 5px #fff !important; font-weight: 900 !important; position: relative; z-index: 2; }
-
         .title-طالب { background: linear-gradient(135deg, #2a2a2a 0%, #111 100%) !important; border: 2px solid #888 !important; }
         .title-طالب .badge-text { color: #ffd700 !important; text-shadow: 1px 1px 2px #000 !important; }
         .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 2px solid #b388ff !important; animation: distinctPulse 2s infinite alternate !important; }
@@ -107,23 +99,14 @@
         .shine-gold::after { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.9), transparent); }
         .premium-name { background: linear-gradient(45deg, #ffd700, #ffae00, #ffffff, #ffd700); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900 !important; display: inline-block; white-space: nowrap !important; }
 
-        /* =========================================
-           3. الأزرار والتنبيهات
-           ========================================= */
         #bottom-toast-msg { visibility: hidden; min-width: 250px; background-color: rgba(18, 18, 18, 0.95); color: #ffd700; text-align: center; border-radius: 15px; padding: 12px; position: fixed; z-index: 100000; left: 50%; bottom: -100px; transform: translateX(-50%); font-size: 1rem; font-weight: bold; border: 1px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transition: bottom 0.5s ease, visibility 0.5s ease; }
-        #bottom-toast-msg.show { visibility: visible; bottom: 30px; }
-
-        .q-btn { background: linear-gradient(to right, rgba(30, 20, 45, 0.9), rgba(15, 10, 25, 0.9)); border: 1px solid #555; color: white; width: 100%; margin: 6px 0; padding: 12px; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .q-btn { background: linear-gradient(to right, rgba(30, 20, 45, 0.9), rgba(15, 10, 25, 0.9)); border: 1px solid #555; color: white; width: 100%; margin: 6px 0; padding: 12px; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; pointer-events: auto !important;}
         .q-btn:active { transform: scale(0.98); }
         .primary { background: var(--p); color: #000; border: none; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
         .danger { background: rgba(255, 0, 0, 0.2); border-color: #ff4d4d; color: #ff4d4d; }
         .correct { background: #2ecc71 !important; color: #000 !important; border: 2px solid #fff !important; box-shadow: 0 0 15px rgba(46, 204, 113, 0.8) !important; }
         .wrong { background: #ff4d4d !important; color: #ffffff !important; border: none !important; box-shadow: 0 0 15px rgba(255, 77, 77, 0.8) !important; }
-        #global-toast { visibility: hidden; min-width: 250px; background-color: rgba(255, 0, 0, 0.9); color: #fff; text-align: center; border-radius: 12px; padding: 16px; position: fixed; z-index: 999999; left: 50%; top: 30px; transform: translateX(-50%); font-size: 1.1rem; font-weight: bold; border: 2px solid #ff4d4d; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
 
-        /* =========================================
-           4. النوافذ والملاحة وعجلة الحظ والأونلاين
-           ========================================= */
         .floating-top-nav { position: fixed; top: 15px; left: 15px; right: 15px; z-index: 10000; pointer-events: none; height: 160px; }
         .circ-btn { width: 45px; height: 45px; border-radius: 50%; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--p); color: var(--p); font-size: 1.3rem; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); pointer-events: auto; margin-bottom: 10px; }
         .circ-btn:active { transform: scale(0.9); }
@@ -163,17 +146,15 @@
         .circular-spin-container { position: relative; width: 260px; height: 260px; margin: 10px auto 20px auto; border-radius: 50%; background-image: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=800'); background-size: cover; background-position: center; border: 2px solid rgba(0, 212, 255, 0.5); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 50px #000; overflow: hidden; }
         .spin-item { position: absolute; width: 60px; height: 60px; border-radius: 50%; background: rgba(10, 20, 30, 0.85); border: 2px solid #555; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #fff; font-size: 0.6rem; font-weight: bold; transition: all 0.1s ease; box-shadow: 0 0 10px rgba(0,0,0,0.8); transform: translate(-50%, -50%); text-align: center; line-height: 1.1; z-index: 2; backdrop-filter: blur(3px); }
         .spin-item.active { transform: translate(-50%, -50%) scale(1.2); border-color: #fff !important; box-shadow: 0 0 20px #fff, inset 0 0 15px rgba(255, 255, 255, 0.5) !important; z-index: 10; background: rgba(0, 0, 0, 0.9); }
-        .item-red { border-color: #ff4d4d !important; color: #ff4d4d !important; }
         .item-gold { border-color: #ffd700 !important; color: #ffd700 !important; }
         .item-blue { border-color: #00d4ff !important; color: #00d4ff !important; }
         .item-green { border-color: #2ecc71 !important; color: #2ecc71 !important; }
         .item-orange { border-color: #ff9900 !important; color: #ff9900 !important; }
         .mythic-bg { background-color: #4A0000 !important; background-image: radial-gradient(circle, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; font-weight: 900 !important; }
 
-        /* =========================================
-           5. غرفة التحدي والأونلاين
-           ========================================= */
         .mythic-room { background: linear-gradient(rgba(10, 5, 20, 0.7), rgba(10, 5, 20, 0.8)), var(--vs-img) no-repeat center center !important; background-size: cover !important; border: 2px solid #00d4ff !important; box-shadow: 0 0 30px rgba(0, 212, 255, 0.4) !important; }
+        .mythic-invite { background: linear-gradient(135deg, #2b0000 0%, #0a0000 100%) !important; border: 2px solid #ff4d4d !important; box-shadow: 0 0 30px rgba(255, 0, 0, 0.5), inset 0 0 20px rgba(255, 77, 77, 0.3) !important; animation: distinctPulse 1.5s infinite alternate !important; }
+        
         #vs-header { display: none; flex-direction: row-reverse; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; background: linear-gradient(rgba(10, 5, 25, 0.8), rgba(10, 5, 25, 0.9)), var(--vs-img) no-repeat center center !important; background-size: cover !important; padding: 10px; border-radius: 15px; border: 1px solid #00d4ff; position: relative; box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
         .p-box { display: flex; flex-direction: column; align-items: center; width: 35%; position: relative; text-align: center;}
         .p-box img { width: 55px !important; height: 55px !important; border-radius: 50%; object-fit: cover; border: 3px solid #555; transition: 0.3s; background: #fff;}
@@ -191,11 +172,10 @@
         .status-lose { color: #ff4d4d; display: block;}
         #match-result-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; border-radius: 13px; backdrop-filter: blur(5px); }
         .result-card { text-align: center; color: #fff; width: 90%; }
-        .vs-option-btn { background: rgba(30, 20, 45, 0.9); border: 2px solid #555; border-radius: 12px; color: #fff; padding: 12px; font-weight: bold; margin: 6px 0; width: 100%; transition: 0.3s ease; text-align: center; cursor: pointer; position: relative; z-index: 20;}
-        .emotes-bar { display: none; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; z-index: 20; position: relative; }
-        .emote-btn { background: rgba(30, 20, 45, 0.9); border: 1px solid var(--p); border-radius: 15px; color: #fff; padding: 6px 12px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .vs-option-btn { background: rgba(30, 20, 45, 0.9); border: 2px solid #555; border-radius: 12px; color: #fff; padding: 12px; font-weight: bold; margin: 6px 0; width: 100%; text-align: center; cursor: pointer; position: relative; z-index: 20;}
         
-        /* Emote styling moved BELOW the user */
+        .emotes-bar { display: none; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; z-index: 20; position: relative; }
+        .emote-btn { background: rgba(30, 20, 45, 0.9); border: 1px solid var(--p); border-radius: 15px; color: #fff; padding: 6px 12px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold; }
         .emote-bubble { position: absolute; background: transparent; padding: 0; top: 110%; left: 50%; transform: translateX(-50%); z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s; white-space: nowrap; }
     </style>
 </head>
@@ -205,20 +185,18 @@
     
     <div id="bottom-toast-msg"></div>
 
-    <div id="global-toast">🚫 لقد تم حظر هذا اللاعب!</div>
-
     <div id="loading-screen" style="position:fixed; inset:0; background:#05050a; z-index:9999999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:var(--p);">
         <i class="fas fa-bolt fa-spin" style="font-size:4rem; margin-bottom:20px; color:#00d4ff;"></i>
         <h2 style="margin:0; font-weight:900;">جاري الاتصال...</h2>
     </div>
+
+    <script>setTimeout(function(){ var ls = document.getElementById('loading-screen'); if(ls) ls.style.display='none'; }, 5000);</script>
 
     <div id="banned-screen" style="position:fixed; inset:0; background:#000; z-index:99999999; display:none; flex-direction:column; justify-content:center; align-items:center; color:#ff4d4d; text-align:center; padding:20px;">
         <i class="fas fa-skull-crossbones" style="font-size:6rem; margin-bottom:20px;"></i>
         <h1 style="font-weight:900; margin:0;">لقد تم حظرك!</h1>
         <p style="color:#aaa; font-size:1.2rem; margin-top:10px;">لا يمكنك الدخول إلى اللعبة.</p>
     </div>
-
-    <div id="custom-toast"></div>
     
     <audio id="sfx-click" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
     <audio id="sfx-win" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"></audio>
@@ -302,7 +280,6 @@
             <span class="sword-anim">⚔️</span> تحدي مباشر (أونلاين) <span class="sword-anim">⚔️</span>
         </button>
     </div>
-
     <div id="screen-game" class="box" style="display:none; width:95%; max-width:480px; padding: 15px; transition: none;">
         
         <div id="vs-header">
@@ -332,8 +309,9 @@
             <div class="vs-center">
                 <div class="vs-huge">VS</div>
                 <div id="match-status-area" style="display:flex; flex-direction:column; align-items:center; gap:5px;">
-                    <button id="btn-cancel-ready" class="q-btn danger" style="background:transparent; border-color:#ff4d4d; color:#ff4d4d; padding:4px 12px; font-size:0.9rem; margin:0;" onclick="window.confirmSurrender()">انسحاب 🏳️</button>
-                    <div id="vs-countdown" style="display:none; margin-top:5px;"></div>
+                    <button id="btn-cancel-ready" class="q-btn danger" style="background:transparent; border-color:#ff4d4d; color:#ff4d4d; padding:4px 12px; font-size:0.9rem; margin:0;" onclick="window.cancelMatchmaking()">إلغاء</button>
+                    <button id="btn-surrender" class="q-btn danger" style="background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d; padding:4px 12px; font-size:0.9rem; margin:0; display:none;" onclick="window.confirmSurrender()">انسحاب 🏳️</button>
+                    <div id="vs-countdown" style="display:none; font-size:1.8rem; font-weight:bold; color:var(--p); margin-top:5px;"></div>
                 </div>
             </div>
             
@@ -366,20 +344,20 @@
         </div>
         
         <div id="emotes-container" class="emotes-bar">
-            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f64f/512.gif' width='40'>">
-                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f64f/512.gif" width="20"> أعتذر
+            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Folded%20Hands.png' width='45'>">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Folded%20Hands.png" width="22"> أعتذر
             </button>
-            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f625/512.gif' width='40'>">
-                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f625/512.gif" width="20"> آسف
+            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Pleading%20Face.png' width='45'>">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Pleading%20Face.png" width="22"> آسف
             </button>
-            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.gif' width='40'>">
-                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.gif" width="20"> ضحك
+            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Tears%20of%20Joy.png' width='45'>">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Tears%20of%20Joy.png" width="22"> ضحك
             </button>
-            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.gif' width='40'>">
-                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.gif" width="20"> يبكي
+            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Loudly%20Crying%20Face.png' width='45'>">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Loudly%20Crying%20Face.png" width="22"> يبكي
             </button>
-            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f44f/512.gif' width='40'>">
-                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44f/512.gif" width="20"> كفو
+            <button class="emote-btn" onclick="window.sendEmoteOnline.call(this)" data-emote="<img src='https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Clapping%20Hands.png' width='45'>">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Clapping%20Hands.png" width="22"> كفو
             </button>
         </div>
 
@@ -401,6 +379,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal-overlay" id="custom-modal">
         
         <div class="m-content" id="modal-custom-confirm" style="border-color:#ff8c00;">
@@ -477,6 +456,10 @@
             
             <button id="profile-google-link-btn" onclick="window.loginGoogle()" class="q-btn" style="background:#fff; color:#444; border:none; display:none; gap:10px; padding:10px 20px; border-radius:15px; margin-bottom:15px; font-weight:900; justify-content:center;">
                 <i class="fab fa-google" style="color:#DB4437; font-size:1.2rem;"></i> <span>ربط بحساب جوجل لحفظ تقدمك</span>
+            </button>
+
+            <button class="q-btn primary" id="st-busy" onclick="window.togBusy()" style="background:#111; color:#fff; border:1px solid #2ecc71; margin-bottom:10px;">
+                الحالة: متاح 🟢
             </button>
 
             <div id="admin-buttons-container" style="display:none; flex-direction:column; gap:10px; margin-bottom:15px;">
@@ -558,12 +541,13 @@
             <button class="q-btn danger" onclick="window.cancelMatchmaking()" style="background:rgba(255, 77, 77, 0.2); border-color:#ff4d4d; color:#ff4d4d; margin-top:15px; width:auto; padding:8px 20px; position:relative; z-index:2;">إلغاء وانسحاب</button>
         </div>
 
-        <div class="m-content" id="modal-challenge-invite">
-            <h3 style="color:#ff4d4d; margin-top:0; font-size:1.5rem;">⚔️ تحدي جديد!</h3>
-            <p style="color:#fff; font-size:1.2rem; margin:15px 0;"><span id="challenger-name-ui" class="premium-name">--</span> يتحداك في مباراة مباشرة!</p>
-            <div style="display:flex; gap:10px;">
-                <button class="q-btn" style="background:#2ecc71; color:#000;" onclick="window.acceptChallenge()">قبول التحدي 🔥</button>
-                <button class="q-btn danger" style="background:transparent;" onclick="window.rejectChallenge()">رفض</button>
+        <div class="m-content mythic-invite" id="modal-challenge-invite" style="border-radius:25px; padding:30px 20px;">
+            <i class="fas fa-khanda sword-anim" style="font-size:3rem; color:#ff4d4d; margin-bottom:15px; text-shadow:0 0 20px #ff0000;"></i>
+            <h3 style="color:#ffd700; margin-top:0; font-size:1.8rem; text-shadow: 0 0 15px #ffd700;">⚔️ تحدي أسطوري!</h3>
+            <p style="color:#fff; font-size:1.3rem; margin:15px 0; font-weight:bold;"><span id="challenger-name-ui" class="neon-bg" style="font-size:1.5rem !important;">--</span><br><br>يتحداك في مواجهة حاسمة!</p>
+            <div style="display:flex; gap:15px; margin-top:20px;">
+                <button class="q-btn" style="background:linear-gradient(90deg, #ff8c00, #ff0000); border:2px solid #fff; color:#fff; font-size:1.2rem; box-shadow:0 0 20px #ff0000;" onclick="window.acceptChallenge()">قبول 🔥</button>
+                <button class="q-btn danger" style="background:transparent; border:1px solid #aaa; color:#aaa; font-size:1.1rem;" onclick="window.rejectChallenge()">رفض</button>
             </div>
         </div>
         
@@ -695,6 +679,7 @@
     var qList = []; var aud = 5; var f50 = 5; var cur = 0; var locked = false; var qOrder = []; var optsOrder = []; var currentRunCorrect = 0; var lastAnswerCorrect = false;
     var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
     var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = [];
+    var isBusy = false; // متغير حالة متاح/مشغول
 
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null) ? d : v; } catch(e) { return d; } };
     window.lsSet = function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} };
@@ -706,6 +691,8 @@
     pts = parseInt(window.lsGet('ULT_P', 0)) || 0; totalHints = parseInt(window.lsGet('ULT_TOTAL_HINTS', 3)) || 3; spins = parseInt(window.lsGet('ULT_SPINS', 1)) || 1;
     activeTitleId = window.lsGet('ULT_TITLE_ID', 't1'); currentAvatar = window.lsGet('ULT_AVATAR', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
     randomWinStreak = parseInt(window.lsGet('ULT_STREAK', 0)) || 0;
+    isBusy = window.lsGet('ULT_BUSY', 'false') === 'true';
+    
     try { ownedTitles = JSON.parse(window.lsGet('ULT_OWNED_TITLES', '["t1"]')); } catch(e) {}
     try { answeredQs = JSON.parse(window.lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
     try { newTitlesList = JSON.parse(window.lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
@@ -718,7 +705,7 @@
 
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
-    window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.style.visibility = "visible"; t.style.bottom = "30px"; window.playSndSafe('sfx-click'); setTimeout(function() { t.style.bottom = "-100px"; setTimeout(function() { t.style.visibility = "hidden"; }, 500); }, 3000); };
+    window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.className = "show"; window.playSndSafe('sfx-click'); setTimeout(function() { t.className = ""; }, 3000); };
     window.showToast = function(msg, keepModal) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = "تنبيه ⚠️"; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = msg; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; aBtn.onclick = function() { window.playSndSafe('sfx-click'); if (keepModal === 'keep-search') window.openMod('modal-add-friend'); else window.closeMod(); }; } window.openMod('modal-action-success'); };
     window.showSuccessModal = function(t, d, i, b) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = t; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = d; var aIcon = document.getElementById('action-icon-ui'); if (aIcon) aIcon.innerHTML = i; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; if (b === 'search-friend-result-stay') { aBtn.onclick = function() { window.openMod('modal-add-friend'); window.safeShow('search-result-container', 'block'); window.playSndSafe('sfx-click'); }; } else { aBtn.onclick = function() { window.openMod(b); window.playSndSafe('sfx-click'); }; } } window.openMod('modal-action-success'); window.playSndSafe('sfx-win'); };
     window.playSndSafe = function(id) { if (!sndOn) return; try { var el = document.getElementById(id); if (el) { el.currentTime = 0; el.play().catch(function(){}); } } catch(e) {} };
@@ -726,8 +713,14 @@
     window.setThm = function(t) { document.body.className = t; window.playSndSafe('sfx-click'); window.lsSet('ULT_THEME', t); };
 
     // ==========================================
-    // 3. النوافذ، الحساب، الإعدادات
+    // 3. النوافذ، الحساب، الإعدادات ومتاح/مشغول
     // ==========================================
+    window.togBusy = function() { 
+        isBusy = !isBusy; window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); 
+        var btn = document.getElementById('st-busy'); if(btn) { btn.innerText = isBusy ? "الحالة: مشغول 🔴" : "الحالة: متاح 🟢"; }
+        window.playSndSafe('sfx-click'); window.saveProgress(false); window.showBottomToast(isBusy ? "أنت الآن مشغول 🔴" : "أنت الآن متاح 🟢");
+    };
+
     window.checkDailyReward = function() { var today = new Date().toDateString(); var lastLogin = window.lsGet('ULT_LAST_LOGIN', ''); if (lastLogin !== today && loggedUser !== '') { spins++; totalHints += 2; window.lsSet('ULT_LAST_LOGIN', today); window.saveProgress(false); setTimeout(function(){ window.showBottomToast("🎁 مكافأة يومية: +1 سحب، +2 تلميح!"); }, 1500); } };
     window.loginGuest = function() { window.playSndSafe('sfx-click'); var n = document.getElementById('guest-name-input'); if (!n) return; var val = n.value.trim(); loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; window.lsSet('ULT_USER', loggedUser); window.lsSet('ULT_FB', 'false'); window.safeHide('screen-login'); window.showStartScreen(); if (typeof window.checkDailyReward === "function") window.checkDailyReward(); };
     window.loginGoogle = function() { window.playSndSafe('sfx-click'); if (window.auth) { var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); window.auth.signInWithRedirect(provider).catch(function(error){ window.showToast("حدث خطأ، حاول مجدداً"); }); } };
@@ -750,16 +743,18 @@
             if (wms) { wms.innerText = loggedUser; if (hasNeonUser || isOwn) wms.className = "neon-bg"; else wms.className = "premium-name"; }
             var sid = document.getElementById('settings-id'); if (sid) sid.innerText = pID; var sp = document.getElementById('current-profile-preview'); if (sp) sp.src = currentAvatar;
             var googleBtn = document.getElementById('profile-google-link-btn'); if (googleBtn) googleBtn.style.display = isGoogle ? 'none' : 'flex';
+            var busyBtn = document.getElementById('st-busy'); if(busyBtn) busyBtn.innerText = isBusy ? "الحالة: مشغول 🔴" : "الحالة: متاح 🟢";
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { if (isOwn) badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (isMd) badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; else badgeEl.innerHTML = ''; }
             if (isOwn || isMd) { window.safeShow('admin-buttons-container', 'flex'); window.safeShow('btn-ban-list', 'block'); if (isOwn) { window.safeShow('btn-mod-list', 'block'); window.safeShow('btn-neon-list', 'block'); } else { window.safeHide('btn-mod-list'); window.safeHide('btn-neon-list'); } } else window.safeHide('admin-buttons-container');
         }
     };
     window.closeMod = function() { window.playSndSafe('sfx-click'); window.safeHide('custom-modal'); };
-    window.showCustomConfirm = function(title, msg, onYes) { var ct = document.getElementById('confirm-title'); if (ct) ct.innerText = title; var cm = document.getElementById('confirm-msg'); if (cm) cm.innerText = msg; var btnYes = document.getElementById('confirm-btn-yes'); if (btnYes) { btnYes.onclick = function() { window.playSndSafe('sfx-click'); onYes(); }; } window.openMod('modal-custom-confirm'); };
+    window.showCustomConfirm = function(title, msg, onYes) { var ct = document.getElementById('confirm-title'); if (ct) ct.innerText = title; var cm = document.getElementById('confirm-msg'); if (cm) cm.innerText = msg; var btnYes = document.getElementById('confirm-btn-yes'); if (btnYes) { btnYes.onclick = function() { window.playSndSafe('sfx-click'); window.closeMod(); onYes(); }; } window.openMod('modal-custom-confirm'); };
     window.setPresetAvatar = function(url, el) { window.playSndSafe('sfx-click'); currentAvatar = url; window.lsSet('ULT_AVATAR', currentAvatar); var btnImg = document.getElementById('profile-img-btn'); var settingsPreview = document.getElementById('current-profile-preview'); var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } if (settingsPreview) settingsPreview.src = currentAvatar; if (btnPlaceholder) btnPlaceholder.style.display = 'none'; var opts = document.querySelectorAll('.preset-img-opt'); for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected'); if (el) el.classList.add('selected'); window.saveProgress(false); window.showBottomToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); };
+
     // ==========================================
-    // 8. الإدارة والحظر (للمشرفين)
+    // 8. الإدارة والحظر (تم تطبيق الفلترة الفورية لمنع أي أخطاء من Firebase)
     // ==========================================
     window.openUserAction = function(uid, name, numId, role, avatar, hasNeon) { 
         if (!window.isMod() || uid === authUid) return; 
@@ -823,15 +818,18 @@
         }); 
     };
 
+    // فلترة فورية بدون حاجة لفهارس
     window.openBanList = function() { 
         var container = document.getElementById('ban-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
         window.openMod('modal-ban-list'); 
-        window.db.collection('users_v4').where('isBanned', '==', true).get().then(function(snap) { 
+        window.db.collection('users_v4').get().then(function(snap) { 
             var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
             snap.forEach(function(doc) { 
                 var d = doc.data(); 
-                var unbanBtn = window.isOwner(em) ? '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">فك الحظر</button>' : ''; 
-                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"><div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ' + (d.bannedBy || 'مجهول') + '</span></div> ' + unbanBtn + '</div>'; 
+                if (d.isBanned === true) {
+                    var unbanBtn = window.isOwner(em) ? '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">فك الحظر</button>' : ''; 
+                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"><div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ' + (d.bannedBy || 'مجهول') + '</span></div> ' + unbanBtn + '</div>'; 
+                }
             }); 
             if (container) container.innerHTML = html || "<p style='color:#2ecc71;'>لا يوجد لاعبين محظورين.</p>"; 
         }).catch(function(){}); 
@@ -849,13 +847,15 @@
     window.openModList = function() { 
         var container = document.getElementById('mod-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
         window.openMod('modal-mod-list'); 
-        window.db.collection('users_v4').where('role', '==', 'mod').get().then(function(snap) { 
+        window.db.collection('users_v4').get().then(function(snap) { 
             var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
             snap.forEach(function(doc) { 
                 var d = doc.data(); 
-                var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة</button>' : ''; 
-                var avatarClickHtml = window.isOwner(em) ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
-                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;" ' + avatarClickHtml + '><span class="premium-name" style="font-size:1.1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+                if (d.role === 'mod') {
+                    var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة</button>' : ''; 
+                    var avatarClickHtml = window.isOwner(em) ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
+                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;" ' + avatarClickHtml + '><span class="premium-name" style="font-size:1.1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+                }
             }); 
             if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد مشرفين حالياً.</p>"; 
         }).catch(function(){}); 
@@ -873,13 +873,15 @@
     window.openNeonList = function() { 
         var container = document.getElementById('neon-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
         window.openMod('modal-neon-list'); 
-        window.db.collection('users_v4').where('hasNeon', '==', true).get().then(function(snap) { 
+        window.db.collection('users_v4').get().then(function(snap) { 
             var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
             snap.forEach(function(doc) { 
                 var d = doc.data(); 
-                var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة ✨</button>' : ''; 
-                var avatarClickHtml = window.isMod() ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
-                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ' + avatarClickHtml + '><span class="neon-bg" style="font-size:1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+                if (d.hasNeon === true || d.hasNeon === 'true') {
+                    var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة ✨</button>' : ''; 
+                    var avatarClickHtml = window.isMod() ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
+                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ' + avatarClickHtml + '><span class="neon-bg" style="font-size:1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+                }
             }); 
             if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد لاعبين باللون الفوسفوري.</p>"; 
         }).catch(function(){}); 
@@ -893,7 +895,22 @@
             }).catch(function(){}); 
         }); 
     };
-
+    
+    // ==========================================
+    // حذف الأصدقاء
+    // ==========================================
+    window.removeFriendDirect = function(fUid, fName) {
+        window.showCustomConfirm("حذف صديق", "هل تريد بالتأكيد حذف " + fName + " من قائمة الأصدقاء؟ 🗑️", function() {
+            var myRef = window.db.collection("users_v4").doc(authUid);
+            myRef.get().then(function(doc){
+                if(doc.exists) {
+                    var d = doc.data(); var newFriends = [];
+                    if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== fUid) newFriends.push(d.friends[i]); } }
+                    myRef.update({friends: newFriends}).then(function(){ window.showBottomToast("تم حذف " + fName + " من الأصدقاء ✅"); });
+                }
+            });
+        });
+    };
     // ==========================================
     // 9. الألقاب، عجلة الحظ وحفظ التقدم
     // ==========================================
@@ -904,7 +921,7 @@
         
         if (!skipFirebase && isGoogle && authUid && window.db) { 
             var myEmail = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : '';
-            var data = { name: loggedUser, score: pts, title: activeTitleId, numId: pID, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak, hasNeon: hasNeonUser };
+            var data = { name: loggedUser, score: pts, title: activeTitleId, numId: pID, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak, hasNeon: hasNeonUser, isBusy: isBusy };
             if (myEmail !== '') data.email = myEmail; if (currentUserRole !== 'user') data.role = currentUserRole;
             window.db.collection("leaderboard_" + window.getWeekString()).doc(authUid).set(data, {merge: true}).catch(function(e){}); 
             window.db.collection("users_v4").doc(authUid).set(data, {merge: true}).catch(function(e){}); 
@@ -1056,25 +1073,31 @@
     window.useAud = function() { if (aud<=0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
     window.use50 = function() { if (f50<=0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++){ if (optsOrder[i] !== 0 && h<2){ var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
     window.useHint = function() { if (totalHints<=0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
-    // ==========================================
-    // 9. الأونلاين والتحدي المباشر 
-    // ==========================================
-    window.searchFriend = function() { 
-        var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); 
-        if (fId === "" || fId === pID) { window.showToast("ID غير صالح!", "keep-search"); return; } 
-        window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { 
-            if (!snap.empty) { 
-                var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) nameCls = 'neon-bg'; var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var banBtnHtml = ''; if (window.isMod() && fId !== pID) { banBtnHtml = '<button class="q-btn danger" style="width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')">إدارة اللاعب ⚙️</button>'; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + banBtnHtml + ' </div>'; window.safeShow('search-result-container', 'block'); } 
-            } else { window.showToast("اللاعب غير موجود!", "keep-search"); } 
-        }).catch(function(){}); 
-    };
-
-    window.sendFriendReq = function(targetUid, fName) { if (!isGoogle) { window.showToast("سجل بجوجل أولاً!"); return; } window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { window.showSuccessModal('تم الإرسال!', 'تم إرسال طلب الصداقة لـ ' + fName, '💌', 'search-friend-result-stay'); document.getElementById('friend-id-input').value = ""; }).catch(function(){}); };
-    window.acceptFriendReq = function(fUid, fName, fNum) { window.playSndSafe('sfx-click'); var myRef = window.db.collection("users_v4").doc(authUid); var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; var friendObjForMe = { uid: fUid, name: fName, numId: fNum }; var friendObjForThem = { uid: authUid, name: loggedUser, numId: pID }; myRef.update({ requests: firebase.firestore.FieldValue.arrayRemove(reqObj), friends: firebase.firestore.FieldValue.arrayUnion(friendObjForMe) }); window.db.collection("users_v4").doc(fUid).update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); window.showToast('أصبح ' + fName + ' من أصدقائك الآن 🤝'); };
     
+    // ==========================================
+    // 11. الأونلاين والتحدي المباشر 
+    // ==========================================
+    var matchRef = null, matchmakingUnsubscribe = null, onlineMatchId = null, myMatchRole = null, onlineTimerInterval = null, currentTurnUid = null, isOnlineMode = false, onlineData = {};
+    var turnTimeLeft = 25;
+
     window.startMatchmaking = function(type, friendUid, friendName) { 
         if (!authUid) { window.showToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } 
         if (qList.length < 10) { window.showToast("خطأ: الأسئلة قيد التحميل..."); return; } 
+        
+        if (type === 'friend') {
+            window.db.collection("users_v4").doc(friendUid).get().then(function(doc){
+                if(doc.exists && (doc.data().isBusy === true || doc.data().isBusy === 'true')) {
+                    window.showBottomToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴");
+                } else {
+                    window.proceedMatchmaking(type, friendUid, friendName);
+                }
+            });
+        } else {
+            window.proceedMatchmaking(type, friendUid, friendName);
+        }
+    };
+
+    window.proceedMatchmaking = function(type, friendUid, friendName) {
         window.openMod('modal-loading-online'); 
         var waitMsg = document.getElementById('wait-msg-ui'); if (type === 'friend') { if (waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if (waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; } 
         var waitMyImg = document.getElementById('wait-my-img'); if (waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
@@ -1097,12 +1120,9 @@
                     foundMatch.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.startVSGame(foundMatch.id, "p2"); }); 
                 } 
             }).catch(function(e){ console.error(e); window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); }); 
-        } 
+        }
     };
 
-    window.acceptChallenge = function() { if (!window.incomingChallengeId) return; window.showToast("جاري الدخول للمباراة... ⚔️"); window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.startVSGame(window.incomingChallengeId, "p2"); }).catch(function(){}); };
-    window.rejectChallenge = function() { if (!window.incomingChallengeId) return; window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ status: 'cancelled' }); window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.closeMod(); };
-    
     window.listenToMatch = function(matchId) { 
         matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { 
             if (!doc.exists) return; var d = doc.data(); 
@@ -1120,7 +1140,7 @@
         window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); 
         
         var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } 
-        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
+        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('btn-surrender'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
         var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } 
         
         window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
@@ -1139,10 +1159,6 @@
 
     window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if (btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
     
-    // الإيموجي يظهر تحت اسم اللاعب
-    window.sendEmoteOnline = function() { if (!isOnlineMode || !onlineMatchId) return; var emoteTxt = this.getAttribute('data-emote') || this.innerText; var updateObj = {}; if (myMatchRole === 'p1') { updateObj.p1_emote = emoteTxt; updateObj.p1_emote_time = Date.now(); } else { updateObj.p2_emote = emoteTxt; updateObj.p2_emote_time = Date.now(); } window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); window.showEmoteBubble('player1-emote-message', emoteTxt); window.playSndSafe('sfx-click'); };
-    window.showEmoteBubble = function(elementId, text) { var el = document.getElementById(elementId); if (el) { el.innerHTML = text; el.style.top = '110%'; el.style.opacity = 1; el.style.transform = 'translateX(-50%) translateY(5px)'; setTimeout(function() { el.style.opacity = 0; el.style.transform = 'translateX(-50%) translateY(0)'; }, 3000); } };
-
     window.listenToOnlineMatch = function() { 
         matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { 
             if (!doc.exists) return; onlineData = doc.data(); 
@@ -1161,11 +1177,11 @@
 
     window.startVSCountdown = function() { 
         window.safeHide('ready-area-left'); window.safeHide('btn-cancel-ready'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); 
-        var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">' + count + '</div>'; window.playSndSafe('sfx-click'); 
+        var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); 
         var cdInt = setInterval(function() { 
             count--; 
-            if (count > 0) { if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">' + count + '</div>'; window.playSndSafe('sfx-click'); } 
-            else if (count === 0) { if (cdDiv) cdDiv.innerHTML = '<div class="go-text">انطلق!</div>'; window.playSndSafe('sfx-win'); } 
+            if (count > 0) { if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); } 
+            else if (count === 0) { if (cdDiv) cdDiv.innerHTML = 'انطلق!'; window.playSndSafe('sfx-win'); } 
             else { 
                 clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); 
                 if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } 
@@ -1207,7 +1223,7 @@
 
     window.submitOnlineAnswer = function(idx) { 
         locked = true; clearInterval(onlineTimerInterval); 
-        var isCorrect = (idx === 0); var btn = document.getElementById('opt'+idx); 
+        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
         if (btn) { 
             if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } 
             else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } 
@@ -1235,17 +1251,15 @@
         if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='has-shine shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } } else if (isDraw) { window.playSndSafe('sfx-click'); if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } else { window.playSndSafe('sfx-lose'); if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } 
         window.saveProgress(false); window.safeShow('match-result-overlay', 'flex'); 
     };
-    window.closeMatchResult = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.goHomeG(); };
-    window.rematchFriend = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); var friendUid = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id; var friendName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name; window.goHomeG(); setTimeout(function() { window.startMatchmaking('friend', friendUid, friendName); }, 500); };
 
     // ==========================================
-    // 10. 100 سؤال من العيار الثقيل جداً!
+    // 12. 100 سؤال جبار (تم تصغير الكود بدمج المصفوفات)
     // ==========================================
     var qDataRawLast = [
-        ["من هو النبي الذي أُمر بأن يأخذ الكتاب بقوة؟", "يحيى عليه السلام", "موسى عليه السلام", "عيسى عليه السلام", "داود عليه السلام", "(يا يحيى خذ الكتاب بقوة)"],
+        ["من هو النبي الذي أُمر بأن يأخذ الكتاب بقوة؟", "يحيى عليه السلام", "موسى عليه السلام", "عيسى عليه السلام", "داود عليه السلام", "يا يحيى خذ الكتاب بقوة"],
         ["ما هي السورة التي ذكرت فيها البسملة مرتين؟", "سورة النمل", "سورة التوبة", "سورة النحل", "سورة الأنفال", "في بدايتها، وفي رسالة سليمان لبلقيس"],
-        ["من هو الصحابي الذي اهتز لموته عرش الرحمن؟", "سعد بن معاذ", "حمزة بن عبد المطلب", "عمر بن الخطاب", "مصعب بن عمير", "قال النبي ﷺ: (اهتز عرش الرحمن لموت سعد بن معاذ)"],
-        ["أطول كلمة في القرآن الكريم من حيث عدد الحروف؟", "فأسقيناكموه", "أنلزمكموها", "ليستخلفنهم", "المستضعفين", "في سورة الحجر (فأسقيناكموه) وتتكون من 11 حرفاً"],
+        ["من هو الصحابي الذي اهتز لموته عرش الرحمن؟", "سعد بن معاذ", "حمزة بن عبد المطلب", "عمر بن الخطاب", "مصعب بن عمير", "قال النبي ﷺ: اهتز عرش الرحمن لموت سعد بن معاذ"],
+        ["أطول كلمة في القرآن الكريم من حيث عدد الحروف؟", "فأسقيناكموه", "أنلزمكموها", "ليستخلفنهم", "المستضعفين", "في سورة الحجر وتتكون من 11 حرفاً"],
         ["من هو الصحابي الذي أشار على النبي ﷺ بحفر الخندق؟", "سلمان الفارسي", "عمار بن ياسر", "حذيفة بن اليمان", "أبو عبيدة بن الجراح", "استخدم خطة فارسية لم تكن العرب تعرفها"],
         ["كم عدد السور المكية في القرآن الكريم؟", "86 سورة", "28 سورة", "90 سورة", "114 سورة", "السور المكية 86 والمدنية 28"],
         ["ما هي المعركة التي سميت بـ (فتح الفتوح)؟", "معركة نهاوند", "معركة القادسية", "معركة اليرموك", "معركة حطين", "انتصر فيها المسلمون على الفرس وسقطت إمبراطوريتهم"],
@@ -1346,16 +1360,12 @@
 
     try { 
         for (var j = 0; j < qDataRawLast.length; j++) { 
-            qList.push({ 
-                q: qDataRawLast[j][0], 
-                o: [qDataRawLast[j][1], qDataRawLast[j][2], qDataRawLast[j][3], qDataRawLast[j][4]], 
-                exp: qDataRawLast[j][5] || "" 
-            }); 
+            qList.push({ q: qDataRawLast[j][0], o: [qDataRawLast[j][1], qDataRawLast[j][2], qDataRawLast[j][3], qDataRawLast[j][4]], exp: qDataRawLast[j][5] || "" }); 
         } 
     } catch (e) { console.error(e); }
 
     // ==========================================
-    // 11. الإقلاع والتسجيل وحفظ الضيف بشكل آمن
+    // 13. الإقلاع والتسجيل (مع تفعيل نظام متاح/مشغول)
     // ==========================================
     window.showStartScreen = function() { 
         window.safeHide('screen-login'); window.safeHide('screen-game'); window.safeShow('screen-start', 'flex'); window.safeShow('main-nav', 'flex'); 
@@ -1379,24 +1389,15 @@
     };
 
     window.finishLoading = function(showLogin) { 
-        setTimeout(function() { 
-            window.safeHide('loading-screen'); 
-            if (showLogin) { 
-                var screenStart = document.getElementById('screen-start'); 
-                if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } 
-            } else { window.showStartScreen(); } 
-        }, 1500); 
+        var ls = document.getElementById('loading-screen'); if(ls) ls.style.display = 'none';
+        if (showLogin) { 
+            var screenStart = document.getElementById('screen-start'); 
+            if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } 
+        } else { window.showStartScreen(); } 
     };
 
     window.addEventListener('DOMContentLoaded', function() { 
         window.safeShow('loading-screen', 'flex'); 
-        
-        setTimeout(function() { 
-            var lScreen = document.getElementById('loading-screen'); 
-            if (lScreen && lScreen.style.display !== 'none' && (!window.auth || !authUid)) { 
-                if (loggedUser && loggedUser !== '' && !isGoogle) { window.finishLoading(false); } else { window.finishLoading(true); } 
-            } 
-        }, 4000); 
         
         if (window.auth) { 
             window.auth.onAuthStateChanged(function(user) { 
@@ -1410,6 +1411,7 @@
                                 if (d.hints !== undefined) totalHints = parseInt(d.hints); if (d.spins !== undefined) spins = parseInt(d.spins); 
                                 if (d.ownedTitles) ownedTitles = d.ownedTitles; if (d.title) activeTitleId = d.title; if (d.answeredQs) answeredQs = d.answeredQs; if (d.avatar) currentAvatar = d.avatar; 
                                 if (d.randomWinStreak !== undefined) randomWinStreak = parseInt(d.randomWinStreak); if (d.role) currentUserRole = d.role; if (d.hasNeon === true || d.hasNeon === 'true') hasNeonUser = true; 
+                                if (d.isBusy !== undefined) { isBusy = (d.isBusy === true || d.isBusy === 'true'); window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); }
                             } else { loggedUser = user.displayName || 'أسطورة'; } 
                             if (window.isOwner(user.email)) { currentUserRole = 'owner'; hasNeonUser = true; pID = "11111111"; if (ownedTitles.indexOf('t_لواء') === -1) ownedTitles.push('t_لواء'); } 
                             window.finishLoading(false); 
@@ -1418,10 +1420,17 @@
                                 if (docSnap.exists) { 
                                     var data = docSnap.data(); if (data.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
                                     
+                                    // إذا وصلك تحدي وأنت مشغول 🔴 يتم الرفض تلقائياً وبدون إزعاجك
                                     if (data.challenges && data.challenges.length > 0) { 
-                                        var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId; 
-                                        var chNameUI = document.getElementById('challenger-name-ui'); if (chNameUI) { chNameUI.innerText = activeCh.fromName; } 
-                                        window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win'); 
+                                        if(isBusy) {
+                                            var activeCh = data.challenges[0]; 
+                                            window.db.collection("matches_v4").doc(activeCh.matchId).update({ status: 'cancelled' }); 
+                                            window.db.collection("users_v4").doc(authUid).update({ challenges: [] });
+                                        } else {
+                                            var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId; 
+                                            var chNameUI = document.getElementById('challenger-name-ui'); if (chNameUI) { chNameUI.innerText = activeCh.fromName; } 
+                                            window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win'); 
+                                        }
                                     } else if (document.getElementById('modal-challenge-invite').style.display === 'flex') { window.closeMod(); } 
                                     
                                     if (data.requests) { 
@@ -1437,7 +1446,9 @@
                                             var frHtml = ''; 
                                             sortedFriends.forEach(function(f){ 
                                                 var isOnline = allUsersStatus[f.numId] === true; var dotColor = isOnline ? '#2ecc71' : '#ff4d4d'; var statusTxt = isOnline ? 'متصل ✅' : 'غير متصل ❌'; var nameCls = (f.name !== "أسطورة") ? 'premium-name' : ''; 
-                                                frHtml += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1);"> <div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="' + nameCls + '" style="font-size:1.1rem !important;">' + f.name + '</span><div style="display:flex; align-items:center; gap:5px; margin-top:3px;"><i class="fas fa-circle" style="color:' + dotColor + '; font-size:0.6rem;"></i><span style="color:' + dotColor + '; font-size:0.75rem;">' + statusTxt + '</span></div></div> <button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d;" onclick="window.startMatchmaking(\'friend\', \'' + f.uid + '\', \'' + f.name.replace(/'/g, "\\'") + '\')">⚔️ تحدي</button> </div>'; 
+                                                var delBtn = '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d; background:transparent;" onclick="window.removeFriendDirect(\''+f.uid+'\', \''+f.name.replace(/'/g, "\\'")+'\')">حذف 🗑️</button>';
+                                                var chBtn = '<button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#2ecc71; color:#2ecc71; background:transparent;" onclick="window.startMatchmaking(\'friend\', \'' + f.uid + '\', \'' + f.name.replace(/'/g, "\\'") + '\')">⚔️ تحدي</button>';
+                                                frHtml += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:5px; border:1px solid rgba(255,255,255,0.1);"> <div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="' + nameCls + '" style="font-size:1.1rem !important;">' + f.name + '</span><div style="display:flex; align-items:center; gap:5px; margin-top:3px;"><i class="fas fa-circle" style="color:' + dotColor + '; font-size:0.6rem;"></i><span style="color:' + dotColor + '; font-size:0.75rem;">' + statusTxt + '</span></div></div> <div style="display:flex; gap:5px;">' + chBtn + delBtn + '</div> </div>'; 
                                             }); 
                                             if (frList) { frList.innerHTML = frHtml; } 
                                         }).catch(function(){}); 
