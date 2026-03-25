@@ -680,74 +680,32 @@
     </div>
 <script>
     // ==========================================
-    // 1. الاتصال بقاعدة البيانات (Firebase)
+    // 1. الاتصال بقاعدة البيانات
     // ==========================================
-    window.db = null; 
-    window.auth = null;
+    window.db = null; window.auth = null;
     try { 
-        var firebaseConfig = { 
-            apiKey: "AIzaSyB5aIAXxxtpVCyvu4aveECY3CtfU0kQlAg", 
-            authDomain: "islamicquiz-94.firebaseapp.com", 
-            projectId: "islamicquiz-94", 
-            storageBucket: "islamicquiz-94.appspot.com" 
-        }; 
-        if (typeof firebase !== 'undefined') { 
-            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); } 
-            window.db = firebase.firestore(); 
-            window.auth = firebase.auth(); 
-        } 
-    } catch(e) { console.error("Firebase Init Error:", e); }
+        var firebaseConfig = { apiKey: "AIzaSyB5aIAXxxtpVCyvu4aveECY3CtfU0kQlAg", authDomain: "islamicquiz-94.firebaseapp.com", projectId: "islamicquiz-94", storageBucket: "islamicquiz-94.appspot.com" }; 
+        if (typeof firebase !== 'undefined') { if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); } window.db = firebase.firestore(); window.auth = firebase.auth(); } 
+    } catch(e) { console.error(e); }
 
     // ==========================================
     // 2. المتغيرات الأساسية
     // ==========================================
-    var DEVELOPER_EMAIL = "fri-man07@hotmail.com"; 
-    var currentUserRole = 'user'; 
-    var hasNeonUser = false; 
-    var sndOn = true;
-    
-    var qList = []; 
-    var aud = 5; 
-    var f50 = 5; 
-    var cur = 0; 
-    var locked = false; 
-    var qOrder = []; 
-    var optsOrder = []; 
-    var currentRunCorrect = 0; 
-    var lastAnswerCorrect = false;
-    
-    var authUid = null; 
-    var pID = ""; 
-    var loggedUser = ""; 
-    var isGoogle = false; 
-    var pts = 0; 
-    var totalHints = 3; 
-    var spins = 1; 
-    var randomWinStreak = 0; 
-    var activeTitleId = 't1'; 
-    var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-    var ownedTitles = ['t1']; 
-    var answeredQs = []; 
-    var newTitlesList = [];
+    var DEVELOPER_EMAIL = "fri-man07@hotmail.com"; var currentUserRole = 'user'; var hasNeonUser = false; var sndOn = true;
+    var qList = []; var aud = 5; var f50 = 5; var cur = 0; var locked = false; var qOrder = []; var optsOrder = []; var currentRunCorrect = 0; var lastAnswerCorrect = false;
+    var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
+    var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = [];
 
-    // ==========================================
-    // 3. دوال التخزين (LocalStorage)
-    // ==========================================
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null) ? d : v; } catch(e) { return d; } };
     window.lsSet = function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} };
     window.generateNumID = function() { return Math.floor(10000000 + Math.random() * 89999999).toString(); };
     window.getWeekString = function() { var d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + 4 - (d.getDay() || 7)); var y = new Date(d.getFullYear(), 0, 1); return d.getFullYear() + "_W" + Math.ceil((((d - y) / 86400000) + 1) / 7); };
 
     pID = window.lsGet('ULT_PRO_ID_V4', window.generateNumID()); window.lsSet('ULT_PRO_ID_V4', pID);
-    loggedUser = window.lsGet('ULT_USER', ''); 
-    isGoogle = window.lsGet('ULT_FB', 'false') === 'true'; 
-    pts = parseInt(window.lsGet('ULT_P', 0)) || 0; 
-    totalHints = parseInt(window.lsGet('ULT_TOTAL_HINTS', 3)) || 3; 
-    spins = parseInt(window.lsGet('ULT_SPINS', 1)) || 1;
-    activeTitleId = window.lsGet('ULT_TITLE_ID', 't1'); 
-    currentAvatar = window.lsGet('ULT_AVATAR', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
+    loggedUser = window.lsGet('ULT_USER', ''); isGoogle = window.lsGet('ULT_FB', 'false') === 'true'; 
+    pts = parseInt(window.lsGet('ULT_P', 0)) || 0; totalHints = parseInt(window.lsGet('ULT_TOTAL_HINTS', 3)) || 3; spins = parseInt(window.lsGet('ULT_SPINS', 1)) || 1;
+    activeTitleId = window.lsGet('ULT_TITLE_ID', 't1'); currentAvatar = window.lsGet('ULT_AVATAR', 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png');
     randomWinStreak = parseInt(window.lsGet('ULT_STREAK', 0)) || 0;
-    
     try { ownedTitles = JSON.parse(window.lsGet('ULT_OWNED_TITLES', '["t1"]')); } catch(e) {}
     try { answeredQs = JSON.parse(window.lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
     try { newTitlesList = JSON.parse(window.lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
@@ -755,97 +713,24 @@
     window.isOwner = function(email) { return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); };
     window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
 
-    // ==========================================
-    // 4. الألقاب وعجلة الحظ
-    // ==========================================
-    var titlesData = { 
-        't1': { n: 'طالب علم', c: 'title-طالب', msg: 'اللقب الافتراضي لكل لاعب 📚' }, 
-        't2': { n: 'المتميز', c: 'title-متميز', msg: 'سجل دخول بجوجل للحصول على اللقب المتميز مجاناً 📧' }, 
-        't4': { n: 'حافظ الحديث', c: 'title-حافظ', shine: 'silver', msg: 'للحصول على هذا اللقب يجب أن تكون في المركز الأول لمدة أسبوع 🥇' }, 
-        't5': { n: 'سيد المعرفة', c: 'title-سيد', shine: 'silver', msg: 'أجب على 250 سؤال صح للحصول عليه ❄️' }, 
-        't6': { n: 'حكيم الأمة', c: 'title-حكيم', shine: 'silver', msg: 'أجب على 350 سؤال صح للحصول عليه 🌋' }, 
-        't_تاج': { n: 'تاج العلم', c: 'title-تاج', extraIcon: '👑 ', shine: 'silver', msg: 'لقب نادر، يمكن الحصول عليه فقط من سحب الحظ 🎁' }, 
-        't_نجم': { n: 'النجم الذهبي', c: 'title-نجم', extraIcon: '⭐ ', shine: 'silver', msg: 'لقب نادر، يمكن الحصول عليه فقط من سحب الحظ 🎁' }, 
-        't_ذهبي': { n: 'العقل الذهبي', c: 'title-ذهبي', extraIcon: '💎 ', shine: 'blue', msg: 'اربح 12 تحدي أونلاين متتالي بدون خسارة للحصول عليه ⚔️' }, 
-        't_لواء': { n: 'لِـوَاءُ الإِسْـلَام', c: 'title-لواء', isDevOnly: true, shine: 'gold', msg: 'هذا اللقب خاص بالمطور حصرآ 🔒' } 
-    };
+    var titlesData = { 't1': { n: 'طالب علم', c: 'title-طالب', msg: 'اللقب الافتراضي 📚' }, 't2': { n: 'المتميز', c: 'title-متميز', msg: 'سجل دخول بجوجل 📧' }, 't4': { n: 'حافظ الحديث', c: 'title-حافظ', shine: 'silver', msg: 'الأول لمدة أسبوع 🥇' }, 't5': { n: 'سيد المعرفة', c: 'title-سيد', shine: 'silver', msg: '250 سؤال صح ❄️' }, 't6': { n: 'حكيم الأمة', c: 'title-حكيم', shine: 'silver', msg: '350 سؤال صح 🌋' }, 't_تاج': { n: 'تاج العلم', c: 'title-تاج', extraIcon: '👑 ', shine: 'silver', msg: 'من سحب الحظ 🎁' }, 't_نجم': { n: 'النجم الذهبي', c: 'title-نجم', extraIcon: '⭐ ', shine: 'silver', msg: 'من سحب الحظ 🎁' }, 't_ذهبي': { n: 'العقل الذهبي', c: 'title-ذهبي', extraIcon: '💎 ', shine: 'blue', msg: '12 تحدي متتالي ⚔️' }, 't_لواء': { n: 'لِـوَاءُ الإِسْـلَام', c: 'title-لواء', isDevOnly: true, shine: 'gold', msg: 'للمطور حصرآ 🔒' } };
+    var spinPrizes = [ { tAR: 'تاج العلم', type: 'title', v: 't_تاج', p: 0.7, icon: '<i class="fas fa-crown" style="color:#ffd700;"></i>', c: 'mythic-bg', perc: '0.7%' }, { tAR: '1 تلميح', type: 'h', v: 1, p: 20, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '20%' }, { tAR: '100 نقطة', type: 'p', v: 100, p: 25, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '25%' }, { tAR: 'صندوق الجائزة', type: 'box', v: 't_نجم', p: 0.7, icon: '<i class="fas fa-gift"></i>', c: 'mythic-bg', perc: '0.7%' }, { tAR: '500 نقطة', type: 'p', v: 500, p: 10, icon: '<i class="fas fa-coins"></i>', c: 'item-green', perc: '10%' }, { tAR: '3 تلميح', type: 'h', v: 3, p: 10, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-orange', perc: '10%' }, { tAR: '2 تلميح', type: 'h', v: 2, p: 15, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '15%' }, { tAR: '300 نقطة', type: 'p', v: 300, p: 15, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '15%' } ];
 
-    var spinPrizes = [ 
-        { tAR: 'تاج العلم', type: 'title', v: 't_تاج', p: 0.7, icon: '<i class="fas fa-crown" style="color:#ffd700;"></i>', c: 'mythic-bg', perc: '0.7%' }, 
-        { tAR: '1 تلميح', type: 'h', v: 1, p: 20, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '20%' }, 
-        { tAR: '100 نقطة', type: 'p', v: 100, p: 25, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '25%' }, 
-        { tAR: 'صندوق الجائزة', type: 'box', v: 't_نجم', p: 0.7, icon: '<i class="fas fa-gift"></i>', c: 'mythic-bg', perc: '0.7%' }, 
-        { tAR: '500 نقطة', type: 'p', v: 500, p: 10, icon: '<i class="fas fa-coins"></i>', c: 'item-green', perc: '10%' }, 
-        { tAR: '3 تلميح', type: 'h', v: 3, p: 10, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-orange', perc: '10%' }, 
-        { tAR: '2 تلميح', type: 'h', v: 2, p: 15, icon: '<i class="fas fa-lightbulb"></i>', c: 'item-gold', perc: '15%' }, 
-        { tAR: '300 نقطة', type: 'p', v: 300, p: 15, icon: '<i class="fas fa-coins"></i>', c: 'item-blue', perc: '15%' } 
-    ];
-
-    // ==========================================
-    // 5. دوال النوافذ، الإشعارات، والأصوات
-    // ==========================================
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
-    
-    window.showBottomToast = function(msg) { 
-        var t = document.getElementById("bottom-toast-msg"); if (!t) return; 
-        t.innerText = msg; t.style.visibility = "visible"; t.style.bottom = "30px"; window.playSndSafe('sfx-click'); 
-        setTimeout(function() { t.style.bottom = "-100px"; setTimeout(function() { t.style.visibility = "hidden"; }, 500); }, 3000); 
-    };
-    
-    window.showToast = function(msg, keepModal) { 
-        var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = "تنبيه ⚠️"; 
-        var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = msg; 
-        var aBtn = document.getElementById('action-btn-ui'); 
-        if (aBtn) { 
-            aBtn.innerText = "متابعة ✔️"; 
-            aBtn.onclick = function() { window.playSndSafe('sfx-click'); if (keepModal === 'keep-search') window.openMod('modal-add-friend'); else window.closeMod(); }; 
-        } 
-        window.openMod('modal-action-success'); 
-    };
-
-    window.showSuccessModal = function(t, d, i, b) { 
-        var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = t; 
-        var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = d; 
-        var aIcon = document.getElementById('action-icon-ui'); if (aIcon) aIcon.innerHTML = i; 
-        var aBtn = document.getElementById('action-btn-ui'); 
-        if (aBtn) { 
-            aBtn.innerText = "متابعة ✔️"; 
-            if (b === 'search-friend-result-stay') { aBtn.onclick = function() { window.openMod('modal-add-friend'); window.safeShow('search-result-container', 'block'); window.playSndSafe('sfx-click'); }; } 
-            else { aBtn.onclick = function() { window.openMod(b); window.playSndSafe('sfx-click'); }; } 
-        } 
-        window.openMod('modal-action-success'); window.playSndSafe('sfx-win'); 
-    };
-
+    window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.style.visibility = "visible"; t.style.bottom = "30px"; window.playSndSafe('sfx-click'); setTimeout(function() { t.style.bottom = "-100px"; setTimeout(function() { t.style.visibility = "hidden"; }, 500); }, 3000); };
+    window.showToast = function(msg, keepModal) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = "تنبيه ⚠️"; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = msg; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; aBtn.onclick = function() { window.playSndSafe('sfx-click'); if (keepModal === 'keep-search') window.openMod('modal-add-friend'); else window.closeMod(); }; } window.openMod('modal-action-success'); };
+    window.showSuccessModal = function(t, d, i, b) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = t; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = d; var aIcon = document.getElementById('action-icon-ui'); if (aIcon) aIcon.innerHTML = i; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; if (b === 'search-friend-result-stay') { aBtn.onclick = function() { window.openMod('modal-add-friend'); window.safeShow('search-result-container', 'block'); window.playSndSafe('sfx-click'); }; } else { aBtn.onclick = function() { window.openMod(b); window.playSndSafe('sfx-click'); }; } } window.openMod('modal-action-success'); window.playSndSafe('sfx-win'); };
     window.playSndSafe = function(id) { if (!sndOn) return; try { var el = document.getElementById(id); if (el) { el.currentTime = 0; el.play().catch(function(){}); } } catch(e) {} };
     window.togSnd = function() { sndOn = !sndOn; var stSnd = document.getElementById('st-snd'); if (stSnd) stSnd.innerText = sndOn ? "الصوت: مفعل 🔊" : "الصوت: معطل 🔇"; window.playSndSafe('sfx-click'); };
     window.setThm = function(t) { document.body.className = t; window.playSndSafe('sfx-click'); window.lsSet('ULT_THEME', t); };
 
     // ==========================================
-    // 6. الحسابات، تسجيل الدخول، والمكافآت
+    // 3. النوافذ، الحساب، الإعدادات
     // ==========================================
-    window.checkDailyReward = function() { 
-        var today = new Date().toDateString(); var lastLogin = window.lsGet('ULT_LAST_LOGIN', ''); 
-        if (lastLogin !== today && loggedUser !== '') { spins++; totalHints += 2; window.lsSet('ULT_LAST_LOGIN', today); window.saveProgress(false); setTimeout(function(){ window.showBottomToast("🎁 مكافأة يومية: +1 سحب، +2 تلميح!"); }, 1500); } 
-    };
-
-    window.loginGuest = function() { 
-        window.playSndSafe('sfx-click'); 
-        var n = document.getElementById('guest-name-input'); if (!n) return; 
-        var val = n.value.trim(); loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; 
-        window.lsSet('ULT_USER', loggedUser); window.lsSet('ULT_FB', 'false'); 
-        window.safeHide('loading-screen'); window.finishLoading(false);
-        if (typeof window.checkDailyReward === "function") window.checkDailyReward(); 
-    };
-
-    window.loginGoogle = function() { 
-        window.playSndSafe('sfx-click'); 
-        if (window.auth) { 
-            var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); 
-            window.auth.signInWithRedirect(provider).catch(function(error){ window.showToast("حدث خطأ، حاول مجدداً"); }); 
-        } 
-    };
-
+    window.checkDailyReward = function() { var today = new Date().toDateString(); var lastLogin = window.lsGet('ULT_LAST_LOGIN', ''); if (lastLogin !== today && loggedUser !== '') { spins++; totalHints += 2; window.lsSet('ULT_LAST_LOGIN', today); window.saveProgress(false); setTimeout(function(){ window.showBottomToast("🎁 مكافأة يومية: +1 سحب، +2 تلميح!"); }, 1500); } };
+    window.loginGuest = function() { window.playSndSafe('sfx-click'); var n = document.getElementById('guest-name-input'); if (!n) return; var val = n.value.trim(); loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; window.lsSet('ULT_USER', loggedUser); window.lsSet('ULT_FB', 'false'); window.safeHide('screen-login'); window.showStartScreen(); if (typeof window.checkDailyReward === "function") window.checkDailyReward(); };
+    window.loginGoogle = function() { window.playSndSafe('sfx-click'); if (window.auth) { var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); window.auth.signInWithRedirect(provider).catch(function(error){ window.showToast("حدث خطأ، حاول مجدداً"); }); } };
     window.logout = function() { window.playSndSafe('sfx-click'); if (window.auth) { window.auth.signOut().then(function() { localStorage.clear(); location.reload(); }); } else { localStorage.clear(); location.reload(); } };
     window.saveNewName = function() { window.playSndSafe('sfx-click'); var n = document.getElementById('new-name-input'); if (n) { var val = n.value.trim(); if (val !== "") { loggedUser = val; window.lsSet('ULT_USER', val); window.saveProgress(false); window.showStartScreen(); } } window.closeMod(); };
     window.copyMyID = function() { window.playSndSafe('sfx-click'); navigator.clipboard.writeText(pID).then(function() { window.showToast("تم نسخ ID بنجاح! 📋"); }).catch(function(){}); };
@@ -853,70 +738,199 @@
 
     window.addPoints = function(amount) { pts = parseInt(pts) + parseInt(amount); window.updateStatsUI(); };
     window.addHints = function(amount) { totalHints = parseInt(totalHints) + parseInt(amount); window.updateStatsUI(); };
-    
-    window.updateAvatarUI = function() { 
-        var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); var btnImg = document.getElementById('profile-img-btn'); 
-        if (currentAvatar && currentAvatar !== '') { if (btnPlaceholder) btnPlaceholder.style.display = 'none'; if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } } 
-        else { if (btnPlaceholder) btnPlaceholder.style.display = 'flex'; if (btnImg) btnImg.style.display = 'none'; } 
-    };
-
-    window.updateStatsUI = function() { 
-        var uiPts = document.getElementById('ui-pts'); if (uiPts) uiPts.innerText = pts; 
-        var savedHintsUI = document.getElementById('saved-hints-ui'); if (savedHintsUI) savedHintsUI.innerText = totalHints; 
-        var spinCount = document.getElementById('spin-count'); if (spinCount) spinCount.innerText = spins; 
-        if (typeof window.updateTitleDisplay === "function") window.updateTitleDisplay(); 
-    };
+    window.updateAvatarUI = function() { var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); var btnImg = document.getElementById('profile-img-btn'); if (currentAvatar && currentAvatar !== '') { if (btnPlaceholder) btnPlaceholder.style.display = 'none'; if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } } else { if (btnPlaceholder) btnPlaceholder.style.display = 'flex'; if (btnImg) btnImg.style.display = 'none'; } };
+    window.updateStatsUI = function() { var uiPts = document.getElementById('ui-pts'); if (uiPts) uiPts.innerText = pts; var savedHintsUI = document.getElementById('saved-hints-ui'); if (savedHintsUI) savedHintsUI.innerText = totalHints; var spinCount = document.getElementById('spin-count'); if (spinCount) spinCount.innerText = spins; if (typeof window.updateTitleDisplay === "function") window.updateTitleDisplay(); };
 
     window.openMod = function(id) { 
-        window.playSndSafe('sfx-click'); 
-        var els = document.querySelectorAll('.m-content'); for (var i = 0; i < els.length; i++) els[i].style.display = 'none';
+        window.playSndSafe('sfx-click'); var els = document.querySelectorAll('.m-content'); for (var i = 0; i < els.length; i++) els[i].style.display = 'none';
         window.safeShow('custom-modal', 'flex'); window.safeShow(id, 'flex'); 
-        
         if (id === 'modal-profile-settings') {
             var wms = document.getElementById('welcome-msg-settings'); var isOwn = false; var isMd = window.isMod();
             if (window.auth && window.auth.currentUser) isOwn = window.isOwner(window.auth.currentUser.email);
             if (wms) { wms.innerText = loggedUser; if (hasNeonUser || isOwn) wms.className = "neon-bg"; else wms.className = "premium-name"; }
-            var sid = document.getElementById('settings-id'); if (sid) sid.innerText = pID; 
-            var sp = document.getElementById('current-profile-preview'); if (sp) sp.src = currentAvatar;
+            var sid = document.getElementById('settings-id'); if (sid) sid.innerText = pID; var sp = document.getElementById('current-profile-preview'); if (sp) sp.src = currentAvatar;
             var googleBtn = document.getElementById('profile-google-link-btn'); if (googleBtn) googleBtn.style.display = isGoogle ? 'none' : 'flex';
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { if (isOwn) badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (isMd) badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; else badgeEl.innerHTML = ''; }
             if (isOwn || isMd) { window.safeShow('admin-buttons-container', 'flex'); window.safeShow('btn-ban-list', 'block'); if (isOwn) { window.safeShow('btn-mod-list', 'block'); window.safeShow('btn-neon-list', 'block'); } else { window.safeHide('btn-mod-list'); window.safeHide('btn-neon-list'); } } else window.safeHide('admin-buttons-container');
         }
     };
-
     window.closeMod = function() { window.playSndSafe('sfx-click'); window.safeHide('custom-modal'); };
     window.showCustomConfirm = function(title, msg, onYes) { var ct = document.getElementById('confirm-title'); if (ct) ct.innerText = title; var cm = document.getElementById('confirm-msg'); if (cm) cm.innerText = msg; var btnYes = document.getElementById('confirm-btn-yes'); if (btnYes) { btnYes.onclick = function() { window.playSndSafe('sfx-click'); onYes(); }; } window.openMod('modal-custom-confirm'); };
+    window.setPresetAvatar = function(url, el) { window.playSndSafe('sfx-click'); currentAvatar = url; window.lsSet('ULT_AVATAR', currentAvatar); var btnImg = document.getElementById('profile-img-btn'); var settingsPreview = document.getElementById('current-profile-preview'); var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } if (settingsPreview) settingsPreview.src = currentAvatar; if (btnPlaceholder) btnPlaceholder.style.display = 'none'; var opts = document.querySelectorAll('.preset-img-opt'); for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected'); if (el) el.classList.add('selected'); window.saveProgress(false); window.showBottomToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); };
+    // ==========================================
+    // 8. الإدارة والحظر (للمشرفين)
+    // ==========================================
+    window.openUserAction = function(uid, name, numId, role, avatar, hasNeon) { 
+        if (!window.isMod() || uid === authUid) return; 
+        window.selectedActionUser = { uid: uid, name: name, numId: numId, role: role, hasNeon: (hasNeon === 'true' || hasNeon === true) }; 
+        var nameEl = document.getElementById('action-user-name'); if (nameEl) nameEl.innerText = name; 
+        var idEl = document.getElementById('action-user-id'); if (idEl) idEl.innerText = "ID: " + numId; 
+        var imgEl = document.getElementById('action-user-img'); if (imgEl) imgEl.src = avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+        
+        var promoteBtn = document.getElementById('btn-promote-user'); 
+        var neonBtn = document.getElementById('btn-toggle-neon'); 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+        var isOwn = window.isOwner(em); var isMd = window.isMod();
+        
+        if (isOwn) { 
+            window.safeShow('btn-promote-user', 'block'); 
+            if (promoteBtn) { promoteBtn.innerText = (role === 'mod') ? 'إزالة الإشراف 🔻' : 'إعطاء إشراف ⭐️'; } 
+            window.safeShow('btn-toggle-neon', 'block'); 
+            if (neonBtn) { neonBtn.innerText = window.selectedActionUser.hasNeon ? 'إزالة الفوسفوري ❌' : 'إعطاء فوسفوري ذهبي ✨'; } 
+            window.safeShow('btn-ban-user', 'block'); 
+        } else if (isMd) { 
+            window.safeHide('btn-promote-user'); window.safeHide('btn-toggle-neon'); window.safeShow('btn-ban-user', 'block'); 
+        }
+        window.openMod('modal-user-action'); 
+    };
 
-    window.setPresetAvatar = function(url, el) { 
-        window.playSndSafe('sfx-click'); currentAvatar = url; window.lsSet('ULT_AVATAR', currentAvatar); 
-        var btnImg = document.getElementById('profile-img-btn'); var settingsPreview = document.getElementById('current-profile-preview'); var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); 
-        if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } if (settingsPreview) settingsPreview.src = currentAvatar; if (btnPlaceholder) btnPlaceholder.style.display = 'none'; 
-        var opts = document.querySelectorAll('.preset-img-opt'); for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected'); 
-        if (el) el.classList.add('selected'); window.saveProgress(false); window.showBottomToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); 
+    window.toggleNeonName = function() { 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+        if (!window.selectedActionUser || !window.isOwner(em)) return; 
+        var u = window.selectedActionUser; var newVal = !u.hasNeon; 
+        window.db.collection('users_v4').doc(u.uid).update({hasNeon: newVal}).then(function(){ 
+            window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({hasNeon: newVal}).catch(function(){});
+            window.showBottomToast(newVal ? "تم إعطاء الفوسفوري لـ " + u.name + " ✨" : "تمت إزالة الفوسفوري عن " + u.name); 
+            window.closeMod(); if(window.openLB) window.openLB(); 
+        }).catch(function(e){}); 
+    };
+
+    window.promoteSelectedUser = function() { 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+        if (!window.selectedActionUser || !window.isOwner(em)) return; 
+        var u = window.selectedActionUser; var newRole = (u.role === 'mod') ? 'user' : 'mod'; 
+        var msg = (newRole === 'mod') ? "هل أنت متأكد من ترقية " + u.name + " إلى مشرف؟" : "هل أنت متأكد من إزالة الإشراف عن " + u.name + "؟"; 
+        window.showCustomConfirm("إدارة الصلاحيات ⭐️", msg, function() { 
+            window.db.collection('users_v4').doc(u.uid).update({role: newRole}).then(function(){ 
+                window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({role: newRole}).catch(function(){});
+                window.showBottomToast(newRole === 'mod' ? "تمت ترقية " + u.name + " لمشرف ⭐️" : "تمت إزالة إشراف " + u.name); 
+                window.closeMod(); if(window.openLB) window.openLB(); 
+            }).catch(function(){}); 
+        }); 
+    };
+    
+    window.banSelectedUser = function() { 
+        if (!window.selectedActionUser) return; 
+        var u = window.selectedActionUser; 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+        if (u.role === 'owner' || (u.role === 'mod' && !window.isOwner(em))) { window.showToast("لا تملك صلاحية حظر هذا الشخص!"); return; } 
+        window.showCustomConfirm("حظر اللاعب 🚫", "هل أنت متأكد من حظر " + u.name + " وطرده من اللعبة؟", function() { 
+            window.db.collection('users_v4').doc(u.uid).update({isBanned: true, bannedBy: loggedUser}).then(function(){ 
+                window.db.collection('system').doc('announcements').set({ latestBanMsg: "تم حظر اللاعب: " + u.name, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); 
+                window.showBottomToast("تم حظر اللاعب " + u.name + " 🚫"); window.closeMod(); if(window.openLB) window.openLB(); 
+            }).catch(function(){}); 
+        }); 
+    };
+
+    window.openBanList = function() { 
+        var container = document.getElementById('ban-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
+        window.openMod('modal-ban-list'); 
+        window.db.collection('users_v4').where('isBanned', '==', true).get().then(function(snap) { 
+            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+            snap.forEach(function(doc) { 
+                var d = doc.data(); 
+                var unbanBtn = window.isOwner(em) ? '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">فك الحظر</button>' : ''; 
+                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"><div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ' + (d.bannedBy || 'مجهول') + '</span></div> ' + unbanBtn + '</div>'; 
+            }); 
+            if (container) container.innerHTML = html || "<p style='color:#2ecc71;'>لا يوجد لاعبين محظورين.</p>"; 
+        }).catch(function(){}); 
+    };
+
+    window.unbanUser = function(uid, name) { 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
+        window.showCustomConfirm("فك الحظر", "هل تريد فك الحظر عن " + name + "؟", function() { 
+            window.db.collection('users_v4').doc(uid).update({isBanned: false}).then(function(){ 
+                window.showBottomToast("تم فك الحظر عن " + name + " ✅"); window.openBanList(); 
+            }).catch(function(){}); 
+        }); 
+    };
+
+    window.openModList = function() { 
+        var container = document.getElementById('mod-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
+        window.openMod('modal-mod-list'); 
+        window.db.collection('users_v4').where('role', '==', 'mod').get().then(function(snap) { 
+            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+            snap.forEach(function(doc) { 
+                var d = doc.data(); 
+                var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة</button>' : ''; 
+                var avatarClickHtml = window.isOwner(em) ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
+                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;" ' + avatarClickHtml + '><span class="premium-name" style="font-size:1.1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+            }); 
+            if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد مشرفين حالياً.</p>"; 
+        }).catch(function(){}); 
+    };
+
+    window.removeModDirect = function(uid, name) { 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
+        window.showCustomConfirm("إزالة إشراف", "هل أنت متأكد من إزالة المشرف " + name + "؟", function() { 
+            window.db.collection('users_v4').doc(uid).update({role: 'user'}).then(function(){ 
+                window.showBottomToast("تم إزالة الإشراف بنجاح"); window.openModList(); 
+            }).catch(function(){}); 
+        }); 
+    };
+
+    window.openNeonList = function() { 
+        var container = document.getElementById('neon-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
+        window.openMod('modal-neon-list'); 
+        window.db.collection('users_v4').where('hasNeon', '==', true).get().then(function(snap) { 
+            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+            snap.forEach(function(doc) { 
+                var d = doc.data(); 
+                var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة ✨</button>' : ''; 
+                var avatarClickHtml = window.isMod() ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
+                html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ' + avatarClickHtml + '><span class="neon-bg" style="font-size:1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
+            }); 
+            if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد لاعبين باللون الفوسفوري.</p>"; 
+        }).catch(function(){}); 
+    };
+
+    window.removeNeonDirect = function(uid, name) { 
+        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
+        window.showCustomConfirm("إزالة الفوسفوري", "هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟", function() { 
+            window.db.collection('users_v4').doc(uid).update({hasNeon: false}).then(function() { 
+                window.showBottomToast("تمت الإزالة بنجاح!"); window.openNeonList(); 
+            }).catch(function(){}); 
+        }); 
     };
 
     // ==========================================
-    // 7. الحفظ، الألقاب وعجلة الحظ
+    // 9. الألقاب، عجلة الحظ وحفظ التقدم
     // ==========================================
     window.saveProgress = function(skipFirebase) { 
-        window.lsSet('ULT_P', pts); window.lsSet('ULT_TOTAL_HINTS', totalHints); window.lsSet('ULT_SPINS', spins); window.lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); window.lsSet('ULT_AVATAR', currentAvatar); window.lsSet('ULT_STREAK', randomWinStreak);
+        window.lsSet('ULT_P', pts); window.lsSet('ULT_TOTAL_HINTS', totalHints); window.lsSet('ULT_SPINS', spins); 
+        window.lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); 
+        window.lsSet('ULT_AVATAR', currentAvatar); window.lsSet('ULT_STREAK', randomWinStreak);
+        
         if (!skipFirebase && isGoogle && authUid && window.db) { 
+            var myEmail = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : '';
             var data = { name: loggedUser, score: pts, title: activeTitleId, numId: pID, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak, hasNeon: hasNeonUser };
-            if (window.auth.currentUser && window.auth.currentUser.email) data.email = window.auth.currentUser.email; if (currentUserRole !== 'user') data.role = currentUserRole;
+            if (myEmail !== '') data.email = myEmail; if (currentUserRole !== 'user') data.role = currentUserRole;
             window.db.collection("leaderboard_" + window.getWeekString()).doc(authUid).set(data, {merge: true}).catch(function(e){}); 
             window.db.collection("users_v4").doc(authUid).set(data, {merge: true}).catch(function(e){}); 
         } 
     };
     
-    window.saveAndExitG = function() { window.saveProgress(false); window.showBottomToast("تم الحفظ بنجاح 💾"); window.goHomeG(); };
+    window.saveAndExitG = function() { 
+        window.saveProgress(false); window.showBottomToast("تم الحفظ بنجاح 💾"); window.goHomeG(); 
+    };
 
     window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { 
         var titleName = t.n; var lockColor = "#ff4d4d"; var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:'+lockColor+'; z-index:10;"></i>' : ''; 
         var checkSpan = (isActive && inList && !isSmall) ? '<i class="fas fa-check" style="color:#2ecc71; font-size:1.2rem; font-weight:bold; position:absolute; right:15px; top:50%; transform:translateY(-50%); z-index:10;"></i>' : ''; 
         var newBadge = ''; if (inList && !isSmall && newTitlesList.indexOf(id) !== -1) { newBadge = '<span style="position:absolute; top:-5px; right:-5px; background:#2ecc71; color:#000; font-size:0.65rem; padding:2px 6px; border-radius:8px; z-index:10; border:1px solid #000; font-weight:bold;">جديد</span>'; }
         var clickEv = ''; var cursor = ''; 
-        if (inList && !isSmall) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (id === 't_لواء') { if (window.isOwner(em)) { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } else { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; lockSpan = '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#ff0000; z-index:10;"></i>'; } } else if (!isOwned) { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; } else { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } } 
+        if (inList && !isSmall) { 
+            var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; 
+            if (id === 't_لواء') { 
+                if (window.isOwner(em)) { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } 
+                else { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; lockSpan = '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#ff0000; z-index:10;"></i>'; } 
+            } else if (!isOwned) { 
+                clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; 
+            } else { 
+                clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; 
+            } 
+        } 
         var wrapperStyle = ''; var fontSize = ''; if (isSmall) { wrapperStyle = 'padding:2px 8px; min-width:80px; width:auto; display:inline-flex; border-radius:6px; margin:0;'; fontSize = '0.65rem'; lockSpan = ''; checkSpan = ''; } else if (inList) { wrapperStyle = 'width:100%; min-height:70px; margin-bottom:12px; padding:10px; ' + cursor; fontSize = '1.2rem'; } else { wrapperStyle = 'padding:5px 15px; min-width:140px; margin-top:5px; border-radius:10px; display:inline-flex;'; fontSize = '0.9rem'; }
         var innerContent = titleName; if (id === 't_لواء') { innerContent = '<span class="sword-icon">⚔️</span><span class="fire-text">' + titleName + '</span><span class="sword-icon">⚔️</span>'; }
         var shineCls = ''; if (t.shine) { if (t.shine === 'silver') shineCls = 'has-shine shine-silver'; else if (t.shine === 'blue') shineCls = 'has-shine shine-blue'; else if (t.shine === 'gold') shineCls = 'has-shine shine-gold'; }
@@ -935,41 +949,297 @@
             var html = ''; if (!isGoogle) html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; var rank = 1; 
             qSnap.forEach(function(doc) { 
                 var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; 
-                if (d.role === 'owner' || window.isOwner(d.email)) roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (d.role === 'mod') roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; 
-                var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(d.email)) nameCls = 'neon-bg'; 
+                var em = d.email || '';
+                if (d.role === 'owner' || window.isOwner(em)) roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (d.role === 'mod') roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; 
+                var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) nameCls = 'neon-bg'; 
                 var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); 
-                html += '<div class="lb-row' + isMe + '"><div class="rank-num">' + rank + '</div><img src="'+av+'" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="'+nameCls+'" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; 
+                html += '<div class="lb-row' + isMe + '"><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; 
             }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; 
         }).catch(function(){}); 
     };
 
     window.renderLuckySpin = function() { var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; var container = document.getElementById('spin-circular-grid'); if (!container) return; var html = ''; var radius = 100; for (var i=0; i<spinPrizes.length; i++) { var p = spinPrizes[i]; var angle = (i * (2 * Math.PI) / spinPrizes.length) - (Math.PI / 2); var x = radius * Math.cos(angle) + 130; var y = radius * Math.sin(angle) + 130; html += '<div class="spin-item ' + p.c + '" id="spin-item-' + i + '" style="left: ' + x + 'px; top: ' + y + 'px;"><span class="icon">' + p.icon + '</span><span>' + p.tAR + '</span><span class="perc">' + p.perc + '</span></div>'; } container.innerHTML = html; };
+    
     window.startLuckySpin = function() { 
         if (spins <= 0 || locked) return; locked = true; spins--; window.lsSet('ULT_SPINS', spins); 
         var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; 
-        var rand = Math.random() * 100, sum = 0, wonIdx = 0; for (var i=0; i<spinPrizes.length; i++) { sum += spinPrizes[i].p; if (rand <= sum) { wonIdx = i; break; } } 
+        var rand = Math.random() * 100, sum = 0, wonIdx = 0; 
+        for (var i=0; i<spinPrizes.length; i++) { sum += spinPrizes[i].p; if (rand <= sum) { wonIdx = i; break; } } 
         var currentIndex = 0; var steps = 0; 
         function jumpHighlight() { 
-            var items = document.querySelectorAll('.spin-item'); for (var k=0; k<items.length; k++) items[k].classList.remove('active'); 
-            var activeItem = document.getElementById('spin-item-' + currentIndex); if (activeItem) activeItem.classList.add('active'); 
+            var items = document.querySelectorAll('.spin-item'); for (var k=0; k<items.length; k++){ items[k].classList.remove('active'); } 
+            var activeItem = document.getElementById('spin-item-' + currentIndex); if (activeItem) { activeItem.classList.add('active'); } 
             window.playSndSafe('sfx-click'); steps++; 
             if (steps > 40 && currentIndex === wonIdx) { 
                 var won = spinPrizes[wonIdx]; 
                 if (won.type === 'h') { window.addHints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
                 else if (won.type === 'p') { window.addPoints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
                 else if (won.type === 'title' || won.type === 'box') { 
-                    if (ownedTitles.indexOf(won.v) === -1) { ownedTitles.push(won.v); newTitlesList.push(won.v); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; window.showGrandPrize('لقب ' + titleName, titleIcon); } 
-                    else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } 
+                    if (ownedTitles.indexOf(won.v) === -1) { 
+                        ownedTitles.push(won.v); newTitlesList.push(won.v); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); 
+                        activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; 
+                        window.showGrandPrize('لقب ' + titleName, titleIcon); 
+                    } else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } 
                 } 
                 locked = false; window.saveProgress(false); window.updateStatsUI(); 
             } else { currentIndex = (currentIndex + 1) % spinPrizes.length; setTimeout(jumpHighlight, steps > 30 ? 200 : 100); } 
-        } jumpHighlight(); 
+        } 
+        jumpHighlight(); 
     };
+
     window.showGrandPrize = function(titleAr, icon) { var gt = document.getElementById('grand-prize-title-ui'); if (gt) gt.innerText = 'مبروك! 🎉'; var gd = document.getElementById('grand-prize-desc-ui'); if (gd) gd.innerText = titleAr; var gi = document.getElementById('grand-prize-icon-ui'); if (gi) gi.innerHTML = icon; window.openMod('modal-grand-prize'); window.playSndSafe('sfx-win'); };
     window.closeGrandPrize = function() { window.openMod('modal-luckyspin'); window.updateStatsUI(); };
 
     // ==========================================
-    // 8. 100 سؤال جبار والتحدي العادي
+    // 10. التحدي العادي والأسئلة
+    // ==========================================
+    window.startG = function() { 
+        isOnlineMode = false; 
+        if (qList.length === 0) { window.showToast("عذراً، الأسئلة قيد التحميل..."); return; } 
+        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
+        window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); 
+        window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); 
+        
+        cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; 
+        for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } 
+        if (qOrder.length === 0) { 
+            answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); 
+            for (var i = 0; i < qList.length; i++) qOrder.push(i); 
+            window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); 
+        } 
+        window.shuffle(qOrder); window.loadQ(); 
+    };
+
+    window.loadQ = function() { 
+        locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); 
+        if (cur >= qList.length) { window.openMod('modal-win'); return; } 
+        var q = qList[qOrder[cur]]; 
+        var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; 
+        var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; 
+        
+        optsOrder = window.shuffle([0, 1, 2, 3]); 
+        for (var i = 0; i < 4; i++) { 
+            var btn = document.getElementById('opt'+i); 
+            if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } 
+        } 
+        
+        var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; 
+        var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; 
+        var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; 
+    };
+
+    window.checkAns = function(idx) { 
+        if (locked) return; locked = true; 
+        if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
+        
+        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; 
+        var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
+        
+        if (isCorrect) { 
+            if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; 
+            if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } 
+        } else { 
+            if (btn) btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); 
+            var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); 
+        } 
+        
+        var eb = document.getElementById('explanation-box'); 
+        if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } 
+        window.safeShow('post-ans-actions', 'block'); 
+    };
+
+    window.handleContinue = function() { if (lastAnswerCorrect) { cur++; window.loadQ(); } else { window.openMod('modal-lose-menu'); } };
+    window.skipQMenu = function() { locked = false; cur++; window.closeMod(); window.loadQ(); };
+    window.goHomeG = function() { window.closeMod(); window.safeHide('match-result-overlay'); document.body.classList.remove('vs-mode-active'); window.showStartScreen(); };
+    window.shuffle = function(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var temp = a[i]; a[i] = a[j]; a[j] = temp; } return a; };
+    
+    window.useAud = function() { if (aud<=0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
+    window.use50 = function() { if (f50<=0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++){ if (optsOrder[i] !== 0 && h<2){ var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
+    window.useHint = function() { if (totalHints<=0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
+    // ==========================================
+    // 9. الأونلاين والتحدي المباشر 
+    // ==========================================
+    window.searchFriend = function() { 
+        var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); 
+        if (fId === "" || fId === pID) { window.showToast("ID غير صالح!", "keep-search"); return; } 
+        window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { 
+            if (!snap.empty) { 
+                var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) nameCls = 'neon-bg'; var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var banBtnHtml = ''; if (window.isMod() && fId !== pID) { banBtnHtml = '<button class="q-btn danger" style="width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')">إدارة اللاعب ⚙️</button>'; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + banBtnHtml + ' </div>'; window.safeShow('search-result-container', 'block'); } 
+            } else { window.showToast("اللاعب غير موجود!", "keep-search"); } 
+        }).catch(function(){}); 
+    };
+
+    window.sendFriendReq = function(targetUid, fName) { if (!isGoogle) { window.showToast("سجل بجوجل أولاً!"); return; } window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { window.showSuccessModal('تم الإرسال!', 'تم إرسال طلب الصداقة لـ ' + fName, '💌', 'search-friend-result-stay'); document.getElementById('friend-id-input').value = ""; }).catch(function(){}); };
+    window.acceptFriendReq = function(fUid, fName, fNum) { window.playSndSafe('sfx-click'); var myRef = window.db.collection("users_v4").doc(authUid); var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; var friendObjForMe = { uid: fUid, name: fName, numId: fNum }; var friendObjForThem = { uid: authUid, name: loggedUser, numId: pID }; myRef.update({ requests: firebase.firestore.FieldValue.arrayRemove(reqObj), friends: firebase.firestore.FieldValue.arrayUnion(friendObjForMe) }); window.db.collection("users_v4").doc(fUid).update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); window.showToast('أصبح ' + fName + ' من أصدقائك الآن 🤝'); };
+    
+    window.startMatchmaking = function(type, friendUid, friendName) { 
+        if (!authUid) { window.showToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } 
+        if (qList.length < 10) { window.showToast("خطأ: الأسئلة قيد التحميل..."); return; } 
+        window.openMod('modal-loading-online'); 
+        var waitMsg = document.getElementById('wait-msg-ui'); if (type === 'friend') { if (waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if (waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; } 
+        var waitMyImg = document.getElementById('wait-my-img'); if (waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+        var waitMyName = document.getElementById('wait-my-name'); if (waitMyName) waitMyName.innerText = loggedUser; 
+        
+        var matchQs = []; var tempQ = []; for (var i=0; i<qList.length; i++) tempQ.push(i); window.shuffle(tempQ); for (var i=0; i<10; i++) matchQs.push(tempQ[i]); 
+        var matchData = { p1_id: authUid, p1_name: loggedUser, p1_avatar: currentAvatar, p1_neon: hasNeonUser, p1_score: 0, p1_ready: false, p2_id: (type === 'friend') ? friendUid : null, p2_name: (type === 'friend') ? friendName : '', p2_avatar: '', p2_neon: false, p2_score: 0, p2_ready: false, status: 'waiting', type: type, current_turn: authUid, questions: matchQs, current_q_index: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp() }; 
+        
+        if (type === 'friend') { 
+            window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.db.collection("users_v4").doc(friendUid).update({ challenges: firebase.firestore.FieldValue.arrayUnion({ matchId: ref.id, fromUid: authUid, fromName: loggedUser }) }); window.listenToMatch(ref.id); }).catch(function(){}); 
+        } else { 
+            window.db.collection("matches_v4").where("status", "==", "waiting").get().then(function(snap) { 
+                var foundMatch = null;
+                snap.forEach(function(doc) {
+                    if(doc.data().type === 'random' && doc.data().p1_id !== authUid) { foundMatch = doc; }
+                });
+                if (!foundMatch) { 
+                    window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); 
+                } else { 
+                    foundMatch.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.startVSGame(foundMatch.id, "p2"); }); 
+                } 
+            }).catch(function(e){ console.error(e); window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); }); 
+        } 
+    };
+
+    window.acceptChallenge = function() { if (!window.incomingChallengeId) return; window.showToast("جاري الدخول للمباراة... ⚔️"); window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.startVSGame(window.incomingChallengeId, "p2"); }).catch(function(){}); };
+    window.rejectChallenge = function() { if (!window.incomingChallengeId) return; window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ status: 'cancelled' }); window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.closeMod(); };
+    
+    window.listenToMatch = function(matchId) { 
+        matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { 
+            if (!doc.exists) return; var d = doc.data(); 
+            if (d.status === 'waiting_ready' && d.p2_id) { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } 
+            else if (d.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } 
+        }); 
+    };
+    
+    window.cancelMatchmaking = function() { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); if (matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
+
+    window.startVSGame = function(matchId, myRole) { 
+        window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; 
+        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
+        window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); 
+        window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); 
+        
+        var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } 
+        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
+        var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } 
+        
+        window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
+            var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); 
+            var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; 
+            var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; 
+            var emMe = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : '';
+            if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+            if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true || window.isOwner(emMe)) ? 'neon-bg' : 'premium-name'; } 
+            if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; 
+            if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true) ? 'neon-bg' : 'premium-name'; } 
+        }).catch(function(){}); 
+        
+        cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); 
+    };
+
+    window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if (btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
+    
+    // الإيموجي يظهر تحت اسم اللاعب
+    window.sendEmoteOnline = function() { if (!isOnlineMode || !onlineMatchId) return; var emoteTxt = this.getAttribute('data-emote') || this.innerText; var updateObj = {}; if (myMatchRole === 'p1') { updateObj.p1_emote = emoteTxt; updateObj.p1_emote_time = Date.now(); } else { updateObj.p2_emote = emoteTxt; updateObj.p2_emote_time = Date.now(); } window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); window.showEmoteBubble('player1-emote-message', emoteTxt); window.playSndSafe('sfx-click'); };
+    window.showEmoteBubble = function(elementId, text) { var el = document.getElementById(elementId); if (el) { el.innerHTML = text; el.style.top = '110%'; el.style.opacity = 1; el.style.transform = 'translateX(-50%) translateY(5px)'; setTimeout(function() { el.style.opacity = 0; el.style.transform = 'translateX(-50%) translateY(0)'; }, 3000); } };
+
+    window.listenToOnlineMatch = function() { 
+        matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { 
+            if (!doc.exists) return; onlineData = doc.data(); 
+            var oppReady = (myMatchRole === 'p1') ? onlineData.p2_ready : onlineData.p1_ready; 
+            var oppStatus = document.getElementById('opp-status-text'); 
+            if (oppStatus) { if (oppReady) { oppStatus.innerText = "جاهز ✔️"; oppStatus.style.color = "#2ecc71"; } else { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } } 
+            if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } 
+            
+            if (myMatchRole === 'p1' && onlineData.p2_emote && onlineData.p2_emote_time && (!window.lastOppEmoteTime || onlineData.p2_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p2_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p2_emote); window.playSndSafe('sfx-click'); } 
+            else if (myMatchRole === 'p2' && onlineData.p1_emote && onlineData.p1_emote_time && (!window.lastOppEmoteTime || onlineData.p1_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p1_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p1_emote); window.playSndSafe('sfx-click'); } 
+            
+            if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } 
+            if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } 
+        }); 
+    };
+
+    window.startVSCountdown = function() { 
+        window.safeHide('ready-area-left'); window.safeHide('btn-cancel-ready'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); 
+        var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">' + count + '</div>'; window.playSndSafe('sfx-click'); 
+        var cdInt = setInterval(function() { 
+            count--; 
+            if (count > 0) { if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">' + count + '</div>'; window.playSndSafe('sfx-click'); } 
+            else if (count === 0) { if (cdDiv) cdDiv.innerHTML = '<div class="go-text">انطلق!</div>'; window.playSndSafe('sfx-win'); } 
+            else { 
+                clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); 
+                if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } 
+            } 
+        }, 1000); 
+    };
+
+    window.renderOnlineTurn = function() { 
+        locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; 
+        var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; 
+        var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; 
+        
+        optsOrder = window.shuffle([0, 1, 2, 3]); 
+        for (var i=0; i<4; i++) { 
+            var btn = document.getElementById('opt'+i); 
+            if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } 
+        } 
+        
+        var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); 
+        if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); 
+        
+        turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; 
+        
+        if (currentTurnUid === authUid) { 
+            if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); 
+        } else { 
+            if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); 
+        } 
+        
+        onlineTimerInterval = setInterval(function() { 
+            turnTimeLeft--; 
+            if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } 
+            if (turnTimeLeft <= 0) { 
+                clearInterval(onlineTimerInterval); 
+                if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } 
+            } 
+        }, 1000); 
+    };
+
+    window.submitOnlineAnswer = function(idx) { 
+        locked = true; clearInterval(onlineTimerInterval); 
+        var isCorrect = (idx === 0); var btn = document.getElementById('opt'+idx); 
+        if (btn) { 
+            if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } 
+            else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } 
+        } 
+        var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; 
+        var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid }; 
+        if (isCorrect) { if (myMatchRole === 'p1') { updateObj.p1_score = onlineData.p1_score + 1; } else { updateObj.p2_score = onlineData.p2_score + 1; } } 
+        if (nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; } 
+        setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000); 
+    };
+
+    window.confirmSurrender = function() { window.closeMod(); if (!isOnlineMode) return; if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
+    
+    window.endOnlineMatch = function() { 
+        clearInterval(onlineTimerInterval); if (matchmakingUnsubscribe) { matchmakingUnsubscribe(); } window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeHide('btn-surrender'); window.safeHide('emotes-container'); 
+        var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; 
+        var isWin = false; var isDraw = false; 
+        if (onlineData.forfeited_by) { isWin = (onlineData.forfeited_by !== authUid); } else { if (myScore > oppScore) { isWin = true; } else if (myScore === oppScore) { isDraw = true; } } 
+        var pLeftStatus = document.getElementById('vs-left-status'); var pRightStatus = document.getElementById('vs-right-status'); 
+        if (pLeftStatus) { pLeftStatus.className = "match-status-text"; } if (pRightStatus) { pRightStatus.className = "match-status-text"; } 
+        if (isWin) { if (pLeftStatus) { pLeftStatus.innerText = "فزت 🏆"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "خسر 💀"; pRightStatus.classList.add("status-lose"); pRightStatus.style.display = "block"; } } else if (isDraw) { if (pLeftStatus) { pLeftStatus.innerText = "تعادل 🤝"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.color="#eee"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "تعادل 🤝"; pRightStatus.classList.add("status-win"); pRightStatus.style.color="#eee"; pRightStatus.style.display = "block"; } } else { if (pLeftStatus) { pLeftStatus.innerText = "خسرت 💀"; pLeftStatus.classList.add("status-lose"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "فاز 🏆"; pRightStatus.classList.add("status-win"); pRightStatus.style.display = "block"; } } 
+        var rTitle = document.getElementById('mr-title'); var rDesc = document.getElementById('mr-desc'); var rIcon = document.getElementById('mr-icon'); var rBtn = document.getElementById('btn-rematch'); 
+        if (rBtn) { if (onlineData.type === 'friend') { rBtn.style.display = 'block'; } else { rBtn.style.display = 'none'; } } 
+        var rewardPts = 0; var titleMsg = ""; 
+        if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='has-shine shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } } else if (isDraw) { window.playSndSafe('sfx-click'); if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } else { window.playSndSafe('sfx-lose'); if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } 
+        window.saveProgress(false); window.safeShow('match-result-overlay', 'flex'); 
+    };
+    window.closeMatchResult = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.goHomeG(); };
+    window.rematchFriend = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); var friendUid = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id; var friendName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name; window.goHomeG(); setTimeout(function() { window.startMatchmaking('friend', friendUid, friendName); }, 500); };
+
+    // ==========================================
+    // 10. 100 سؤال من العيار الثقيل جداً!
     // ==========================================
     var qDataRawLast = [
         ["من هو النبي الذي أُمر بأن يأخذ الكتاب بقوة؟", "يحيى عليه السلام", "موسى عليه السلام", "عيسى عليه السلام", "داود عليه السلام", "(يا يحيى خذ الكتاب بقوة)"],
@@ -1084,239 +1354,43 @@
         } 
     } catch (e) { console.error(e); }
 
-    window.startG = function() { 
-        isOnlineMode = false; 
-        if (qList.length === 0) { window.showToast("عذراً، الأسئلة قيد التحميل..."); return; } 
-        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
-        window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); 
-        window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); 
-        cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; 
-        for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } 
-        if (qOrder.length === 0) { answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); for (var i = 0; i < qList.length; i++) qOrder.push(i); window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); } 
-        window.shuffle(qOrder); window.loadQ(); 
-    };
-
-    window.loadQ = function() { 
-        locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); 
-        if (cur >= qList.length) { window.openMod('modal-win'); return; } 
-        var q = qList[qOrder[cur]]; var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; 
-        var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; 
-        optsOrder = window.shuffle([0, 1, 2, 3]); 
-        for (var i = 0; i < 4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } 
-        var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; 
-    };
-
-    window.checkAns = function(idx) { 
-        if (locked) return; locked = true; 
-        if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
-        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; 
-        var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
-        if (isCorrect) { 
-            if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; 
-            if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } 
-        } else { 
-            if (btn) btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); 
-            var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); 
-        } 
-        var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } window.safeShow('post-ans-actions', 'block'); 
-    };
-
-    window.handleContinue = function() { if (lastAnswerCorrect) { cur++; window.loadQ(); } else { window.openMod('modal-lose-menu'); } };
-    window.skipQMenu = function() { locked = false; cur++; window.closeMod(); window.loadQ(); };
-    window.goHomeG = function() { window.closeMod(); window.safeHide('match-result-overlay'); document.body.classList.remove('vs-mode-active'); window.showStartScreen(); };
-    window.shuffle = function(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var temp = a[i]; a[i] = a[j]; a[j] = temp; } return a; };
-    window.useAud = function() { if (aud<=0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
-    window.use50 = function() { if (f50<=0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++){ if (optsOrder[i] !== 0 && h<2){ var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
-    window.useHint = function() { if (totalHints<=0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
-
     // ==========================================
-    // 9. الأونلاين والتحدي المباشر 
-    // ==========================================
-    window.startMatchmaking = function(type, friendUid, friendName) { 
-        if (!authUid) { window.showToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } 
-        if (qList.length < 10) { window.showToast("خطأ: الأسئلة قيد التحميل..."); return; } 
-        window.openMod('modal-loading-online'); 
-        var waitMsg = document.getElementById('wait-msg-ui'); if (type === 'friend') { if (waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if (waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; } 
-        var waitMyImg = document.getElementById('wait-my-img'); if (waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-        var waitMyName = document.getElementById('wait-my-name'); if (waitMyName) waitMyName.innerText = loggedUser; 
-        
-        var matchQs = []; var tempQ = []; for (var i=0; i<qList.length; i++) tempQ.push(i); window.shuffle(tempQ); for (var i=0; i<10; i++) matchQs.push(tempQ[i]); 
-        var matchData = { p1_id: authUid, p1_name: loggedUser, p1_avatar: currentAvatar, p1_neon: hasNeonUser, p1_score: 0, p1_ready: false, p2_id: (type === 'friend') ? friendUid : null, p2_name: (type === 'friend') ? friendName : '', p2_avatar: '', p2_neon: false, p2_score: 0, p2_ready: false, status: 'waiting', type: type, current_turn: authUid, questions: matchQs, current_q_index: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp() }; 
-        
-        // إصلاح البحث العشوائي (Random Matchmaking)
-        if (type === 'friend') { 
-            window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.db.collection("users_v4").doc(friendUid).update({ challenges: firebase.firestore.FieldValue.arrayUnion({ matchId: ref.id, fromUid: authUid, fromName: loggedUser }) }); window.listenToMatch(ref.id); }).catch(function(){}); 
-        } else { 
-            window.db.collection("matches_v4").where("status", "==", "waiting").where("type", "==", "random").limit(1).get().then(function(snap) { 
-                if (snap.empty) { 
-                    window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); 
-                } else { 
-                    var matchDoc = snap.docs[0]; 
-                    if(matchDoc.data().p1_id === authUid) {
-                        matchRef = matchDoc.ref; window.listenToMatch(matchDoc.id); return;
-                    }
-                    matchDoc.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.startVSGame(matchDoc.id, "p2"); }); 
-                } 
-            }).catch(function(e){ console.error(e); }); 
-        } 
-    };
-
-    window.listenToMatch = function(matchId) { 
-        matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { 
-            if (!doc.exists) return; var d = doc.data(); 
-            if (d.status === 'waiting_ready' && d.p2_id) { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } 
-            else if (d.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } 
-        }); 
-    };
-    
-    window.cancelMatchmaking = function() { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); if (matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
-
-    window.startVSGame = function(matchId, myRole) { 
-        window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; 
-        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
-        window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); 
-        window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); 
-        window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); 
-        
-        var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } 
-        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
-        var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } 
-        
-        window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
-            var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); 
-            var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; 
-            var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; 
-            if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-            if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true) ? 'neon-bg' : 'premium-name'; } 
-            if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; 
-            if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true) ? 'neon-bg' : 'premium-name'; } 
-        }).catch(function(){}); 
-        
-        cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); 
-    };
-
-    window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if (btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
-    
-    // إرسال الإيموجي وظهوره بالأسفل
-    window.sendEmoteOnline = function() { if (!isOnlineMode || !onlineMatchId) return; var emoteTxt = this.getAttribute('data-emote') || this.innerText; var updateObj = {}; if (myMatchRole === 'p1') { updateObj.p1_emote = emoteTxt; updateObj.p1_emote_time = Date.now(); } else { updateObj.p2_emote = emoteTxt; updateObj.p2_emote_time = Date.now(); } window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); window.showEmoteBubble('player1-emote-message', emoteTxt); window.playSndSafe('sfx-click'); };
-    window.showEmoteBubble = function(elementId, text) { 
-        var el = document.getElementById(elementId); 
-        if (el) { 
-            el.innerHTML = text; 
-            el.style.top = '110%'; // ليظهر تحت اسم اللاعب 
-            el.style.opacity = 1; 
-            el.style.transform = 'translateX(-50%) translateY(5px)'; 
-            setTimeout(function() { el.style.opacity = 0; el.style.transform = 'translateX(-50%) translateY(0)'; }, 3000); 
-        } 
-    };
-
-    window.listenToOnlineMatch = function() { 
-        matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { 
-            if (!doc.exists) return; onlineData = doc.data(); 
-            var oppReady = (myMatchRole === 'p1') ? onlineData.p2_ready : onlineData.p1_ready; 
-            var oppStatus = document.getElementById('opp-status-text'); 
-            if (oppStatus) { if (oppReady) { oppStatus.innerText = "جاهز ✔️"; oppStatus.style.color = "#2ecc71"; } else { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } } 
-            
-            if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } 
-            
-            if (myMatchRole === 'p1' && onlineData.p2_emote && onlineData.p2_emote_time && (!window.lastOppEmoteTime || onlineData.p2_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p2_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p2_emote); window.playSndSafe('sfx-click'); } 
-            else if (myMatchRole === 'p2' && onlineData.p1_emote && onlineData.p1_emote_time && (!window.lastOppEmoteTime || onlineData.p1_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p1_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p1_emote); window.playSndSafe('sfx-click'); } 
-            
-            if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } 
-            if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } 
-        }); 
-    };
-
-    window.startVSCountdown = function() { 
-        window.safeHide('ready-area-left'); window.safeHide('btn-cancel-ready'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); 
-        var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click'); 
-        var cdInt = setInterval(function() { 
-            count--; 
-            if (count > 0) { if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click'); } 
-            else if (count === 0) { if (cdDiv) cdDiv.innerHTML = '<div class="go-text">انطلق!</div>'; window.playSndSafe('sfx-win'); } 
-            else { 
-                clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); 
-                if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } 
-            } 
-        }, 1000); 
-    };
-
-    // إظهار الأسئلة للخصم بدون قدرته على الضغط + وقت 25 ثانية
-    window.renderOnlineTurn = function() { 
-        locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; 
-        var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; 
-        var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; 
-        
-        optsOrder = window.shuffle([0, 1, 2, 3]); 
-        for (var i=0; i<4; i++) { 
-            var btn = document.getElementById('opt'+i); 
-            if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } 
-        } 
-        
-        var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); 
-        if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); 
-        
-        // ضبط الوقت على 25 ثانية
-        turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; 
-        
-        // تعطيل الأزرار للخصم ليرى السؤال فقط
-        if (currentTurnUid === authUid) { 
-            if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); 
-        } else { 
-            if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); 
-        } 
-        
-        onlineTimerInterval = setInterval(function() { 
-            turnTimeLeft--; 
-            if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } 
-            if (turnTimeLeft <= 0) { 
-                clearInterval(onlineTimerInterval); 
-                if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } 
-            } 
-        }, 1000); 
-    };
-
-    window.submitOnlineAnswer = function(idx) { 
-        locked = true; clearInterval(onlineTimerInterval); 
-        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); 
-        var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
-        
-        if (btn) { 
-            if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } 
-            else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } 
-        } 
-        
-        var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; 
-        var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid }; 
-        if (isCorrect) { if (myMatchRole === 'p1') { updateObj.p1_score = onlineData.p1_score + 1; } else { updateObj.p2_score = onlineData.p2_score + 1; } } 
-        if (nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; } 
-        setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000); 
-    };
-
-    window.confirmSurrender = function() { window.closeMod(); if (!isOnlineMode) return; if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
-    window.endOnlineMatch = function() { clearInterval(onlineTimerInterval); if (matchmakingUnsubscribe) { matchmakingUnsubscribe(); } window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeHide('btn-surrender'); window.safeHide('emotes-container'); var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; var isWin = false; var isDraw = false; if (onlineData.forfeited_by) { isWin = (onlineData.forfeited_by !== authUid); } else { if (myScore > oppScore) { isWin = true; } else if (myScore === oppScore) { isDraw = true; } } var pLeftStatus = document.getElementById('vs-left-status'); var pRightStatus = document.getElementById('vs-right-status'); if (pLeftStatus) { pLeftStatus.className = "match-status-text"; } if (pRightStatus) { pRightStatus.className = "match-status-text"; } if (isWin) { if (pLeftStatus) { pLeftStatus.innerText = "فزت 🏆"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "خسر 💀"; pRightStatus.classList.add("status-lose"); pRightStatus.style.display = "block"; } } else if (isDraw) { if (pLeftStatus) { pLeftStatus.innerText = "تعادل 🤝"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.color="#eee"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "تعادل 🤝"; pRightStatus.classList.add("status-win"); pRightStatus.style.color="#eee"; pRightStatus.style.display = "block"; } } else { if (pLeftStatus) { pLeftStatus.innerText = "خسرت 💀"; pLeftStatus.classList.add("status-lose"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "فاز 🏆"; pRightStatus.classList.add("status-win"); pRightStatus.style.display = "block"; } } var rTitle = document.getElementById('mr-title'); var rDesc = document.getElementById('mr-desc'); var rIcon = document.getElementById('mr-icon'); var rBtn = document.getElementById('btn-rematch'); if (rBtn) { if (onlineData.type === 'friend') { rBtn.style.display = 'block'; } else { rBtn.style.display = 'none'; } } var rewardPts = 0; var titleMsg = ""; if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='has-shine shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } } else if (isDraw) { window.playSndSafe('sfx-click'); if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } else { window.playSndSafe('sfx-lose'); if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } window.saveProgress(false); window.safeShow('match-result-overlay', 'flex'); };
-    window.closeMatchResult = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.goHomeG(); };
-
-    // ==========================================
-    // 10. الإقلاع ومستمع البداية (إصلاح تسجيل الخروج)
+    // 11. الإقلاع والتسجيل وحفظ الضيف بشكل آمن
     // ==========================================
     window.showStartScreen = function() { 
         window.safeHide('screen-login'); window.safeHide('screen-game'); window.safeShow('screen-start', 'flex'); window.safeShow('main-nav', 'flex'); 
-        var welcomeMsg = document.getElementById('welcome-msg'); var isDev = window.auth && window.auth.currentUser && window.auth.currentUser.email && window.isOwner(window.auth.currentUser.email); 
+        
+        var welcomeMsg = document.getElementById('welcome-msg'); 
+        var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; 
+        var isDev = window.isOwner(em); 
+        
         if (welcomeMsg) { 
             welcomeMsg.innerText = loggedUser; welcomeMsg.style.fontFamily = "'Amiri', serif"; welcomeMsg.style.fontWeight = "900"; welcomeMsg.style.padding = "5px 15px"; welcomeMsg.style.borderRadius = "10px"; welcomeMsg.style.display = "inline-block"; welcomeMsg.style.textShadow = "2px 2px 5px rgba(0,0,0,0.8)"; welcomeMsg.style.setProperty('font-size', '1.8rem', 'important'); 
             if (hasNeonUser || isDev) { welcomeMsg.className = "neon-bg"; welcomeMsg.style.border = "2px solid #fff"; welcomeMsg.style.setProperty('color', '#000', 'important'); } 
             else if (isGoogle) { welcomeMsg.className = "premium-name"; welcomeMsg.style.border = "2px solid #ffd700"; welcomeMsg.style.setProperty('color', 'transparent', 'important'); } 
             else { welcomeMsg.className = ""; welcomeMsg.style.background = "rgba(255,255,255,0.1)"; welcomeMsg.style.border = "2px solid rgba(255,255,255,0.3)"; welcomeMsg.style.setProperty('color', '#ffd700', 'important'); } 
         } 
-        var devCont = document.getElementById('dev-badge-container'); if (devCont) { if (isDev) { devCont.innerHTML = '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; window.safeShow('dev-badge-container', 'inline-flex'); } else window.safeHide('dev-badge-container'); } 
-        var uidDisplay = document.getElementById('user-id-display'); if (uidDisplay) { uidDisplay.innerText = pID; } window.updateStatsUI(); window.updateAvatarUI(); window.saveProgress(false); 
+        
+        var devCont = document.getElementById('dev-badge-container'); 
+        if (devCont) { if (isDev) { devCont.innerHTML = '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; window.safeShow('dev-badge-container', 'inline-flex'); } else { window.safeHide('dev-badge-container'); } } 
+        
+        var uidDisplay = document.getElementById('user-id-display'); if (uidDisplay) { uidDisplay.innerText = pID; } 
+        window.updateStatsUI(); window.updateAvatarUI(); window.saveProgress(false); 
     };
 
-    window.finishLoading = function(showLogin) { setTimeout(function() { window.safeHide('loading-screen'); if (showLogin) { var screenStart = document.getElementById('screen-start'); if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } } else { window.showStartScreen(); } }, 1500); };
+    window.finishLoading = function(showLogin) { 
+        setTimeout(function() { 
+            window.safeHide('loading-screen'); 
+            if (showLogin) { 
+                var screenStart = document.getElementById('screen-start'); 
+                if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } 
+            } else { window.showStartScreen(); } 
+        }, 1500); 
+    };
 
     window.addEventListener('DOMContentLoaded', function() { 
         window.safeShow('loading-screen', 'flex'); 
+        
         setTimeout(function() { 
             var lScreen = document.getElementById('loading-screen'); 
             if (lScreen && lScreen.style.display !== 'none' && (!window.auth || !authUid)) { 
@@ -1329,8 +1403,7 @@
                 if (user) { 
                     authUid = user.uid; isGoogle = true; window.lsSet('ULT_FB', 'true'); 
                     if (window.db) { 
-                        var userRef = window.db.collection("users_v4").doc(authUid); 
-                        userRef.get().then(function(doc) { 
+                        window.db.collection("users_v4").doc(authUid).get().then(function(doc) { 
                             if (doc.exists) { 
                                 var d = doc.data(); if (d.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
                                 loggedUser = d.name || user.displayName || 'أسطورة'; pID = d.numId || pID; pts = parseInt(d.score || pts); 
@@ -1344,14 +1417,28 @@
                             window.db.collection("users_v4").doc(authUid).onSnapshot(function(docSnap) { 
                                 if (docSnap.exists) { 
                                     var data = docSnap.data(); if (data.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
-                                    if (data.challenges && data.challenges.length > 0) { var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId; var chNameUI = document.getElementById('challenger-name-ui'); if (chNameUI) { chNameUI.innerText = activeCh.fromName; } window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win'); } else if (document.getElementById('modal-challenge-invite').style.display === 'flex') { window.closeMod(); } 
-                                    if (data.requests) { var reqs = data.requests; var badge = document.getElementById('req-badge-ui'); if (badge) { badge.innerText = reqs.length; if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); } } 
+                                    
+                                    if (data.challenges && data.challenges.length > 0) { 
+                                        var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId; 
+                                        var chNameUI = document.getElementById('challenger-name-ui'); if (chNameUI) { chNameUI.innerText = activeCh.fromName; } 
+                                        window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win'); 
+                                    } else if (document.getElementById('modal-challenge-invite').style.display === 'flex') { window.closeMod(); } 
+                                    
+                                    if (data.requests) { 
+                                        var reqs = data.requests; var badge = document.getElementById('req-badge-ui'); 
+                                        if (badge) { badge.innerText = reqs.length; if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); } 
+                                    } 
+                                    
                                     if (data.friends && data.friends.length > 0) { 
                                         var frList = document.getElementById('online-friends-list'); window.safeShow('online-badge-ui', 'flex'); 
                                         window.db.collection("users_v4").get().then(function(usersSnap) { 
                                             var allUsersStatus = {}; usersSnap.forEach(function(uDoc) { allUsersStatus[uDoc.data().numId] = uDoc.data().isOnline === true; }); 
                                             var sortedFriends = data.friends.sort(function(a, b) { return (allUsersStatus[b.numId] === true ? 1 : 0) - (allUsersStatus[a.numId] === true ? 1 : 0); }); 
-                                            var frHtml = ''; sortedFriends.forEach(function(f){ var isOnline = allUsersStatus[f.numId] === true; var dotColor = isOnline ? '#2ecc71' : '#ff4d4d'; var statusTxt = isOnline ? 'متصل ✅' : 'غير متصل ❌'; var nameCls = (f.name !== "أسطورة") ? 'premium-name' : ''; frHtml += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1);"> <div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="${nameCls}" style="font-size:1.1rem !important;">${f.name}</span><div style="display:flex; align-items:center; gap:5px; margin-top:3px;"><i class="fas fa-circle" style="color:${dotColor}; font-size:0.6rem;"></i><span style="color:${dotColor}; font-size:0.75rem;">${statusTxt}</span></div></div> <button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d;" onclick="window.startMatchmaking('friend', '${f.uid}', '${f.name.replace(/'/g, "\\'")}')">⚔️ تحدي</button> </div>`; }); 
+                                            var frHtml = ''; 
+                                            sortedFriends.forEach(function(f){ 
+                                                var isOnline = allUsersStatus[f.numId] === true; var dotColor = isOnline ? '#2ecc71' : '#ff4d4d'; var statusTxt = isOnline ? 'متصل ✅' : 'غير متصل ❌'; var nameCls = (f.name !== "أسطورة") ? 'premium-name' : ''; 
+                                                frHtml += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; gap:10px; border:1px solid rgba(255,255,255,0.1);"> <div style="display:flex; flex-direction:column; align-items:flex-start;"><span class="' + nameCls + '" style="font-size:1.1rem !important;">' + f.name + '</span><div style="display:flex; align-items:center; gap:5px; margin-top:3px;"><i class="fas fa-circle" style="color:' + dotColor + '; font-size:0.6rem;"></i><span style="color:' + dotColor + '; font-size:0.75rem;">' + statusTxt + '</span></div></div> <button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d;" onclick="window.startMatchmaking(\'friend\', \'' + f.uid + '\', \'' + f.name.replace(/'/g, "\\'") + '\')">⚔️ تحدي</button> </div>'; 
+                                            }); 
                                             if (frList) { frList.innerHTML = frHtml; } 
                                         }).catch(function(){}); 
                                     } else { window.safeHide('online-badge-ui'); } 
@@ -1359,12 +1446,20 @@
                             });
                         }).catch(function() { window.finishLoading(false); }); 
                     } else window.finishLoading(false); 
-                } else { if (loggedUser && loggedUser !== '' && !isGoogle) { window.finishLoading(false); } else { window.finishLoading(true); } } 
+                } else { 
+                    if (loggedUser && loggedUser !== '' && !isGoogle) { window.finishLoading(false); } else { window.finishLoading(true); } 
+                } 
             }); 
-        } else { if (loggedUser && loggedUser !== '' && !isGoogle) { window.finishLoading(false); } else { window.finishLoading(true); } } 
+        } else { 
+            if (loggedUser && loggedUser !== '' && !isGoogle) { window.finishLoading(false); } else { window.finishLoading(true); } 
+        } 
     });
 
-    window.addEventListener('DOMContentLoaded', function() { var glowMessages = ["سبحان الله", "الحمد لله", "لا إله إلا الله", "الله أكبر", "اللهم صلِّ على محمد", "أستغفر الله العظيم"]; var glowIndex = 0; var glowEl = document.getElementById('glow-msg'); if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } });
+    window.addEventListener('DOMContentLoaded', function() { 
+        var glowMessages = ["سبحان الله", "الحمد لله", "لا إله إلا الله", "الله أكبر", "اللهم صلِّ على محمد", "أستغفر الله العظيم"]; 
+        var glowIndex = 0; var glowEl = document.getElementById('glow-msg'); 
+        if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } 
+    });
 </script>
 </body>
 </html>
