@@ -99,7 +99,13 @@
         .shine-gold::after { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.9), transparent); }
         .premium-name { background: linear-gradient(45deg, #ffd700, #ffae00, #ffffff, #ffd700); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900 !important; display: inline-block; white-space: nowrap !important; }
 
+        /* التوست العُلوي الجديد */
+        #top-toast-msg { visibility: hidden; min-width: 250px; background-color: rgba(30, 20, 45, 0.95); color: #fff; text-align: center; border-radius: 12px; padding: 12px 20px; position: fixed; z-index: 100000; left: 50%; top: -100px; transform: translateX(-50%); font-size: 1.1rem; font-weight: bold; border: 1px solid var(--p); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transition: top 0.5s ease, visibility 0.5s ease; }
+        #top-toast-msg.show { visibility: visible; top: 20px; }
+
         #bottom-toast-msg { visibility: hidden; min-width: 250px; background-color: rgba(18, 18, 18, 0.95); color: #ffd700; text-align: center; border-radius: 15px; padding: 12px; position: fixed; z-index: 100000; left: 50%; bottom: -100px; transform: translateX(-50%); font-size: 1rem; font-weight: bold; border: 1px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transition: bottom 0.5s ease, visibility 0.5s ease; }
+        #bottom-toast-msg.show { visibility: visible; bottom: 30px; }
+
         .q-btn { background: linear-gradient(to right, rgba(30, 20, 45, 0.9), rgba(15, 10, 25, 0.9)); border: 1px solid #555; color: white; width: 100%; margin: 6px 0; padding: 12px; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; pointer-events: auto !important;}
         .q-btn:active { transform: scale(0.98); }
         .primary { background: var(--p); color: #000; border: none; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
@@ -166,16 +172,14 @@
         .disabled-opts { pointer-events: none; opacity: 0.6; filter: grayscale(50%); transition: 0.3s;}
         .vs-center { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; width: 30%; }
         .vs-huge { font-size: 2rem; color: #ff4d4d; font-weight: 900; text-shadow: 0 0 15px #ff0000; font-family: Impact, sans-serif; margin-bottom: 5px;}
-        .ready-btn { padding: 5px 15px; font-size: 0.9rem; border-radius: 20px; border: none; background: #2ecc71; color: #000; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 5px;}
         .match-status-text { position: absolute; top: -25px; font-weight: 900; font-size: 1.1rem; text-shadow: 1px 1px 3px #000; white-space: nowrap; display: none; z-index: 10;}
         .status-win { color: #ffd700; display: block;}
         .status-lose { color: #ff4d4d; display: block;}
         #match-result-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 100; display: none; justify-content: center; align-items: center; flex-direction: column; border-radius: 13px; backdrop-filter: blur(5px); }
         .result-card { text-align: center; color: #fff; width: 90%; }
-        .vs-option-btn { background: rgba(30, 20, 45, 0.9); border: 2px solid #555; border-radius: 12px; color: #fff; padding: 12px; font-weight: bold; margin: 6px 0; width: 100%; text-align: center; cursor: pointer; position: relative; z-index: 20;}
-        
+        .vs-option-btn { background: rgba(30, 20, 45, 0.9); border: 2px solid #555; border-radius: 12px; color: #fff; padding: 12px; font-weight: bold; margin: 6px 0; width: 100%; transition: 0.3s ease; text-align: center; cursor: pointer; position: relative; z-index: 20;}
         .emotes-bar { display: none; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 15px; z-index: 20; position: relative; }
-        .emote-btn { background: rgba(30, 20, 45, 0.9); border: 1px solid var(--p); border-radius: 15px; color: #fff; padding: 6px 12px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: bold; }
+        .emote-btn { background: rgba(30, 20, 45, 0.9); border: 1px solid var(--p); border-radius: 15px; color: #fff; padding: 6px 12px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 5px; font-weight: bold; }
         .emote-bubble { position: absolute; background: transparent; padding: 0; top: 110%; left: 50%; transform: translateX(-50%); z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s; white-space: nowrap; }
     </style>
 </head>
@@ -183,14 +187,13 @@
     <div class="snow-overlay"></div>
     <div id="top-glow"><span id="glow-msg" class="fire-banner">سبحان الله</span></div>
     
+    <div id="top-toast-msg"></div>
     <div id="bottom-toast-msg"></div>
 
     <div id="loading-screen" style="position:fixed; inset:0; background:#05050a; z-index:9999999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:var(--p);">
         <i class="fas fa-bolt fa-spin" style="font-size:4rem; margin-bottom:20px; color:#00d4ff;"></i>
         <h2 style="margin:0; font-weight:900;">جاري الاتصال...</h2>
     </div>
-
-    <script>setTimeout(function(){ var ls = document.getElementById('loading-screen'); if(ls) ls.style.display='none'; }, 5000);</script>
 
     <div id="banned-screen" style="position:fixed; inset:0; background:#000; z-index:99999999; display:none; flex-direction:column; justify-content:center; align-items:center; color:#ff4d4d; text-align:center; padding:20px;">
         <i class="fas fa-skull-crossbones" style="font-size:6rem; margin-bottom:20px;"></i>
@@ -302,7 +305,7 @@
                 <img id="p-left-img" src="">
                 <span id="vs-left-name" style="font-size:0.9rem; margin-top:5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">أنت</span>
                 <div id="ready-area-left" style="margin-top:10px; width:100%;">
-                    <button id="btn-ready-me" class="ready-btn" onclick="window.setReady()">استعداد</button>
+                    <span style="color:#2ecc71; font-size:0.8rem; font-weight:bold;">متصل 🟢</span>
                 </div>
             </div>
             
@@ -542,8 +545,8 @@
         </div>
 
         <div class="m-content mythic-invite" id="modal-challenge-invite" style="border-radius:25px; padding:30px 20px;">
-            <i class="fas fa-khanda sword-anim" style="font-size:3rem; color:#ff4d4d; margin-bottom:15px; text-shadow:0 0 20px #ff0000;"></i>
-            <h3 style="color:#ffd700; margin-top:0; font-size:1.8rem; text-shadow: 0 0 15px #ffd700;">⚔️ تحدي أسطوري!</h3>
+            <div style="font-size:3.5rem; margin-bottom:15px; text-shadow:0 0 25px #ff0000;" class="sword-anim">⚔️</div>
+            <h3 style="color:#ffd700; margin-top:0; font-size:1.8rem; text-shadow: 0 0 15px #ffd700;">تحدي أسطوري!</h3>
             <p style="color:#fff; font-size:1.3rem; margin:15px 0; font-weight:bold;"><span id="challenger-name-ui" class="neon-bg" style="font-size:1.5rem !important;">--</span><br><br>يتحداك في مواجهة حاسمة!</p>
             <div style="display:flex; gap:15px; margin-top:20px;">
                 <button class="q-btn" style="background:linear-gradient(90deg, #ff8c00, #ff0000); border:2px solid #fff; color:#fff; font-size:1.2rem; box-shadow:0 0 20px #ff0000;" onclick="window.acceptChallenge()">قبول 🔥</button>
@@ -664,7 +667,7 @@
     </div>
 <script>
     // ==========================================
-    // 1. الاتصال بقاعدة البيانات
+    // 1. الاتصال وتهيئة المتغيرات الأساسية
     // ==========================================
     window.db = null; window.auth = null;
     try { 
@@ -672,14 +675,11 @@
         if (typeof firebase !== 'undefined') { if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); } window.db = firebase.firestore(); window.auth = firebase.auth(); } 
     } catch(e) { console.error(e); }
 
-    // ==========================================
-    // 2. المتغيرات الأساسية
-    // ==========================================
     var DEVELOPER_EMAIL = "fri-man07@hotmail.com"; var currentUserRole = 'user'; var hasNeonUser = false; var sndOn = true;
     var qList = []; var aud = 5; var f50 = 5; var cur = 0; var locked = false; var qOrder = []; var optsOrder = []; var currentRunCorrect = 0; var lastAnswerCorrect = false;
     var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
     var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = [];
-    var isBusy = false; // متغير حالة متاح/مشغول
+    var isBusy = false; 
 
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null) ? d : v; } catch(e) { return d; } };
     window.lsSet = function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} };
@@ -706,6 +706,7 @@
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
     window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.className = "show"; window.playSndSafe('sfx-click'); setTimeout(function() { t.className = ""; }, 3000); };
+    window.showTopToast = function(msg) { var t = document.getElementById("top-toast-msg"); if (!t) return; t.innerText = msg; t.className = "show"; window.playSndSafe('sfx-click'); setTimeout(function() { t.className = ""; }, 4000); };
     window.showToast = function(msg, keepModal) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = "تنبيه ⚠️"; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = msg; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; aBtn.onclick = function() { window.playSndSafe('sfx-click'); if (keepModal === 'keep-search') window.openMod('modal-add-friend'); else window.closeMod(); }; } window.openMod('modal-action-success'); };
     window.showSuccessModal = function(t, d, i, b) { var aTitle = document.getElementById('action-title-ui'); if (aTitle) aTitle.innerText = t; var aDesc = document.getElementById('action-desc-ui'); if (aDesc) aDesc.innerText = d; var aIcon = document.getElementById('action-icon-ui'); if (aIcon) aIcon.innerHTML = i; var aBtn = document.getElementById('action-btn-ui'); if (aBtn) { aBtn.innerText = "متابعة ✔️"; if (b === 'search-friend-result-stay') { aBtn.onclick = function() { window.openMod('modal-add-friend'); window.safeShow('search-result-container', 'block'); window.playSndSafe('sfx-click'); }; } else { aBtn.onclick = function() { window.openMod(b); window.playSndSafe('sfx-click'); }; } } window.openMod('modal-action-success'); window.playSndSafe('sfx-win'); };
     window.playSndSafe = function(id) { if (!sndOn) return; try { var el = document.getElementById(id); if (el) { el.currentTime = 0; el.play().catch(function(){}); } } catch(e) {} };
@@ -713,22 +714,41 @@
     window.setThm = function(t) { document.body.className = t; window.playSndSafe('sfx-click'); window.lsSet('ULT_THEME', t); };
 
     // ==========================================
-    // 3. النوافذ، الحساب، الإعدادات ومتاح/مشغول
+    // 2. دالة إنهاء التحميل (التي سببت المشكلة سابقاً)
     // ==========================================
-    window.togBusy = function() { 
-        isBusy = !isBusy; window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); 
-        var btn = document.getElementById('st-busy'); if(btn) { btn.innerText = isBusy ? "الحالة: مشغول 🔴" : "الحالة: متاح 🟢"; }
-        window.playSndSafe('sfx-click'); window.saveProgress(false); window.showBottomToast(isBusy ? "أنت الآن مشغول 🔴" : "أنت الآن متاح 🟢");
+    window.finishLoading = function(showLogin) { 
+        var ls = document.getElementById('loading-screen'); if(ls) ls.style.display = 'none';
+        if (showLogin) { 
+            var screenStart = document.getElementById('screen-start'); 
+            if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } 
+        } else { window.showStartScreen(); } 
     };
 
+    window.showStartScreen = function() { 
+        window.safeHide('screen-login'); window.safeHide('screen-game'); window.safeShow('screen-start', 'flex'); window.safeShow('main-nav', 'flex'); 
+        var welcomeMsg = document.getElementById('welcome-msg'); var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; var isDev = window.isOwner(em); 
+        if (welcomeMsg) { 
+            welcomeMsg.innerText = loggedUser; welcomeMsg.style.fontFamily = "'Amiri', serif"; welcomeMsg.style.fontWeight = "900"; welcomeMsg.style.padding = "5px 15px"; welcomeMsg.style.borderRadius = "10px"; welcomeMsg.style.display = "inline-block"; welcomeMsg.style.textShadow = "2px 2px 5px rgba(0,0,0,0.8)"; welcomeMsg.style.setProperty('font-size', '1.8rem', 'important'); 
+            if (hasNeonUser || isDev) { welcomeMsg.className = "neon-bg"; welcomeMsg.style.border = "2px solid #fff"; welcomeMsg.style.setProperty('color', '#000', 'important'); } 
+            else if (isGoogle) { welcomeMsg.className = "premium-name"; welcomeMsg.style.border = "2px solid #ffd700"; welcomeMsg.style.setProperty('color', 'transparent', 'important'); } 
+            else { welcomeMsg.className = ""; welcomeMsg.style.background = "rgba(255,255,255,0.1)"; welcomeMsg.style.border = "2px solid rgba(255,255,255,0.3)"; welcomeMsg.style.setProperty('color', '#ffd700', 'important'); } 
+        } 
+        var devCont = document.getElementById('dev-badge-container'); if (devCont) { if (isDev) { devCont.innerHTML = '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; window.safeShow('dev-badge-container', 'inline-flex'); } else { window.safeHide('dev-badge-container'); } } 
+        var uidDisplay = document.getElementById('user-id-display'); if (uidDisplay) { uidDisplay.innerText = pID; } 
+        window.updateStatsUI(); window.updateAvatarUI(); window.saveProgress(false); 
+    };
+
+    // ==========================================
+    // 3. النوافذ والمستخدم
+    // ==========================================
+    window.togBusy = function() { isBusy = !isBusy; window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); var btn = document.getElementById('st-busy'); if(btn) { btn.innerText = isBusy ? "الحالة: مشغول 🔴" : "الحالة: متاح 🟢"; } window.playSndSafe('sfx-click'); window.saveProgress(false); window.showBottomToast(isBusy ? "أنت الآن مشغول 🔴" : "أنت الآن متاح 🟢"); };
     window.checkDailyReward = function() { var today = new Date().toDateString(); var lastLogin = window.lsGet('ULT_LAST_LOGIN', ''); if (lastLogin !== today && loggedUser !== '') { spins++; totalHints += 2; window.lsSet('ULT_LAST_LOGIN', today); window.saveProgress(false); setTimeout(function(){ window.showBottomToast("🎁 مكافأة يومية: +1 سحب، +2 تلميح!"); }, 1500); } };
     window.loginGuest = function() { window.playSndSafe('sfx-click'); var n = document.getElementById('guest-name-input'); if (!n) return; var val = n.value.trim(); loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; window.lsSet('ULT_USER', loggedUser); window.lsSet('ULT_FB', 'false'); window.safeHide('screen-login'); window.showStartScreen(); if (typeof window.checkDailyReward === "function") window.checkDailyReward(); };
-    window.loginGoogle = function() { window.playSndSafe('sfx-click'); if (window.auth) { var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); window.auth.signInWithRedirect(provider).catch(function(error){ window.showToast("حدث خطأ، حاول مجدداً"); }); } };
+    window.loginGoogle = function() { window.playSndSafe('sfx-click'); if (window.auth) { var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); window.auth.signInWithRedirect(provider).catch(function(error){ window.showTopToast("حدث خطأ، حاول مجدداً"); }); } };
     window.logout = function() { window.playSndSafe('sfx-click'); if (window.auth) { window.auth.signOut().then(function() { localStorage.clear(); location.reload(); }); } else { localStorage.clear(); location.reload(); } };
     window.saveNewName = function() { window.playSndSafe('sfx-click'); var n = document.getElementById('new-name-input'); if (n) { var val = n.value.trim(); if (val !== "") { loggedUser = val; window.lsSet('ULT_USER', val); window.saveProgress(false); window.showStartScreen(); } } window.closeMod(); };
-    window.copyMyID = function() { window.playSndSafe('sfx-click'); navigator.clipboard.writeText(pID).then(function() { window.showToast("تم نسخ ID بنجاح! 📋"); }).catch(function(){}); };
+    window.copyMyID = function() { window.playSndSafe('sfx-click'); navigator.clipboard.writeText(pID).then(function() { window.showBottomToast("تم نسخ ID بنجاح! 📋"); }).catch(function(){}); };
     window.shareResult = function() { window.playSndSafe('sfx-click'); var shareTxt = "أكملت التحدي وحصلت على " + pts + " نقطة! 🔥 ID: " + pID; if (navigator.share) { navigator.share({ title: 'Islamic Quiz PRO', text: shareTxt }).catch(function(){}); } else { window.copyMyID(); } };
-
     window.addPoints = function(amount) { pts = parseInt(pts) + parseInt(amount); window.updateStatsUI(); };
     window.addHints = function(amount) { totalHints = parseInt(totalHints) + parseInt(amount); window.updateStatsUI(); };
     window.updateAvatarUI = function() { var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); var btnImg = document.getElementById('profile-img-btn'); if (currentAvatar && currentAvatar !== '') { if (btnPlaceholder) btnPlaceholder.style.display = 'none'; if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } } else { if (btnPlaceholder) btnPlaceholder.style.display = 'flex'; if (btnImg) btnImg.style.display = 'none'; } };
@@ -754,172 +774,31 @@
     window.setPresetAvatar = function(url, el) { window.playSndSafe('sfx-click'); currentAvatar = url; window.lsSet('ULT_AVATAR', currentAvatar); var btnImg = document.getElementById('profile-img-btn'); var settingsPreview = document.getElementById('current-profile-preview'); var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } if (settingsPreview) settingsPreview.src = currentAvatar; if (btnPlaceholder) btnPlaceholder.style.display = 'none'; var opts = document.querySelectorAll('.preset-img-opt'); for (var i = 0; i < opts.length; i++) opts[i].classList.remove('selected'); if (el) el.classList.add('selected'); window.saveProgress(false); window.showBottomToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); };
 
     // ==========================================
-    // 8. الإدارة والحظر (تم تطبيق الفلترة الفورية لمنع أي أخطاء من Firebase)
+    // 4. الإدارة والفلاتر (آمنة)
     // ==========================================
     window.openUserAction = function(uid, name, numId, role, avatar, hasNeon) { 
-        if (!window.isMod() || uid === authUid) return; 
-        window.selectedActionUser = { uid: uid, name: name, numId: numId, role: role, hasNeon: (hasNeon === 'true' || hasNeon === true) }; 
-        var nameEl = document.getElementById('action-user-name'); if (nameEl) nameEl.innerText = name; 
-        var idEl = document.getElementById('action-user-id'); if (idEl) idEl.innerText = "ID: " + numId; 
-        var imgEl = document.getElementById('action-user-img'); if (imgEl) imgEl.src = avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
-        
-        var promoteBtn = document.getElementById('btn-promote-user'); 
-        var neonBtn = document.getElementById('btn-toggle-neon'); 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-        var isOwn = window.isOwner(em); var isMd = window.isMod();
-        
-        if (isOwn) { 
-            window.safeShow('btn-promote-user', 'block'); 
-            if (promoteBtn) { promoteBtn.innerText = (role === 'mod') ? 'إزالة الإشراف 🔻' : 'إعطاء إشراف ⭐️'; } 
-            window.safeShow('btn-toggle-neon', 'block'); 
-            if (neonBtn) { neonBtn.innerText = window.selectedActionUser.hasNeon ? 'إزالة الفوسفوري ❌' : 'إعطاء فوسفوري ذهبي ✨'; } 
-            window.safeShow('btn-ban-user', 'block'); 
-        } else if (isMd) { 
-            window.safeHide('btn-promote-user'); window.safeHide('btn-toggle-neon'); window.safeShow('btn-ban-user', 'block'); 
-        }
-        window.openMod('modal-user-action'); 
+        if (!window.isMod() || uid === authUid) return; window.selectedActionUser = { uid: uid, name: name, numId: numId, role: role, hasNeon: (hasNeon === 'true' || hasNeon === true) }; 
+        var nameEl = document.getElementById('action-user-name'); if (nameEl) nameEl.innerText = name; var idEl = document.getElementById('action-user-id'); if (idEl) idEl.innerText = "ID: " + numId; var imgEl = document.getElementById('action-user-img'); if (imgEl) imgEl.src = avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+        var promoteBtn = document.getElementById('btn-promote-user'); var neonBtn = document.getElementById('btn-toggle-neon'); var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; var isOwn = window.isOwner(em); var isMd = window.isMod();
+        if (isOwn) { window.safeShow('btn-promote-user', 'block'); if (promoteBtn) { promoteBtn.innerText = (role === 'mod') ? 'إزالة الإشراف 🔻' : 'إعطاء إشراف ⭐️'; } window.safeShow('btn-toggle-neon', 'block'); if (neonBtn) { neonBtn.innerText = window.selectedActionUser.hasNeon ? 'إزالة الفوسفوري ❌' : 'إعطاء فوسفوري ذهبي ✨'; } window.safeShow('btn-ban-user', 'block'); } 
+        else if (isMd) { window.safeHide('btn-promote-user'); window.safeHide('btn-toggle-neon'); window.safeShow('btn-ban-user', 'block'); } window.openMod('modal-user-action'); 
     };
+    window.toggleNeonName = function() { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.selectedActionUser || !window.isOwner(em)) return; var u = window.selectedActionUser; var newVal = !u.hasNeon; window.db.collection('users_v4').doc(u.uid).update({hasNeon: newVal}).then(function(){ window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({hasNeon: newVal}).catch(function(){}); window.showBottomToast(newVal ? "تم إعطاء الفوسفوري لـ " + u.name + " ✨" : "تمت إزالة الفوسفوري عن " + u.name); window.closeMod(); if(window.openLB) window.openLB(); }).catch(function(e){}); };
+    window.promoteSelectedUser = function() { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.selectedActionUser || !window.isOwner(em)) return; var u = window.selectedActionUser; var newRole = (u.role === 'mod') ? 'user' : 'mod'; var msg = (newRole === 'mod') ? "هل أنت متأكد من ترقية " + u.name + " إلى مشرف؟" : "هل أنت متأكد من إزالة الإشراف عن " + u.name + "؟"; window.showCustomConfirm("إدارة الصلاحيات ⭐️", msg, function() { window.db.collection('users_v4').doc(u.uid).update({role: newRole}).then(function(){ window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({role: newRole}).catch(function(){}); window.showBottomToast(newRole === 'mod' ? "تمت ترقية " + u.name + " لمشرف ⭐️" : "تمت إزالة إشراف " + u.name); window.closeMod(); if(window.openLB) window.openLB(); }).catch(function(){}); }); };
+    window.banSelectedUser = function() { if (!window.selectedActionUser) return; var u = window.selectedActionUser; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (u.role === 'owner' || (u.role === 'mod' && !window.isOwner(em))) { window.showTopToast("لا تملك صلاحية حظر هذا الشخص!"); return; } window.showCustomConfirm("حظر اللاعب 🚫", "هل أنت متأكد من حظر " + u.name + " وطرده من اللعبة؟", function() { window.db.collection('users_v4').doc(u.uid).update({isBanned: true, bannedBy: loggedUser}).then(function(){ window.db.collection('system').doc('announcements').set({ latestBanMsg: "تم حظر اللاعب: " + u.name, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); window.showBottomToast("تم حظر اللاعب " + u.name + " 🚫"); window.closeMod(); if(window.openLB) window.openLB(); }).catch(function(){}); }); };
 
-    window.toggleNeonName = function() { 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-        if (!window.selectedActionUser || !window.isOwner(em)) return; 
-        var u = window.selectedActionUser; var newVal = !u.hasNeon; 
-        window.db.collection('users_v4').doc(u.uid).update({hasNeon: newVal}).then(function(){ 
-            window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({hasNeon: newVal}).catch(function(){});
-            window.showBottomToast(newVal ? "تم إعطاء الفوسفوري لـ " + u.name + " ✨" : "تمت إزالة الفوسفوري عن " + u.name); 
-            window.closeMod(); if(window.openLB) window.openLB(); 
-        }).catch(function(e){}); 
-    };
-
-    window.promoteSelectedUser = function() { 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-        if (!window.selectedActionUser || !window.isOwner(em)) return; 
-        var u = window.selectedActionUser; var newRole = (u.role === 'mod') ? 'user' : 'mod'; 
-        var msg = (newRole === 'mod') ? "هل أنت متأكد من ترقية " + u.name + " إلى مشرف؟" : "هل أنت متأكد من إزالة الإشراف عن " + u.name + "؟"; 
-        window.showCustomConfirm("إدارة الصلاحيات ⭐️", msg, function() { 
-            window.db.collection('users_v4').doc(u.uid).update({role: newRole}).then(function(){ 
-                window.db.collection("leaderboard_" + window.getWeekString()).doc(u.uid).update({role: newRole}).catch(function(){});
-                window.showBottomToast(newRole === 'mod' ? "تمت ترقية " + u.name + " لمشرف ⭐️" : "تمت إزالة إشراف " + u.name); 
-                window.closeMod(); if(window.openLB) window.openLB(); 
-            }).catch(function(){}); 
-        }); 
-    };
-    
-    window.banSelectedUser = function() { 
-        if (!window.selectedActionUser) return; 
-        var u = window.selectedActionUser; 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-        if (u.role === 'owner' || (u.role === 'mod' && !window.isOwner(em))) { window.showToast("لا تملك صلاحية حظر هذا الشخص!"); return; } 
-        window.showCustomConfirm("حظر اللاعب 🚫", "هل أنت متأكد من حظر " + u.name + " وطرده من اللعبة؟", function() { 
-            window.db.collection('users_v4').doc(u.uid).update({isBanned: true, bannedBy: loggedUser}).then(function(){ 
-                window.db.collection('system').doc('announcements').set({ latestBanMsg: "تم حظر اللاعب: " + u.name, timestamp: firebase.firestore.FieldValue.serverTimestamp() }); 
-                window.showBottomToast("تم حظر اللاعب " + u.name + " 🚫"); window.closeMod(); if(window.openLB) window.openLB(); 
-            }).catch(function(){}); 
-        }); 
-    };
-
-    // فلترة فورية بدون حاجة لفهارس
-    window.openBanList = function() { 
-        var container = document.getElementById('ban-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
-        window.openMod('modal-ban-list'); 
-        window.db.collection('users_v4').get().then(function(snap) { 
-            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-            snap.forEach(function(doc) { 
-                var d = doc.data(); 
-                if (d.isBanned === true) {
-                    var unbanBtn = window.isOwner(em) ? '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">فك الحظر</button>' : ''; 
-                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"><div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ' + (d.bannedBy || 'مجهول') + '</span></div> ' + unbanBtn + '</div>'; 
-                }
-            }); 
-            if (container) container.innerHTML = html || "<p style='color:#2ecc71;'>لا يوجد لاعبين محظورين.</p>"; 
-        }).catch(function(){}); 
-    };
-
-    window.unbanUser = function(uid, name) { 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
-        window.showCustomConfirm("فك الحظر", "هل تريد فك الحظر عن " + name + "؟", function() { 
-            window.db.collection('users_v4').doc(uid).update({isBanned: false}).then(function(){ 
-                window.showBottomToast("تم فك الحظر عن " + name + " ✅"); window.openBanList(); 
-            }).catch(function(){}); 
-        }); 
-    };
-
-    window.openModList = function() { 
-        var container = document.getElementById('mod-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
-        window.openMod('modal-mod-list'); 
-        window.db.collection('users_v4').get().then(function(snap) { 
-            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-            snap.forEach(function(doc) { 
-                var d = doc.data(); 
-                if (d.role === 'mod') {
-                    var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة</button>' : ''; 
-                    var avatarClickHtml = window.isOwner(em) ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
-                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;" ' + avatarClickHtml + '><span class="premium-name" style="font-size:1.1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
-                }
-            }); 
-            if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد مشرفين حالياً.</p>"; 
-        }).catch(function(){}); 
-    };
-
-    window.removeModDirect = function(uid, name) { 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
-        window.showCustomConfirm("إزالة إشراف", "هل أنت متأكد من إزالة المشرف " + name + "؟", function() { 
-            window.db.collection('users_v4').doc(uid).update({role: 'user'}).then(function(){ 
-                window.showBottomToast("تم إزالة الإشراف بنجاح"); window.openModList(); 
-            }).catch(function(){}); 
-        }); 
-    };
-
-    window.openNeonList = function() { 
-        var container = document.getElementById('neon-list-container'); if (container) container.innerHTML = "جاري التحميل..."; 
-        window.openMod('modal-neon-list'); 
-        window.db.collection('users_v4').get().then(function(snap) { 
-            var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
-            snap.forEach(function(doc) { 
-                var d = doc.data(); 
-                if (d.hasNeon === true || d.hasNeon === 'true') {
-                    var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة ✨</button>' : ''; 
-                    var avatarClickHtml = window.isMod() ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; 
-                    html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ' + avatarClickHtml + '><span class="neon-bg" style="font-size:1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; 
-                }
-            }); 
-            if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد لاعبين باللون الفوسفوري.</p>"; 
-        }).catch(function(){}); 
-    };
-
-    window.removeNeonDirect = function(uid, name) { 
-        var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; 
-        window.showCustomConfirm("إزالة الفوسفوري", "هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟", function() { 
-            window.db.collection('users_v4').doc(uid).update({hasNeon: false}).then(function() { 
-                window.showBottomToast("تمت الإزالة بنجاح!"); window.openNeonList(); 
-            }).catch(function(){}); 
-        }); 
-    };
-    
-    // ==========================================
-    // حذف الأصدقاء
-    // ==========================================
-    window.removeFriendDirect = function(fUid, fName) {
-        window.showCustomConfirm("حذف صديق", "هل تريد بالتأكيد حذف " + fName + " من قائمة الأصدقاء؟ 🗑️", function() {
-            var myRef = window.db.collection("users_v4").doc(authUid);
-            myRef.get().then(function(doc){
-                if(doc.exists) {
-                    var d = doc.data(); var newFriends = [];
-                    if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== fUid) newFriends.push(d.friends[i]); } }
-                    myRef.update({friends: newFriends}).then(function(){ window.showBottomToast("تم حذف " + fName + " من الأصدقاء ✅"); });
-                }
-            });
-        });
-    };
+    window.openBanList = function() { var container = document.getElementById('ban-list-container'); if (container) container.innerHTML = "جاري التحميل..."; window.openMod('modal-ban-list'); window.db.collection('users_v4').get().then(function(snap) { var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; snap.forEach(function(doc) { var d = doc.data(); if (d.isBanned === true) { var unbanBtn = window.isOwner(em) ? '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.unbanUser(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">فك الحظر</button>' : ''; html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ff4d4d;"><div style="text-align:right;"><span style="color:#fff; font-weight:bold; font-size:1rem;">' + d.name + '</span><br><span style="color:#aaa; font-size:0.7rem;">حُظر بواسطة: ' + (d.bannedBy || 'مجهول') + '</span></div> ' + unbanBtn + '</div>'; } }); if (container) container.innerHTML = html || "<p style='color:#2ecc71;'>لا يوجد لاعبين محظورين.</p>"; }).catch(function(){}); };
+    window.unbanUser = function(uid, name) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; window.showCustomConfirm("فك الحظر", "هل تريد فك الحظر عن " + name + "؟", function() { window.db.collection('users_v4').doc(uid).update({isBanned: false}).then(function(){ window.showBottomToast("تم فك الحظر عن " + name + " ✅"); window.openBanList(); }).catch(function(){}); }); };
+    window.openModList = function() { var container = document.getElementById('mod-list-container'); if (container) container.innerHTML = "جاري التحميل..."; window.openMod('modal-mod-list'); window.db.collection('users_v4').get().then(function(snap) { var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; snap.forEach(function(doc) { var d = doc.data(); if (d.role === 'mod') { var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeModDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة</button>' : ''; var avatarClickHtml = window.isOwner(em) ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #00d4ff;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #00d4ff; object-fit:cover;" ' + avatarClickHtml + '><span class="premium-name" style="font-size:1.1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; } }); if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد مشرفين حالياً.</p>"; }).catch(function(){}); };
+    window.removeModDirect = function(uid, name) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; window.showCustomConfirm("إزالة إشراف", "هل أنت متأكد من إزالة المشرف " + name + "؟", function() { window.db.collection('users_v4').doc(uid).update({role: 'user'}).then(function(){ window.showBottomToast("تم إزالة الإشراف بنجاح"); window.openModList(); }).catch(function(){}); }); };
+    window.openNeonList = function() { var container = document.getElementById('neon-list-container'); if (container) container.innerHTML = "جاري التحميل..."; window.openMod('modal-neon-list'); window.db.collection('users_v4').get().then(function(snap) { var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; snap.forEach(function(doc) { var d = doc.data(); if (d.hasNeon === true || d.hasNeon === 'true') { var removeBtn = window.isOwner(em) ? '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إزالة ✨</button>' : ''; var avatarClickHtml = window.isMod() ? 'onclick="window.openUserAction(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\', \'' + d.numId + '\', \'' + (d.role || 'user') + '\', \'' + (d.avatar || '') + '\', \'' + d.hasNeon + '\')" style="cursor:pointer;"' : ''; html += '<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="' + (d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ' + avatarClickHtml + '><span class="neon-bg" style="font-size:1rem;">' + d.name + '</span></div> ' + removeBtn + '</div>'; } }); if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد لاعبين باللون الفوسفوري.</p>"; }).catch(function(){}); };
+    window.removeNeonDirect = function(uid, name) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; window.showCustomConfirm("إزالة الفوسفوري", "هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟", function() { window.db.collection('users_v4').doc(uid).update({hasNeon: false}).then(function() { window.showBottomToast("تمت الإزالة بنجاح!"); window.openNeonList(); }).catch(function(){}); }); };
 
     // ==========================================
-    // 9. الألقاب، عجلة الحظ وحفظ التقدم
+    // 5. حفظ التقدم والألقاب وعجلة الحظ
     // ==========================================
     window.saveProgress = function(skipFirebase) { 
-        window.lsSet('ULT_P', pts); window.lsSet('ULT_TOTAL_HINTS', totalHints); window.lsSet('ULT_SPINS', spins); 
-        window.lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); 
-        window.lsSet('ULT_AVATAR', currentAvatar); window.lsSet('ULT_STREAK', randomWinStreak);
-        
+        window.lsSet('ULT_P', pts); window.lsSet('ULT_TOTAL_HINTS', totalHints); window.lsSet('ULT_SPINS', spins); window.lsSet('ULT_OWNED_TITLES', JSON.stringify(ownedTitles)); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); window.lsSet('ULT_AVATAR', currentAvatar); window.lsSet('ULT_STREAK', randomWinStreak);
         if (!skipFirebase && isGoogle && authUid && window.db) { 
             var myEmail = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : '';
             var data = { name: loggedUser, score: pts, title: activeTitleId, numId: pID, hints: totalHints, spins: spins, ownedTitles: ownedTitles, answeredQs: answeredQs, avatar: currentAvatar, randomWinStreak: randomWinStreak, hasNeon: hasNeonUser, isBusy: isBusy };
@@ -928,167 +807,47 @@
             window.db.collection("users_v4").doc(authUid).set(data, {merge: true}).catch(function(e){}); 
         } 
     };
-    
-    window.saveAndExitG = function() { 
-        window.saveProgress(false); window.showBottomToast("تم الحفظ بنجاح 💾"); window.goHomeG(); 
-    };
+    window.saveAndExitG = function() { window.saveProgress(false); window.showTopToast("تم الحفظ بنجاح 💾"); window.goHomeG(); };
 
-    window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { 
-        var titleName = t.n; var lockColor = "#ff4d4d"; var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:'+lockColor+'; z-index:10;"></i>' : ''; 
-        var checkSpan = (isActive && inList && !isSmall) ? '<i class="fas fa-check" style="color:#2ecc71; font-size:1.2rem; font-weight:bold; position:absolute; right:15px; top:50%; transform:translateY(-50%); z-index:10;"></i>' : ''; 
-        var newBadge = ''; if (inList && !isSmall && newTitlesList.indexOf(id) !== -1) { newBadge = '<span style="position:absolute; top:-5px; right:-5px; background:#2ecc71; color:#000; font-size:0.65rem; padding:2px 6px; border-radius:8px; z-index:10; border:1px solid #000; font-weight:bold;">جديد</span>'; }
-        var clickEv = ''; var cursor = ''; 
-        if (inList && !isSmall) { 
-            var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; 
-            if (id === 't_لواء') { 
-                if (window.isOwner(em)) { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } 
-                else { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; lockSpan = '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#ff0000; z-index:10;"></i>'; } 
-            } else if (!isOwned) { 
-                clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; 
-            } else { 
-                clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; 
-            } 
-        } 
-        var wrapperStyle = ''; var fontSize = ''; if (isSmall) { wrapperStyle = 'padding:2px 8px; min-width:80px; width:auto; display:inline-flex; border-radius:6px; margin:0;'; fontSize = '0.65rem'; lockSpan = ''; checkSpan = ''; } else if (inList) { wrapperStyle = 'width:100%; min-height:70px; margin-bottom:12px; padding:10px; ' + cursor; fontSize = '1.2rem'; } else { wrapperStyle = 'padding:5px 15px; min-width:140px; margin-top:5px; border-radius:10px; display:inline-flex;'; fontSize = '0.9rem'; }
-        var innerContent = titleName; if (id === 't_لواء') { innerContent = '<span class="sword-icon">⚔️</span><span class="fire-text">' + titleName + '</span><span class="sword-icon">⚔️</span>'; }
-        var shineCls = ''; if (t.shine) { if (t.shine === 'silver') shineCls = 'has-shine shine-silver'; else if (t.shine === 'blue') shineCls = 'has-shine shine-blue'; else if (t.shine === 'gold') shineCls = 'has-shine shine-gold'; }
-        return '<div class="legendary-badge ' + t.c + ' ' + shineCls + '" ' + clickEv + ' style="' + wrapperStyle + '">' + newBadge + lockSpan + '<div class="badge-text" style="font-size:'+fontSize+'; margin:0;">' + (t.extraIcon || '') + innerContent + '</div>' + checkSpan + '</div>'; 
-    };
-
+    window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { var titleName = t.n; var lockColor = "#ff4d4d"; var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:'+lockColor+'; z-index:10;"></i>' : ''; var checkSpan = (isActive && inList && !isSmall) ? '<i class="fas fa-check" style="color:#2ecc71; font-size:1.2rem; font-weight:bold; position:absolute; right:15px; top:50%; transform:translateY(-50%); z-index:10;"></i>' : ''; var newBadge = ''; if (inList && !isSmall && newTitlesList.indexOf(id) !== -1) { newBadge = '<span style="position:absolute; top:-5px; right:-5px; background:#2ecc71; color:#000; font-size:0.65rem; padding:2px 6px; border-radius:8px; z-index:10; border:1px solid #000; font-weight:bold;">جديد</span>'; } var clickEv = ''; var cursor = ''; if (inList && !isSmall) { var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; if (id === 't_لواء') { if (window.isOwner(em)) { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } else { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; lockSpan = '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.2rem; color:#ff0000; z-index:10;"></i>'; } } else if (!isOwned) { clickEv = 'onclick="window.showTitleMsg(\''+id+'\')"'; cursor = 'cursor:pointer; opacity:0.9;'; } else { clickEv = 'onclick="window.selectTitle(\''+id+'\')"'; cursor = 'cursor:pointer;'; } } var wrapperStyle = ''; var fontSize = ''; if (isSmall) { wrapperStyle = 'padding:2px 8px; min-width:80px; width:auto; display:inline-flex; border-radius:6px; margin:0;'; fontSize = '0.65rem'; lockSpan = ''; checkSpan = ''; } else if (inList) { wrapperStyle = 'width:100%; min-height:70px; margin-bottom:12px; padding:10px; ' + cursor; fontSize = '1.2rem'; } else { wrapperStyle = 'padding:5px 15px; min-width:140px; margin-top:5px; border-radius:10px; display:inline-flex;'; fontSize = '0.9rem'; } var innerContent = titleName; if (id === 't_لواء') { innerContent = '<span class="sword-icon">⚔️</span><span class="fire-text">' + titleName + '</span><span class="sword-icon">⚔️</span>'; } var shineCls = ''; if (t.shine) { if (t.shine === 'silver') shineCls = 'has-shine shine-silver'; else if (t.shine === 'blue') shineCls = 'has-shine shine-blue'; else if (t.shine === 'gold') shineCls = 'has-shine shine-gold'; } return '<div class="legendary-badge ' + t.c + ' ' + shineCls + '" ' + clickEv + ' style="' + wrapperStyle + '">' + newBadge + lockSpan + '<div class="badge-text" style="font-size:'+fontSize+'; margin:0;">' + (t.extraIcon || '') + innerContent + '</div>' + checkSpan + '</div>'; };
     window.updateTitleDisplay = function() { var t = titlesData[activeTitleId] || titlesData['t1']; var utd = document.getElementById('user-title-display'); if (utd) utd.innerHTML = window.generateTitleHtml(activeTitleId, t, true, true, false, false); };
     window.selectTitle = function(id) { window.playSndSafe('sfx-click'); activeTitleId = id; window.lsSet('ULT_TITLE_ID', id); window.updateTitleDisplay(); window.saveProgress(false); window.openTitles(); };
     window.openTitles = function() { var html = ''; for(var id in titlesData){ var t = titlesData[id]; var isActive = (id === activeTitleId); var isOwned = false; if(ownedTitles.indexOf(id) !== -1) isOwned = true; html += window.generateTitleHtml(id, t, isActive, isOwned, true, false); } var tl = document.getElementById('titles-list'); if(tl) tl.innerHTML = html; newTitlesList = []; window.lsSet('ULT_NEW_TITLES', '[]'); window.openMod('modal-titles'); };
     window.showTitleMsg = function(id) { var t = titlesData[id]; if(!t) return; var tName = document.getElementById('title-info-name'); if(tName) tName.innerHTML = (t.extraIcon || '') + t.n; var tDesc = document.getElementById('title-info-desc'); if(tDesc) tDesc.innerText = t.msg || 'هذا اللقب مقفول.'; window.openMod('modal-title-info'); };
 
-    window.openLB = function() { 
-        var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); 
-        if(!window.db) return; 
-        window.db.collection("leaderboard_" + window.getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { 
-            var html = ''; if (!isGoogle) html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; var rank = 1; 
-            qSnap.forEach(function(doc) { 
-                var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; 
-                var em = d.email || '';
-                if (d.role === 'owner' || window.isOwner(em)) roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (d.role === 'mod') roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; 
-                var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) nameCls = 'neon-bg'; 
-                var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); 
-                html += '<div class="lb-row' + isMe + '"><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; 
-            }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; 
-        }).catch(function(){}); 
-    };
-
+    window.openLB = function() { var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); if(!window.db) return; window.db.collection("leaderboard_" + window.getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { var html = ''; if (!isGoogle) html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; var rank = 1; qSnap.forEach(function(doc) { var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; var em = d.email || ''; if (d.role === 'owner' || window.isOwner(em)) roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (d.role === 'mod') roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) nameCls = 'neon-bg'; var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); html += '<div class="lb-row' + isMe + '"><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; }).catch(function(){}); };
     window.renderLuckySpin = function() { var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; var container = document.getElementById('spin-circular-grid'); if (!container) return; var html = ''; var radius = 100; for (var i=0; i<spinPrizes.length; i++) { var p = spinPrizes[i]; var angle = (i * (2 * Math.PI) / spinPrizes.length) - (Math.PI / 2); var x = radius * Math.cos(angle) + 130; var y = radius * Math.sin(angle) + 130; html += '<div class="spin-item ' + p.c + '" id="spin-item-' + i + '" style="left: ' + x + 'px; top: ' + y + 'px;"><span class="icon">' + p.icon + '</span><span>' + p.tAR + '</span><span class="perc">' + p.perc + '</span></div>'; } container.innerHTML = html; };
-    
-    window.startLuckySpin = function() { 
-        if (spins <= 0 || locked) return; locked = true; spins--; window.lsSet('ULT_SPINS', spins); 
-        var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; 
-        var rand = Math.random() * 100, sum = 0, wonIdx = 0; 
-        for (var i=0; i<spinPrizes.length; i++) { sum += spinPrizes[i].p; if (rand <= sum) { wonIdx = i; break; } } 
-        var currentIndex = 0; var steps = 0; 
-        function jumpHighlight() { 
-            var items = document.querySelectorAll('.spin-item'); for (var k=0; k<items.length; k++){ items[k].classList.remove('active'); } 
-            var activeItem = document.getElementById('spin-item-' + currentIndex); if (activeItem) { activeItem.classList.add('active'); } 
-            window.playSndSafe('sfx-click'); steps++; 
-            if (steps > 40 && currentIndex === wonIdx) { 
-                var won = spinPrizes[wonIdx]; 
-                if (won.type === 'h') { window.addHints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
-                else if (won.type === 'p') { window.addPoints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } 
-                else if (won.type === 'title' || won.type === 'box') { 
-                    if (ownedTitles.indexOf(won.v) === -1) { 
-                        ownedTitles.push(won.v); newTitlesList.push(won.v); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); 
-                        activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; 
-                        window.showGrandPrize('لقب ' + titleName, titleIcon); 
-                    } else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } 
-                } 
-                locked = false; window.saveProgress(false); window.updateStatsUI(); 
-            } else { currentIndex = (currentIndex + 1) % spinPrizes.length; setTimeout(jumpHighlight, steps > 30 ? 200 : 100); } 
-        } 
-        jumpHighlight(); 
-    };
-
+    window.startLuckySpin = function() { if (spins <= 0 || locked) return; locked = true; spins--; window.lsSet('ULT_SPINS', spins); var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; var rand = Math.random() * 100, sum = 0, wonIdx = 0; for (var i=0; i<spinPrizes.length; i++) { sum += spinPrizes[i].p; if (rand <= sum) { wonIdx = i; break; } } var currentIndex = 0; var steps = 0; function jumpHighlight() { var items = document.querySelectorAll('.spin-item'); for (var k=0; k<items.length; k++){ items[k].classList.remove('active'); } var activeItem = document.getElementById('spin-item-' + currentIndex); if (activeItem) { activeItem.classList.add('active'); } window.playSndSafe('sfx-click'); steps++; if (steps > 40 && currentIndex === wonIdx) { var won = spinPrizes[wonIdx]; if (won.type === 'h') { window.addHints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } else if (won.type === 'p') { window.addPoints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } else if (won.type === 'title' || won.type === 'box') { if (ownedTitles.indexOf(won.v) === -1) { ownedTitles.push(won.v); newTitlesList.push(won.v); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; window.showGrandPrize('لقب ' + titleName, titleIcon); } else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } } locked = false; window.saveProgress(false); window.updateStatsUI(); } else { currentIndex = (currentIndex + 1) % spinPrizes.length; setTimeout(jumpHighlight, steps > 30 ? 200 : 100); } } jumpHighlight(); };
     window.showGrandPrize = function(titleAr, icon) { var gt = document.getElementById('grand-prize-title-ui'); if (gt) gt.innerText = 'مبروك! 🎉'; var gd = document.getElementById('grand-prize-desc-ui'); if (gd) gd.innerText = titleAr; var gi = document.getElementById('grand-prize-icon-ui'); if (gi) gi.innerHTML = icon; window.openMod('modal-grand-prize'); window.playSndSafe('sfx-win'); };
     window.closeGrandPrize = function() { window.openMod('modal-luckyspin'); window.updateStatsUI(); };
-
+    
     // ==========================================
-    // 10. التحدي العادي والأسئلة
+    // 6. اللعب العادي
     // ==========================================
-    window.startG = function() { 
-        isOnlineMode = false; 
-        if (qList.length === 0) { window.showToast("عذراً، الأسئلة قيد التحميل..."); return; } 
-        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
-        window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); 
-        window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); 
-        
-        cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; 
-        for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } 
-        if (qOrder.length === 0) { 
-            answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); 
-            for (var i = 0; i < qList.length; i++) qOrder.push(i); 
-            window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); 
-        } 
-        window.shuffle(qOrder); window.loadQ(); 
-    };
-
-    window.loadQ = function() { 
-        locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); 
-        if (cur >= qList.length) { window.openMod('modal-win'); return; } 
-        var q = qList[qOrder[cur]]; 
-        var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; 
-        var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; 
-        
-        optsOrder = window.shuffle([0, 1, 2, 3]); 
-        for (var i = 0; i < 4; i++) { 
-            var btn = document.getElementById('opt'+i); 
-            if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } 
-        } 
-        
-        var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; 
-        var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; 
-        var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; 
-    };
-
-    window.checkAns = function(idx) { 
-        if (locked) return; locked = true; 
-        if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
-        
-        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; 
-        var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
-        
-        if (isCorrect) { 
-            if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; 
-            if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } 
-        } else { 
-            if (btn) btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); 
-            var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); 
-        } 
-        
-        var eb = document.getElementById('explanation-box'); 
-        if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } 
-        window.safeShow('post-ans-actions', 'block'); 
-    };
-
+    window.startG = function() { isOnlineMode = false; if (qList.length === 0) { window.showTopToast("عذراً، الأسئلة قيد التحميل..."); return; } window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } if (qOrder.length === 0) { answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); for (var i = 0; i < qList.length; i++) qOrder.push(i); window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); } window.shuffle(qOrder); window.loadQ(); };
+    window.loadQ = function() { locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); if (cur >= qList.length) { window.openMod('modal-win'); return; } var q = qList[qOrder[cur]]; var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i = 0; i < 4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; };
+    window.checkAns = function(idx) { if (locked) return; locked = true; if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; if (isCorrect) { if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } } else { if (btn) btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } window.safeShow('post-ans-actions', 'block'); };
     window.handleContinue = function() { if (lastAnswerCorrect) { cur++; window.loadQ(); } else { window.openMod('modal-lose-menu'); } };
     window.skipQMenu = function() { locked = false; cur++; window.closeMod(); window.loadQ(); };
     window.goHomeG = function() { window.closeMod(); window.safeHide('match-result-overlay'); document.body.classList.remove('vs-mode-active'); window.showStartScreen(); };
     window.shuffle = function(a){ for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var temp = a[i]; a[i] = a[j]; a[j] = temp; } return a; };
-    
     window.useAud = function() { if (aud<=0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
     window.use50 = function() { if (f50<=0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++){ if (optsOrder[i] !== 0 && h<2){ var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
     window.useHint = function() { if (totalHints<=0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
-    
     // ==========================================
-    // 11. الأونلاين والتحدي المباشر 
+    // 7. الأونلاين والتحدي المباشر (بدون تعليق)
     // ==========================================
     var matchRef = null, matchmakingUnsubscribe = null, onlineMatchId = null, myMatchRole = null, onlineTimerInterval = null, currentTurnUid = null, isOnlineMode = false, onlineData = {};
     var turnTimeLeft = 25;
 
     window.startMatchmaking = function(type, friendUid, friendName) { 
-        if (!authUid) { window.showToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } 
-        if (qList.length < 10) { window.showToast("خطأ: الأسئلة قيد التحميل..."); return; } 
+        if (!authUid) { window.showTopToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } 
+        if (qList.length < 10) { window.showTopToast("خطأ: الأسئلة قيد التحميل..."); return; } 
         
         if (type === 'friend') {
             window.db.collection("users_v4").doc(friendUid).get().then(function(doc){
                 if(doc.exists && (doc.data().isBusy === true || doc.data().isBusy === 'true')) {
-                    window.showBottomToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴");
+                    window.showTopToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴");
                 } else {
                     window.proceedMatchmaking(type, friendUid, friendName);
                 }
@@ -1128,11 +887,34 @@
         matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { 
             if (!doc.exists) return; var d = doc.data(); 
             if (d.status === 'waiting_ready' && d.p2_id) { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } 
-            else if (d.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } 
+            else if (d.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showTopToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } 
         }); 
     };
     
     window.cancelMatchmaking = function() { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); if (matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
+
+    // إصلاح أزرار القبول والرفض لمنع التعليق
+    window.acceptChallenge = function() { 
+        if (!window.incomingChallengeId) return; 
+        window.playSndSafe('sfx-click');
+        window.showBottomToast("جاري الدخول للمباراة... ⚔️"); 
+        
+        window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ 
+            p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready', p2_ready: true 
+        }).then(function() { 
+            window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); 
+            window.startVSGame(window.incomingChallengeId, "p2"); 
+        }).catch(function(){ window.showTopToast("انتهى التحدي أو تم إلغاؤه"); window.closeMod(); }); 
+    };
+    
+    window.rejectChallenge = function() { 
+        if (!window.incomingChallengeId) return; 
+        window.playSndSafe('sfx-click');
+        window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ status: 'cancelled' }).catch(function(){}); 
+        window.db.collection("users_v4").doc(authUid).update({ challenges: [] }).catch(function(){}); 
+        window.incomingChallengeId = null;
+        window.closeMod(); 
+    };
 
     window.startVSGame = function(matchId, myRole) { 
         window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; 
@@ -1140,9 +922,10 @@
         window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); 
         window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); 
         
-        var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } 
-        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('btn-surrender'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
-        var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } 
+        window.safeHide('btn-cancel-ready'); window.safeHide('btn-surrender');
+        window.safeShow('vs-countdown', 'block'); window.safeShow('emotes-container', 'flex'); 
+        
+        var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "متصل 🟢"; oppStatus.style.color = "#2ecc71"; } 
         
         window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
             var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); 
@@ -1156,28 +939,34 @@
         }).catch(function(){}); 
         
         cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); 
+        
+        // إعطاء إشارة الجاهزية تلقائياً للبدء فوراً وتفادي مشكلة تعليق الأسئلة
+        var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; 
+        window.db.collection("matches_v4").doc(onlineMatchId).update(updateField);
     };
 
-    window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if (btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
-    
     window.listenToOnlineMatch = function() { 
         matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { 
             if (!doc.exists) return; onlineData = doc.data(); 
             var oppReady = (myMatchRole === 'p1') ? onlineData.p2_ready : onlineData.p1_ready; 
-            var oppStatus = document.getElementById('opp-status-text'); 
-            if (oppStatus) { if (oppReady) { oppStatus.innerText = "جاهز ✔️"; oppStatus.style.color = "#2ecc71"; } else { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } } 
-            if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } 
+            
+            if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showTopToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } 
             
             if (myMatchRole === 'p1' && onlineData.p2_emote && onlineData.p2_emote_time && (!window.lastOppEmoteTime || onlineData.p2_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p2_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p2_emote); window.playSndSafe('sfx-click'); } 
             else if (myMatchRole === 'p2' && onlineData.p1_emote && onlineData.p1_emote_time && (!window.lastOppEmoteTime || onlineData.p1_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p1_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p1_emote); window.playSndSafe('sfx-click'); } 
             
-            if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } 
+            // البدء الفوري بمجرد جاهزية الطرفين
+            if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { 
+                window.isCountdownStarted = true; 
+                window.startVSCountdown(); 
+            } 
+            
             if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } 
         }); 
     };
 
     window.startVSCountdown = function() { 
-        window.safeHide('ready-area-left'); window.safeHide('btn-cancel-ready'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); 
+        window.safeHide('ready-area-left'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); 
         var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); 
         var cdInt = setInterval(function() { 
             count--; 
@@ -1252,9 +1041,11 @@
         if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='has-shine shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } } else if (isDraw) { window.playSndSafe('sfx-click'); if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } else { window.playSndSafe('sfx-lose'); if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } 
         window.saveProgress(false); window.safeShow('match-result-overlay', 'flex'); 
     };
+    window.closeMatchResult = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.goHomeG(); };
+    window.rematchFriend = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); var friendUid = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id; var friendName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name; window.goHomeG(); setTimeout(function() { window.startMatchmaking('friend', friendUid, friendName); }, 500); };
 
     // ==========================================
-    // 12. 100 سؤال جبار (تم تصغير الكود بدمج المصفوفات)
+    // 12. 100 سؤال جبار
     // ==========================================
     var qDataRawLast = [
         ["من هو النبي الذي أُمر بأن يأخذ الكتاب بقوة؟", "يحيى عليه السلام", "موسى عليه السلام", "عيسى عليه السلام", "داود عليه السلام", "يا يحيى خذ الكتاب بقوة"],
@@ -1297,7 +1088,7 @@
         ["من هو الصحابي الذي حمى النبي بجسده يوم أحد حتى شُلت يده؟", "طلحة بن عبيد الله", "أبو دجانة", "الزبير بن العوام", "سعد بن أبي وقاص", "لقبه النبي يومها بـ (طلحة الخير)"],
         ["كم عدد أبواب الجنة؟", "8 أبواب", "7 أبواب", "6 أبواب", "9 أبواب", "في الحديث: (في الجنة ثمانية أبواب، فيها باب يسمى الريان)"],
         ["ما اسم الناقة التي هاجر عليها النبي ﷺ للمدينة؟", "القصواء", "الجدعاء", "العضباء", "البراق", "اشتراها النبي من أبي بكر الصديق رضي الله عنه"],
-        ["من هو أول من بنى السجون في الإسلام لحبس المجرمين؟", "علي بن أبي طالب", "عمر بن الخطاب", "عثمان بن عفان", "معاوية بن أبي sفيان", "كان يسمى سجن (نافع) بالكوفة"],
+        ["من هو أول من بنى السجون في الإسلام لحبس المجرمين؟", "علي بن أبي طالب", "عمر بن الخطاب", "عثمان بن عفان", "معاوية بن أبي سفيان", "كان يسمى سجن (نافع) بالكوفة"],
         ["ما هي السورة التي تُقرأ كل ليلة لتمنع عذاب القبر؟", "سورة الملك", "سورة الواقعة", "سورة يس", "سورة السجدة", "هي المانعة المنجية من عذاب القبر"],
         ["من هو الصحابي الذي أمره النبي بجمع القرآن في عهد أبي بكر؟", "زيد بن ثابت", "عبد الله بن مسعود", "أبي بن كعب", "علي بن أبي طالب", "كان شاباً فطناً ومن كتاب الوحي"],
         ["من هو النبي الذي ابتلعه الحوت ثم نبذه بالعراء؟", "يونس عليه السلام", "يوسف عليه السلام", "أيوب عليه السلام", "إلياس عليه السلام", "دعا قائلاً: (لا إله إلا أنت سبحانك إني كنت من الظالمين)"],
@@ -1329,12 +1120,12 @@
         ["من هو النبي الذي أُلقي في غيابة الجب (البئر)؟", "يوسف عليه السلام", "يونس عليه السلام", "يعقوب عليه السلام", "إبراهيم عليه السلام", "(وأجمعوا أن يجعلوه في غيابات الجب)"],
         ["ما هي الغزوة التي شاركت فيها الملائكة للقتال صراحة مع المسلمين؟", "غزوة بدر", "غزوة أحد", "غزوة الخندق", "غزوة حنين", "(إذ تستغيثون ربكم فاستجاب لكم أني ممدكم بألف من الملائكة مردفين)"],
         ["من هو القائد المسلم الذي فتح مصر؟", "عمرو بن العاص", "أبو عبيدة بن الجراح", "خالد بن الوليد", "سعد بن أبي وقاص", "كان من دهاة العرب وقادة الفتح الإسلامي"],
-        ["كم عدد مصارف الزكاة التي حددها القرآن الكريم في sورة التوبة؟", "8 مصارف", "7 مصارف", "6 مصارف", "5 مصارف", "(إنما الصدقات للفقراء والمساكين والعاملين عليها...) 8 أصناف"],
+        ["كم عدد مصارف الزكاة التي حددها القرآن الكريم في سورة التوبة؟", "8 مصارف", "7 مصارف", "6 مصارف", "5 مصارف", "(إنما الصدقات للفقراء والمساكين والعاملين عليها...) 8 أصناف"],
         ["من هو الصحابي الملقب بـ (أمين هذه الأمة)؟", "أبو عبيدة بن الجراح", "عبد الرحمن بن عوف", "أبو الدرداء", "معاذ بن جبل", "قال النبي ﷺ: لكل أمة أمين، وأمين هذه الأمة أبو عبيدة"],
         ["ما هي السورة التي تُسمى بسورة (بني النضير)؟", "سورة الحشر", "سورة التوبة", "سورة المائدة", "سورة الأحزاب", "نزلت في إجلاء يهود بني النضير عن المدينة"],
         ["من هو الصحابي الذي نزلت الملائكة تستمع لقراءته للقرآن؟", "أسيد بن حضير", "عبد الله بن مسعود", "أبي بن كعب", "البراء بن عازب", "قال له النبي: (تلك الملائكة دنت لصوتك، ولو قرأت لأصبحت ينظر الناس إليها)"],
         ["ما هي السورة التي ذكرت قصة طالوت وجالوت؟", "سورة البقرة", "سورة الكهف", "سورة الأنبياء", "سورة طه", "(فلما فصل طالوت بالجنود...)"],
-        ["من هو الصحابي الملقب بـ (حواري رسول الله)؟", " الزبير بن العوام", "سعد بن أبي وقاص", "طلحة بن عبيد الله", "سعيد بن زيد", "قال النبي ﷺ: (لكل نبي حواري، وحواريي الزبير)"],
+        ["من هو الصحابي الملقب بـ (حواري رسول الله)؟", "الزبير بن العوام", "سعد بن أبي وقاص", "طلحة بن عبيد الله", "سعيد بن زيد", "قال النبي ﷺ: (لكل نبي حواري، وحواريي الزبير)"],
         ["ما هي السورة التي حذرت من الغيبة والنميمة بصريح العبارة وتوعدت فاعلها؟", "سورة الهمزة", "سورة الماعون", "سورة العصر", "سورة التكاثر", "(ويل لكل همزة لمزة)"],
         ["من هو النبي الذي سخر الله له الريح عاصفة تجري بأمره؟", "سليمان عليه السلام", "داود عليه السلام", "يونس عليه السلام", "موسى عليه السلام", "(ولسليمان الريح عاصفة تجري بأمره إلى الأرض التي باركنا فيها)"],
         ["من هو قائد جيش المسلمين في معركة القادسية ضد الفرس؟", "سعد بن أبي وقاص", "النعمان بن مقرن", "خالد بن الوليد", "عمرو بن العاص", "انتهت بنصر حاسم للمسلمين عام 15 هـ"],
@@ -1366,37 +1157,8 @@
     } catch (e) { console.error(e); }
 
     // ==========================================
-    // 13. الإقلاع والتسجيل (مع تفعيل نظام متاح/مشغول)
+    // 13. الإقلاع والتسجيل (مربوطة بالتحديات وحالة مشغول)
     // ==========================================
-    window.showStartScreen = function() { 
-        window.safeHide('screen-login'); window.safeHide('screen-game'); window.safeShow('screen-start', 'flex'); window.safeShow('main-nav', 'flex'); 
-        
-        var welcomeMsg = document.getElementById('welcome-msg'); 
-        var em = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; 
-        var isDev = window.isOwner(em); 
-        
-        if (welcomeMsg) { 
-            welcomeMsg.innerText = loggedUser; welcomeMsg.style.fontFamily = "'Amiri', serif"; welcomeMsg.style.fontWeight = "900"; welcomeMsg.style.padding = "5px 15px"; welcomeMsg.style.borderRadius = "10px"; welcomeMsg.style.display = "inline-block"; welcomeMsg.style.textShadow = "2px 2px 5px rgba(0,0,0,0.8)"; welcomeMsg.style.setProperty('font-size', '1.8rem', 'important'); 
-            if (hasNeonUser || isDev) { welcomeMsg.className = "neon-bg"; welcomeMsg.style.border = "2px solid #fff"; welcomeMsg.style.setProperty('color', '#000', 'important'); } 
-            else if (isGoogle) { welcomeMsg.className = "premium-name"; welcomeMsg.style.border = "2px solid #ffd700"; welcomeMsg.style.setProperty('color', 'transparent', 'important'); } 
-            else { welcomeMsg.className = ""; welcomeMsg.style.background = "rgba(255,255,255,0.1)"; welcomeMsg.style.border = "2px solid rgba(255,255,255,0.3)"; welcomeMsg.style.setProperty('color', '#ffd700', 'important'); } 
-        } 
-        
-        var devCont = document.getElementById('dev-badge-container'); 
-        if (devCont) { if (isDev) { devCont.innerHTML = '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; window.safeShow('dev-badge-container', 'inline-flex'); } else { window.safeHide('dev-badge-container'); } } 
-        
-        var uidDisplay = document.getElementById('user-id-display'); if (uidDisplay) { uidDisplay.innerText = pID; } 
-        window.updateStatsUI(); window.updateAvatarUI(); window.saveProgress(false); 
-    };
-
-    window.finishLoading = function(showLogin) { 
-        var ls = document.getElementById('loading-screen'); if(ls) ls.style.display = 'none';
-        if (showLogin) { 
-            var screenStart = document.getElementById('screen-start'); 
-            if (!screenStart || screenStart.style.display !== 'flex') { window.safeShow('screen-login', 'flex'); } 
-        } else { window.showStartScreen(); } 
-    };
-
     window.addEventListener('DOMContentLoaded', function() { 
         window.safeShow('loading-screen', 'flex'); 
         
@@ -1421,18 +1183,21 @@
                                 if (docSnap.exists) { 
                                     var data = docSnap.data(); if (data.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
                                     
-                                    // إذا وصلك تحدي وأنت مشغول 🔴 يتم الرفض تلقائياً وبدون إزعاجك
+                                    // إذا وصلك تحدي وأنت مشغول يتم الرفض تلقائياً، وإلا تظهر نافذة التحدي
                                     if (data.challenges && data.challenges.length > 0) { 
                                         if(isBusy) {
                                             var activeCh = data.challenges[0]; 
-                                            window.db.collection("matches_v4").doc(activeCh.matchId).update({ status: 'cancelled' }); 
-                                            window.db.collection("users_v4").doc(authUid).update({ challenges: [] });
+                                            window.db.collection("matches_v4").doc(activeCh.matchId).update({ status: 'cancelled' }).catch(function(){}); 
+                                            window.db.collection("users_v4").doc(authUid).update({ challenges: [] }).catch(function(){});
                                         } else {
                                             var activeCh = data.challenges[0]; window.incomingChallengeId = activeCh.matchId; 
                                             var chNameUI = document.getElementById('challenger-name-ui'); if (chNameUI) { chNameUI.innerText = activeCh.fromName; } 
                                             window.openMod('modal-challenge-invite'); window.playSndSafe('sfx-win'); 
                                         }
-                                    } else if (document.getElementById('modal-challenge-invite').style.display === 'flex') { window.closeMod(); } 
+                                    } else { 
+                                        var invModal = document.getElementById('modal-challenge-invite');
+                                        if (invModal && invModal.style.display === 'flex') { window.closeMod(); } 
+                                    } 
                                     
                                     if (data.requests) { 
                                         var reqs = data.requests; var badge = document.getElementById('req-badge-ui'); 
@@ -1448,7 +1213,6 @@
                                             sortedFriends.forEach(function(f){ 
                                                 var isOnline = allUsersStatus[f.numId] === true; var dotColor = isOnline ? '#2ecc71' : '#ff4d4d'; var statusTxt = isOnline ? 'متصل ✅' : 'غير متصل ❌'; var nameCls = (f.name !== "أسطورة") ? 'premium-name' : ''; 
                                                 
-                                                // التعديل: إضافة زر الحذف 🗑️ بجانب زر التحدي
                                                 var delBtn = '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem; border-color:#ff4d4d; color:#ff4d4d; background:transparent;" onclick="window.removeFriendDirect(\''+f.uid+'\', \''+f.name.replace(/'/g, "\\'")+'\')"><i class="fas fa-trash-alt"></i></button>';
                                                 var chBtn = '<button class="q-btn" style="width:auto; margin:0; padding:5px 12px; font-size:0.8rem; border-color:#2ecc71; color:#2ecc71; background:transparent;" onclick="window.startMatchmaking(\'friend\', \'' + f.uid + '\', \'' + f.name.replace(/'/g, "\\'") + '\')">⚔️ تحدي</button>';
                                                 
