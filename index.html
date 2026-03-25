@@ -867,8 +867,7 @@
     window.removeModDirect = function(uid, name) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; window.showCustomConfirm("إزالة إشراف", "هل أنت متأكد من إزالة المشرف " + name + "؟", function() { window.db.collection('users_v4').doc(uid).update({role: 'user'}).then(function(){ window.showBottomToast("تم إزالة الإشراف بنجاح"); window.openModList(); }).catch(function(){}); }); };
     window.openNeonList = function() { var container = document.getElementById('neon-list-container'); if (container) container.innerHTML = "جاري التحميل..."; window.openMod('modal-neon-list'); window.db.collection('users_v4').where('hasNeon', '==', true).get().then(function(snap) { var html = ''; var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; snap.forEach(function(doc) { var d = doc.data(); var removeBtn = window.isOwner(em) ? `<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.removeNeonDirect('${doc.id}', '${d.name.replace(/'/g, "\\'")}')">إزالة ✨</button>` : ''; var avatarClickHtml = window.isMod() ? `onclick="window.openUserAction('${doc.id}', '${d.name.replace(/'/g, "\\'")}', '${d.numId}', '${d.role || 'user'}', '${d.avatar || ''}', '${d.hasNeon}')" style="cursor:pointer;"` : ''; html += `<div style="background:rgba(255,255,255,0.05); padding:10px; margin-bottom:8px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;"><div style="text-align:right; display:flex; align-items:center; gap:10px;"><img src="${d.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" style="width:40px; height:40px; border-radius:50%; border:2px solid #ffd700; object-fit:cover;" ${avatarClickHtml}><span class="neon-bg" style="font-size:1rem;">${d.name}</span></div> ${removeBtn}</div>`; }); if (container) container.innerHTML = html || "<p style='color:#aaa;'>لا يوجد لاعبين باللون الفوسفوري.</p>"; }).catch(function(){}); };
     window.removeNeonDirect = function(uid, name) { var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; if (!window.isOwner(em)) return; window.showCustomConfirm("إزالة الفوسفوري", "هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟", function() { window.db.collection('users_v4').doc(uid).update({hasNeon: false}).then(function() { window.showBottomToast("تمت الإزالة بنجاح!"); window.openNeonList(); }).catch(function(){}); }); };
-</script>
-<script>
+
     // ==========================================
     // 6. الحفظ والألقاب والمتصدرين والعجلة
     // ==========================================
@@ -923,7 +922,8 @@
     window.startLuckySpin = function() { if (spins <= 0 || locked) return; locked = true; spins--; window.lsSet('ULT_SPINS', spins); var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; var rand = Math.random() * 100, sum = 0, wonIdx = 0; for (var i=0; i<spinPrizes.length; i++) { sum += spinPrizes[i].p; if (rand <= sum) { wonIdx = i; break; } } var currentIndex = 0; var steps = 0; function jumpHighlight() { var items = document.querySelectorAll('.spin-item'); for (var k=0; k<items.length; k++){ items[k].classList.remove('active'); } var activeItem = document.getElementById('spin-item-' + currentIndex); if (activeItem) { activeItem.classList.add('active'); } window.playSndSafe('sfx-click'); steps++; if (steps > 40 && currentIndex === wonIdx) { var won = spinPrizes[wonIdx]; if (won.type === 'h') { window.addHints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } else if (won.type === 'p') { window.addPoints(won.v); window.showGrandPrize("ربحت " + won.tAR, won.icon); } else if (won.type === 'title' || won.type === 'box') { if (ownedTitles.indexOf(won.v) === -1) { ownedTitles.push(won.v); newTitlesList.push(won.v); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); activeTitleId = won.v; var titleIcon = won.type === 'box' ? '⭐' : '👑'; var titleName = won.type === 'box' ? 'النجم الذهبي' : 'تاج العلم'; window.showGrandPrize('لقب ' + titleName, titleIcon); } else { window.addHints(15); window.showGrandPrize('تم تعويضك بـ 15 تلميح!', '💡'); } } locked = false; window.saveProgress(false); window.updateStatsUI(); } else { currentIndex = (currentIndex + 1) % spinPrizes.length; setTimeout(jumpHighlight, steps > 30 ? 200 : 100); } } jumpHighlight(); };
     window.showGrandPrize = function(titleAr, icon) { var gt = document.getElementById('grand-prize-title-ui'); if (gt) gt.innerText = 'مبروك! 🎉'; var gd = document.getElementById('grand-prize-desc-ui'); if (gd) gd.innerText = titleAr; var gi = document.getElementById('grand-prize-icon-ui'); if (gi) gi.innerHTML = icon; window.openMod('modal-grand-prize'); window.playSndSafe('sfx-win'); };
     window.closeGrandPrize = function() { window.openMod('modal-luckyspin'); window.updateStatsUI(); };
-
+</script>
+<script>
     // ==========================================
     // 7. دوال اللعب الأساسية
     // ==========================================
@@ -939,7 +939,7 @@
     window.useHint = function() { if (totalHints<=0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
 
     // ==========================================
-    // 8. الأصدقاء والمطابقة والتحديات (بحث دائم بدون إغلاق)
+    // 8. الأصدقاء والمطابقة والتحديات
     // ==========================================
     var matchRef = null, matchmakingUnsubscribe = null, onlineMatchId = null, myMatchRole = null, onlineTimerInterval = null, currentTurnUid = null, isOnlineMode = false, onlineData = {};
     
@@ -972,10 +972,55 @@
     window.rejectChallenge = function() { if (!window.incomingChallengeId) return; window.db.collection("matches_v4").doc(window.incomingChallengeId).update({ status: 'cancelled' }); window.db.collection("users_v4").doc(authUid).update({ challenges: [] }); window.closeMod(); };
     window.listenToMatch = function(matchId) { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { if (!doc.exists) return; var d = doc.data(); if (d.status === 'waiting_ready' && d.p2_id) { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } else if (d.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } }); };
     window.cancelMatchmaking = function() { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); if (matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
-    window.startVSGame = function(matchId, myRole) { window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); var pLeftBox = document.getElementById('p-left-box'); if (pLeftBox) pLeftBox.className = 'p-box'; var pRightBox = document.getElementById('p-right-box'); if (pRightBox) pRightBox.className = 'p-box'; var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true || window.isOwner(window.auth?.currentUser?.email)) ? 'neon-bg' : 'premium-name'; } if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true || window.isOwner(oppData.name === "أسطورة" ? "" : "admin@admin.com")) ? 'neon-bg' : 'premium-name'; } }).catch(function(){}); cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); };
+    
+    // التعديل المضاف: عكس الأماكن لتكون دائماً على اليسار
+    window.startVSGame = function(matchId, myRole) { 
+        window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); 
+        onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; 
+        window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); 
+        window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); 
+        window.safeShow('vs-header', 'flex'); 
+        document.body.classList.add('vs-mode-active'); 
+        window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); 
+
+        var vsHeader = document.getElementById('vs-header');
+        if (vsHeader) vsHeader.style.flexDirection = 'row-reverse';
+
+        var pLeftBox = document.getElementById('p-left-box'); if (pLeftBox) pLeftBox.className = 'p-box'; 
+        var pRightBox = document.getElementById('p-right-box'); if (pRightBox) pRightBox.className = 'p-box'; 
+        var btnR = document.getElementById('btn-ready-me'); if (btnR) { window.safeShow('btn-ready-me', 'inline-block'); btnR.innerText = "استعداد"; btnR.style.pointerEvents = 'auto'; btnR.style.background = '#2ecc71'; } 
+        window.safeShow('btn-cancel-ready', 'inline-block'); window.safeHide('vs-countdown'); window.safeShow('emotes-container', 'flex'); 
+        var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } 
+        window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { 
+            var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); 
+            var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; 
+            var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; 
+            if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+            if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true || window.isOwner(window.auth?.currentUser?.email)) ? 'neon-bg' : 'premium-name'; } 
+            if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; 
+            if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true || window.isOwner(oppData.name === "أسطورة" ? "" : "admin@admin.com")) ? 'neon-bg' : 'premium-name'; } 
+        }).catch(function(){}); 
+        cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); 
+    };
+
     window.setReady = function() { window.playSndSafe('sfx-click'); var btn = document.getElementById('btn-ready-me'); if (btn) { btn.innerText = "جاهز ✔️"; btn.style.pointerEvents = 'none'; btn.style.background = '#888'; } var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
     window.sendEmoteOnline = function() { if (!isOnlineMode || !onlineMatchId) return; var emoteTxt = this.getAttribute('data-emote') || this.innerText; var updateObj = {}; if (myMatchRole === 'p1') { updateObj.p1_emote = emoteTxt; updateObj.p1_emote_time = Date.now(); } else { updateObj.p2_emote = emoteTxt; updateObj.p2_emote_time = Date.now(); } window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); window.showEmoteBubble('player1-emote-message', emoteTxt); window.playSndSafe('sfx-click'); };
-    window.showEmoteBubble = function(elementId, text) { var el = document.getElementById(elementId); if (el) { el.innerText = text; el.style.opacity = 1; el.style.transform = 'translateY(-10px)'; setTimeout(function() { el.style.opacity = 0; el.style.transform = 'translateY(0)'; }, 3000); } };
+    
+    // التعديل المضاف: إصلاح مكان الإيموجي وتوسيطه
+    window.showEmoteBubble = function(elementId, text) { 
+        var el = document.getElementById(elementId); 
+        if (el) { 
+            el.innerText = text; 
+            el.style.top = '-35px'; 
+            el.style.opacity = 1; 
+            el.style.transform = 'translateX(-50%) translateY(-5px)'; 
+            setTimeout(function() { 
+                el.style.opacity = 0; 
+                el.style.transform = 'translateX(-50%) translateY(0)'; 
+            }, 3000); 
+        } 
+    };
+
     window.listenToOnlineMatch = function() { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { if (!doc.exists) return; onlineData = doc.data(); var oppReady = (myMatchRole === 'p1') ? onlineData.p2_ready : onlineData.p1_ready; var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { if (oppReady) { oppStatus.innerText = "جاهز ✔️"; oppStatus.style.color = "#2ecc71"; } else { oppStatus.innerText = "ينتظر ⏳"; oppStatus.style.color = "#ffd700"; } } if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } if (myMatchRole === 'p1' && onlineData.p2_emote && onlineData.p2_emote_time && (!window.lastOppEmoteTime || onlineData.p2_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p2_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p2_emote); window.playSndSafe('sfx-click'); } else if (myMatchRole === 'p2' && onlineData.p1_emote && onlineData.p1_emote_time && (!window.lastOppEmoteTime || onlineData.p1_emote_time > window.lastOppEmoteTime)) { window.lastOppEmoteTime = onlineData.p1_emote_time; window.showEmoteBubble('player2-emote-message', onlineData.p1_emote); window.playSndSafe('sfx-click'); } if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } }); };
     window.startVSCountdown = function() { window.safeHide('ready-area-left'); window.safeHide('btn-cancel-ready'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click'); var cdInt = setInterval(function() { count--; if (count > 0) { if (cdDiv) cdDiv.innerHTML = '<div class="countdown-num">'+count+'</div>'; window.playSndSafe('sfx-click'); } else if (count === 0) { if (cdDiv) cdDiv.innerHTML = '<div class="go-text">انطلق!</div>'; window.playSndSafe('sfx-win'); } else { clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } } }, 1000); };
     window.renderOnlineTurn = function() { locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i=0; i<4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; if (currentTurnUid === authUid) { if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); } else { if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); } onlineTimerInterval = setInterval(function() { turnTimeLeft--; if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } if (turnTimeLeft <= 0) { clearInterval(onlineTimerInterval); if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } } }, 1000); };
@@ -986,7 +1031,7 @@
     window.rematchFriend = function() { window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); var friendUid = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id; var friendName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name; window.goHomeG(); setTimeout(function() { window.startMatchmaking('friend', friendUid, friendName); }, 500); };
 
     // ==========================================
-    // 10. 100 سؤال إسلامي صعب 
+    // 10. 100 سؤال إسلامي صعب (بقيت كما هي)
     // ==========================================
     var qDataRawLast = [
         ["في أي سنة هجرية وقعت غزوة مؤتة؟", "السنة الثامنة", "السنة السابعة", "السنة التاسعة", "السنة السادسة", "وقعت في جمادى الأولى من السنة الثامنة للهجرة."],
@@ -1114,6 +1159,7 @@
     window.copyMyID = function() { window.playSndSafe('sfx-click'); navigator.clipboard.writeText(pID).then(function() { window.showToast("تم نسخ ID بنجاح! 📋"); }).catch(function(){}); };
     window.shareResult = function() { window.playSndSafe('sfx-click'); var shareTxt = "أكملت التحدي وحصلت على " + pts + " نقطة! 🔥 ID: " + pID; if (navigator.share) { navigator.share({ title: 'Islamic Quiz PRO', text: shareTxt }).catch(function(){}); } else { window.copyMyID(); } };
 
+    // التعديل المضاف: جعل حجم الاسم الفوسفوري كبير ومتناسق في الواجهة الرئيسية
     window.showStartScreen = function() { 
         window.safeHide('screen-login'); window.safeHide('screen-game'); window.safeShow('screen-start', 'block'); window.safeShow('main-nav', 'flex'); 
         var welcomeMsg = document.getElementById('welcome-msg'); var isDev = false; 
@@ -1135,7 +1181,9 @@
                 welcomeMsg.style.border = "2px solid #fff";
                 welcomeMsg.style.boxShadow = "0 0 15px #fff, inset 0 0 10px #fff";
                 welcomeMsg.style.setProperty('color', '#000', 'important');
-                welcomeMsg.style.setProperty('font-size', '2.8rem', 'important');
+                welcomeMsg.style.setProperty('font-size', '2rem', 'important');
+                welcomeMsg.style.setProperty('padding', '8px 30px', 'important');
+                welcomeMsg.style.setProperty('line-height', '1.5', 'important');
             } else if (isGoogle || isDev) {
                 welcomeMsg.className = "premium-name"; 
                 welcomeMsg.style.border = "2px solid #ffd700";
@@ -1228,5 +1276,3 @@
 
     window.addEventListener('DOMContentLoaded', function() { var glowMessages = ["سبحان الله", "الحمد لله", "لا إله إلا الله", "الله أكبر", "اللهم صلِّ على محمد", "أستغفر الله العظيم"]; var glowIndex = 0; var glowEl = document.getElementById('glow-msg'); if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } });
 </script>
-</body>
-</html>
