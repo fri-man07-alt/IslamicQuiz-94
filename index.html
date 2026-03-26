@@ -1143,7 +1143,6 @@
             if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); 
         } 
         
-        // كود ذكي للبحث عن حاوية الطلبات مهما كان اسمها
         var reqListCont = document.getElementById('friend-requests-list') || document.getElementById('req-list-container') || document.getElementById('requests-list') || document.getElementById('req-list') || document.querySelector('[id*="req"][id*="list"]');
         
         if (reqListCont) {
@@ -1152,19 +1151,26 @@
             } else {
                 var rHtml = '';
                 reqs.forEach(function(r) {
-                    rHtml += '<div style="background:rgba(255,255,255,0.05); padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.1);">';
-                    rHtml += '<div><span class="premium-name" style="font-size:1.1rem;">' + r.fromName + '</span><br><span style="color:#aaa; font-size:0.7rem;">ID: ' + r.fromNumId + '</span></div>';
-                    rHtml += '<div style="display:flex; gap:5px;">';
-                    rHtml += '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.acceptFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">قبول ✅</button>';
-                    rHtml += '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.rejectFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">حذف ❌</button>';
-                    rHtml += '</div></div>';
+                    try {
+                        // حماية ضد الطلبات الوهمية وتفادي الأخطاء
+                        var safeName = r.fromName ? r.fromName.replace(/'/g, "\\'") : 'لاعب مجهول';
+                        var showName = r.fromName || 'لاعب مجهول';
+                        var safeUid = r.fromUid || '';
+                        var safeNum = r.fromNumId || 'غير معروف';
+
+                        rHtml += '<div style="background:rgba(255,255,255,0.05); padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.1);">';
+                        rHtml += '<div><span class="premium-name" style="font-size:1.1rem;">' + showName + '</span><br><span style="color:#aaa; font-size:0.7rem;">ID: ' + safeNum + '</span></div>';
+                        rHtml += '<div style="display:flex; gap:5px;">';
+                        rHtml += '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.acceptFriendReq(\'' + safeUid + '\', \'' + safeName + '\', \'' + safeNum + '\')">قبول ✅</button>';
+                        rHtml += '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.rejectFriendReq(\'' + safeUid + '\', \'' + safeName + '\', \'' + safeNum + '\')">حذف ❌</button>';
+                        rHtml += '</div></div>';
+                    } catch(e) {}
                 });
                 reqListCont.innerHTML = rHtml;
             }
         }
     }
 
-                                    
                                     if (data.friends && data.friends.length > 0) { 
                                         var frList = document.getElementById('online-friends-list'); 
                                         window.safeShow('online-badge-ui', 'flex'); 
@@ -1245,42 +1251,43 @@
     });
 
     // ==========================================
-    // تشغيل الستيكرات الـ 3D بشكل آمن ومضمون
+    // رادار الستيكرات الـ 3D (يعمل فور بدء التحدي)
     // ==========================================
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            var emotesContainer = document.getElementById('emotes-container');
-            if (emotesContainer) {
-                emotesContainer.innerHTML = '';
-                var stickers3D = [
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // بكاء
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // غضب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // حب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.webp", // صدمة
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp"  // نظارات
-                ];
-                emotesContainer.style.display = 'flex';
-                emotesContainer.style.justifyContent = 'center';
-                emotesContainer.style.gap = '15px';
-                emotesContainer.style.padding = '10px';
-                emotesContainer.style.flexWrap = 'wrap';
+    setInterval(function() {
+        var emotesContainer = document.getElementById('emotes-container');
+        if (emotesContainer && !emotesContainer.getAttribute('data-3d-loaded')) {
+            emotesContainer.setAttribute('data-3d-loaded', 'true');
+            emotesContainer.innerHTML = '';
+            
+            var stickers3D = [
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // بكاء
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // غضب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // حب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.webp", // صدمة
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp"  // نظارات
+            ];
+            
+            emotesContainer.style.display = 'flex';
+            emotesContainer.style.justifyContent = 'center';
+            emotesContainer.style.gap = '15px';
+            emotesContainer.style.padding = '10px';
+            emotesContainer.style.flexWrap = 'wrap';
 
-                for (var i = 0; i < stickers3D.length; i++) {
-                    var btn = document.createElement('div');
-                    var imgHtml = '<img src="' + stickers3D[i] + '" style="width:45px; height:45px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5)); pointer-events:none;">';
-                    btn.innerHTML = imgHtml;
-                    btn.style.cursor = 'pointer';
-                    btn.style.transition = 'transform 0.2s';
-                    btn.setAttribute('data-emote', imgHtml);
-                    btn.onmouseover = function() { this.style.transform = 'scale(1.2)'; };
-                    btn.onmouseout = function() { this.style.transform = 'scale(1)'; };
-                    btn.onclick = window.sendEmoteOnline;
-                    emotesContainer.appendChild(btn);
-                }
+            for (var i = 0; i < stickers3D.length; i++) {
+                var btn = document.createElement('div');
+                var imgHtml = '<img src="' + stickers3D[i] + '" style="width:45px; height:45px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5)); pointer-events:none;">';
+                btn.innerHTML = imgHtml;
+                btn.style.cursor = 'pointer';
+                btn.style.transition = 'transform 0.2s';
+                btn.setAttribute('data-emote', imgHtml);
+                btn.onmouseover = function() { this.style.transform = 'scale(1.2)'; };
+                btn.onmouseout = function() { this.style.transform = 'scale(1)'; };
+                btn.onclick = window.sendEmoteOnline;
+                emotesContainer.appendChild(btn);
             }
-        }, 1000);
-    });
+        }
+    }, 1500);
 
 
 </script>
