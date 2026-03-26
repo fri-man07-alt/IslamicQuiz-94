@@ -1251,90 +1251,67 @@
     });
 
     // ==========================================
-    // زر الإيموجيات المنبثق (الإصدار الأقوى والأكثر توافقاً)
+    // زر الإيموجيات المربوط بشاشة التحدي حصراً 100%
     // ==========================================
     setInterval(function() {
-        // هالمرة رح نراقب الحاوية القديمة، لأننا متأكدين إنها موجودة بملفك
+        // نبحث عن حاوية الستيكرات الأصلية اللي بتكون جوا التحدي بس
         var eContainer = document.getElementById('emotes-container');
         
-        // إذا كانت الحاوية الأصلية موجودة وظاهرة على الشاشة = نحن داخل التحدي
-        var isGameActive = (eContainer && eContainer.offsetParent !== null);
+        // إذا الحاوية موجودة، والزر لسا مو مزروع جواتها، بنزرعه!
+        if (eContainer && !document.getElementById('super-emote-btn')) {
+            
+            // ننظف الحاوية الأصلية
+            eContainer.innerHTML = '';
+            eContainer.style.pointerEvents = 'none'; // عشان ما تخرب الضغطات
 
-        if (isGameActive) {
-            // نخفي الحاوية القديمة البشعة عشان ما تاخد مساحة
-            eContainer.style.display = 'none';
+            // 1. إنشاء الزر الدائري
+            var emoteBtn = document.createElement('div');
+            emoteBtn.id = 'super-emote-btn';
+            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; pointer-events:auto;';
+            emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp" style="width:35px; height:35px; pointer-events:none;">';
+            
+            // 2. إنشاء اللوحة المنبثقة
+            var panel = document.createElement('div');
+            panel.id = 'super-emote-panel';
+            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.8); pointer-events:auto;';
+            
+            var stickers3D = [
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // عيون قلوب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.webp", // بوسة
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.webp", // 3 قلوب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك مع دموع
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61c/512.webp", // غمزة
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // معصب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // بكاء
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"  // لايك
+            ];
 
-            // إذا الزر مو موجود لسا، بنصنعه
-            if (!document.getElementById('super-emote-btn')) {
+            for (var i = 0; i < stickers3D.length; i++) {
+                var sBtn = document.createElement('div');
+                sBtn.style = 'width:50px; height:50px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; justify-content:center; align-items:center; transition:0.2s;';
+                var imgHtml = '<img src="' + stickers3D[i] + '" style="width:40px; height:40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); pointer-events:none;">';
+                sBtn.innerHTML = imgHtml;
+                sBtn.setAttribute('data-emote', imgHtml);
                 
-                // 1. إنشاء الزر الدائري (أسفل يمين)
-                var emoteBtn = document.createElement('div');
-                emoteBtn.id = 'super-emote-btn';
-                emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:9999999; border:2px solid #ffd700; transition:0.3s;';
-                emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp" style="width:35px; height:35px; pointer-events:none;">';
-                
-                // 2. إنشاء اللوحة المنبثقة للستيكرات
-                var panel = document.createElement('div');
-                panel.id = 'super-emote-panel';
-                panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:9999998; box-shadow:0 0 20px rgba(0,0,0,0.8);';
-                
-                // الوجوه الخرافية الـ 3D
-                var stickers3D = [
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // عيون قلوب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.webp", // بوسة مع قلب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.webp", // 3 قلوب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك مع دموع
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61c/512.webp", // لسان وغمزة
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // معصب
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // يبكي
-                    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"  // لايك
-                ];
-
-                for (var i = 0; i < stickers3D.length; i++) {
-                    var sBtn = document.createElement('div');
-                    sBtn.style = 'width:50px; height:50px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; justify-content:center; align-items:center; transition:0.2s;';
-                    
-                    var imgHtml = '<img src="' + stickers3D[i] + '" style="width:40px; height:40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); pointer-events:none;">';
-                    sBtn.innerHTML = imgHtml;
-                    sBtn.setAttribute('data-emote', imgHtml);
-                    
-                    sBtn.onmouseover = function() { this.style.transform = 'scale(1.2)'; this.style.backgroundColor = 'rgba(255,215,0,0.3)'; };
-                    sBtn.onmouseout = function() { this.style.transform = 'scale(1)'; this.style.backgroundColor = 'rgba(255,255,255,0.1)'; };
-                    
-                    // عند الضغط على الستيكر
-                    sBtn.onclick = function(e) {
-                        if (typeof window.sendEmoteOnline === 'function') {
-                            window.sendEmoteOnline.call(this, e);
-                        }
-                        panel.style.display = 'none'; // إغلاق النافذة
-                        emoteBtn.style.transform = 'scale(1)'; // إرجاع الزر
-                    };
-                    
-                    panel.appendChild(sBtn);
-                }
-
-                emoteBtn.onclick = function() {
-                    if (panel.style.display === 'none') {
-                        panel.style.display = 'flex';
-                        emoteBtn.style.transform = 'scale(0.9)';
-                    } else {
-                        panel.style.display = 'none';
-                        emoteBtn.style.transform = 'scale(1)';
+                sBtn.onclick = function(e) {
+                    if (typeof window.sendEmoteOnline === 'function') {
+                        window.sendEmoteOnline.call(this, e);
                     }
+                    panel.style.display = 'none'; 
+                    emoteBtn.style.transform = 'scale(1)';
                 };
-                
-                document.body.appendChild(panel);
-                document.body.appendChild(emoteBtn);
-            } else {
-                // نظهره إذا كنا داخل التحدي
-                document.getElementById('super-emote-btn').style.display = 'flex';
+                panel.appendChild(sBtn);
             }
-        } else {
-            // نخفيه إذا طلعنا من التحدي
-            if (document.getElementById('super-emote-btn')) {
-                document.getElementById('super-emote-btn').style.display = 'none';
-                document.getElementById('super-emote-panel').style.display = 'none';
-            }
+
+            emoteBtn.onclick = function() {
+                panel.style.display = (panel.style.display === 'none') ? 'flex' : 'none';
+                emoteBtn.style.transform = (panel.style.display === 'flex') ? 'scale(0.9)' : 'scale(1)';
+            };
+            
+            // 🔥 السر هون: زراعة اللوحة والزر جوا حاوية اللعبة الأصلية مباشرة 🔥
+            // هيك مستحيل يظهروا برا التحدي!
+            eContainer.appendChild(panel);
+            eContainer.appendChild(emoteBtn);
         }
     }, 1000);
 
