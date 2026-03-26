@@ -1251,39 +1251,29 @@
     });
 
     // ==========================================
-    // زر الإيموجيات المربوط بشاشة التحدي حصراً 100%
+    // زر الإيموجيات الخارق (نسخة الرادار الشامل والنهائي)
     // ==========================================
     setInterval(function() {
-        // نبحث عن حاوية الستيكرات الأصلية اللي بتكون جوا التحدي بس
-        var eContainer = document.getElementById('emotes-container');
-        
-        // إذا الحاوية موجودة، والزر لسا مو مزروع جواتها، بنزرعه!
-        if (eContainer && !document.getElementById('super-emote-btn')) {
-            
-            // ننظف الحاوية الأصلية
-            eContainer.innerHTML = '';
-            eContainer.style.pointerEvents = 'none'; // عشان ما تخرب الضغطات
-
-            // 1. إنشاء الزر الدائري
+        // 1. إنشاء الزر وإضافته لجسم الصفحة مباشرة (عشان ما يختفي بسبب اللعبة)
+        if (!document.getElementById('super-emote-btn')) {
             var emoteBtn = document.createElement('div');
             emoteBtn.id = 'super-emote-btn';
-            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; pointer-events:auto;';
+            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; display:none;'; 
             emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp" style="width:35px; height:35px; pointer-events:none;">';
             
-            // 2. إنشاء اللوحة المنبثقة
             var panel = document.createElement('div');
             panel.id = 'super-emote-panel';
-            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.8); pointer-events:auto;';
+            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.8);';
             
             var stickers3D = [
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // عيون قلوب
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.webp", // بوسة
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.webp", // 3 قلوب
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك مع دموع
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61c/512.webp", // غمزة
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // معصب
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // بكاء
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"  // لايك
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61c/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", 
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"  
             ];
 
             for (var i = 0; i < stickers3D.length; i++) {
@@ -1308,10 +1298,42 @@
                 emoteBtn.style.transform = (panel.style.display === 'flex') ? 'scale(0.9)' : 'scale(1)';
             };
             
-            // 🔥 السر هون: زراعة اللوحة والزر جوا حاوية اللعبة الأصلية مباشرة 🔥
-            // هيك مستحيل يظهروا برا التحدي!
-            eContainer.appendChild(panel);
-            eContainer.appendChild(emoteBtn);
+            document.body.appendChild(panel);
+            document.body.appendChild(emoteBtn);
+        }
+
+        // 2. الرادار الشامل: متى نظهر الزر؟
+        var theBtn = document.getElementById('super-emote-btn');
+        var thePanel = document.getElementById('super-emote-panel');
+        var isGameActive = false;
+
+        // نبحث عن زر "انسحاب" في الشاشة (لأنه الدليل القاطع إننا جوا تحدي)
+        var elements = document.querySelectorAll('*');
+        for (var k = 0; k < elements.length; k++) {
+            var el = elements[k];
+            if (el.children.length === 0 && el.textContent && el.textContent.trim() === 'انسحاب') {
+                // إذا كان زر الانسحاب ظاهراً على الشاشة
+                if (window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null) {
+                    isGameActive = true;
+                    break;
+                }
+            }
+        }
+
+        // إخفاء إجباري للزر إذا كنا في الشاشة الرئيسية (حتى لو علق الكود)
+        var mainScreenCheck = document.getElementById('online-friends-list');
+        if (mainScreenCheck && window.getComputedStyle(mainScreenCheck).display !== 'none' && mainScreenCheck.offsetParent !== null) {
+            isGameActive = false;
+        }
+
+        // التنفيذ: إظهار أو إخفاء الزر
+        if (theBtn) {
+            if (isGameActive) {
+                if (theBtn.style.display === 'none') theBtn.style.display = 'flex';
+            } else {
+                theBtn.style.display = 'none';
+                if (thePanel) thePanel.style.display = 'none'; // سكر النافذة كمان
+            }
         }
     }, 1000);
 
