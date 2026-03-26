@@ -1251,7 +1251,7 @@
     });
 
     // ==========================================
-    // زر الإيموجيات + نظام الفقاعات (نسخة المراقب الذكي - مع الإخفاء التام)
+    // زر الإيموجيات الذكي (اختفاء وتواجد حسب شاشة التحدي حصراً)
     // ==========================================
     window.addEventListener('load', function() {
         var emoteBtn, panel;
@@ -1310,39 +1310,31 @@
             if (p) p.remove();
         }
 
-        // بناء فقاعات العرض (تبقى موجودة برمجياً)
-        function checkBubbles() {
-            var p1Box = document.getElementById('p-left-box');
-            if (p1Box && !document.getElementById('player1-emote-message')) {
-                p1Box.style.position = 'relative';
-                var bubble1 = document.createElement('div');
-                bubble1.id = 'player1-emote-message';
-                bubble1.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
-                p1Box.appendChild(bubble1);
-            }
-            var p2Box = document.getElementById('p-right-box');
-            if (p2Box && !document.getElementById('player2-emote-message')) {
-                p2Box.style.position = 'relative';
-                var bubble2 = document.createElement('div');
-                bubble2.id = 'player2-emote-message';
-                bubble2.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
-                p2Box.appendChild(bubble2);
-            }
-        }
+        // رادار سريع جداً للفحص (كل 400 مللي ثانية)
+        setInterval(function() {
+            var vsHeader = document.getElementById('vs-header');
+            var gameScreen = document.getElementById('screen-game');
+            
+            // الفحص: إذا كانت شاشة اللعبة ظاهرة والهيدر تبع التحدي شغال
+            var isVisible = (gameScreen && gameScreen.style.display !== 'none' && vsHeader && vsHeader.style.display !== 'none');
 
-        var vsHeader = document.getElementById('vs-header');
-        if (vsHeader) {
-            var observer = new MutationObserver(function() {
-                var isVisible = (vsHeader.style.display === 'flex' || vsHeader.style.display === 'block');
-                if (isVisible) {
-                    createEmoteUI();
-                    checkBubbles();
-                } else {
-                    removeEmoteUI();
+            if (isVisible) {
+                createEmoteUI();
+                // تأكيد وجود حاويات الرسائل
+                if (!document.getElementById('player1-emote-message')) {
+                    var p1Box = document.getElementById('p-left-box');
+                    if (p1Box) {
+                        p1Box.style.position = 'relative';
+                        var bubble1 = document.createElement('div');
+                        bubble1.id = 'player1-emote-message';
+                        bubble1.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
+                        p1Box.appendChild(bubble1);
+                    }
                 }
-            });
-            observer.observe(vsHeader, { attributes: true, attributeFilter: ['style'] });
-        }
+            } else {
+                removeEmoteUI();
+            }
+        }, 400);
     });
 
 </script>
