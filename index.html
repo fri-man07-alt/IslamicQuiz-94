@@ -861,6 +861,17 @@
         friendRef.update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); 
         window.showTopToast('أصبح ' + fName + ' من أصدقائك الآن 🤝'); 
     };
+        window.rejectFriendReq = function(fUid, fName, fNum) { 
+        window.playSndSafe('sfx-click'); 
+        var myRef = window.db.collection("users_v4").doc(authUid); 
+        var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; 
+        myRef.update({ 
+            requests: firebase.firestore.FieldValue.arrayRemove(reqObj) 
+        }).then(function() { 
+            window.showBottomToast('تم حذف طلب الصداقة ❌'); 
+        }); 
+    };
+
     window.setMyStatus = function(statusBool) { isBusy = statusBool; window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); window.updateStatusButtons(); window.playSndSafe('sfx-click'); window.saveProgress(false); };
     window.updateStatusButtons = function() { var btnOn = document.getElementById('btn-stat-online'); var btnBusy = document.getElementById('btn-stat-busy'); if (isBusy) { if(btnBusy) { btnBusy.style.border = '2px solid #ffd700'; btnBusy.style.color = '#ffd700'; } if(btnOn) { btnOn.style.border = '1px solid #555'; btnOn.style.color = '#aaa'; } } else { if(btnOn) { btnOn.style.border = '2px solid #ffd700'; btnOn.style.color = '#ffd700'; } if(btnBusy) { btnBusy.style.border = '1px solid #555'; btnBusy.style.color = '#aaa'; } } };
 
@@ -1124,27 +1135,28 @@
                                         } 
                                     } 
                                     
-     if (data.requests) { 
-        var reqs = data.requests; 
-        var badge = document.getElementById('req-badge-ui'); 
-        if (badge) { 
-            badge.innerText = reqs.length; 
-            if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); 
-        } 
-        var reqListCont = document.getElementById('friend-requests-list');
-        if (reqListCont) {
-            if (reqs.length === 0) {
-                reqListCont.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">لا يوجد طلبات صداقة حالياً.</p>';
-            } else {
-                var rHtml = '';
-                reqs.forEach(function(r) {
-                    rHtml += '<div style="background:rgba(255,255,255,0.05); padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.1);">';
-                    rHtml += '<div><span class="premium-name" style="font-size:1.1rem;">' + r.fromName + '</span><br><span style="color:#aaa; font-size:0.7rem;">ID: ' + r.fromNumId + '</span></div>';
-                    rHtml += '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 15px; font-size:0.8rem;" onclick="window.acceptFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">قبول ✅</button>';
-                    rHtml += '</div>';
-                });
-                reqListCont.innerHTML = rHtml;
-            }
+    // تحديث قائمة طلبات الصداقة وإضافة زر الرفض والقبول
+    var reqs = data.requests || []; 
+    var badge = document.getElementById('req-badge-ui'); 
+    if (badge) { 
+        badge.innerText = reqs.length; 
+        if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); 
+    } 
+    var reqListCont = document.getElementById('friend-requests-list');
+    if (reqListCont) {
+        if (reqs.length === 0) {
+            reqListCont.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">لا يوجد طلبات صداقة حالياً.</p>';
+        } else {
+            var rHtml = '';
+            reqs.forEach(function(r) {
+                rHtml += '<div style="background:rgba(255,255,255,0.05); padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.1);">';
+                rHtml += '<div><span class="premium-name" style="font-size:1.1rem;">' + r.fromName + '</span><br><span style="color:#aaa; font-size:0.7rem;">ID: ' + r.fromNumId + '</span></div>';
+                rHtml += '<div style="display:flex; gap:5px;">';
+                rHtml += '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem;" onclick="window.acceptFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">قبول ✅</button>';
+                rHtml += '<button class="q-btn danger" style="width:auto; margin:0; padding:5px 10px; font-size:0.8rem; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;" onclick="window.rejectFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">حذف ❌</button>';
+                rHtml += '</div></div>';
+            });
+            reqListCont.innerHTML = rHtml;
         }
     }
 
