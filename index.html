@@ -1251,90 +1251,472 @@
     });
 
     // ==========================================
-    // زر الإيموجيات الذكي (اختفاء وتواجد حسب شاشة التحدي حصراً)
+    // نظام الستيكرات (جواكر) - بدون أصوات + 17 ستيكر (مرحبا ووداعا) + سحب وإفلات
     // ==========================================
     window.addEventListener('load', function() {
-        var emoteBtn, panel;
+        // 1. قاعدة بيانات 17 ستيكر متحرك (بدون إزعاج الأصوات) 
+        var allEmotes = [
+            { id: 'e1', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.gif" }, // ضحكة
+            { id: 'e2', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.gif" }, // غضب
+            { id: 'e3', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/2615/512.gif" }, // قهوة
+            { id: 'e4', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.gif" }, // بكاء
+            { id: 'e5', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44f_1f3fb/512.gif" }, // تصفيق
+            { id: 'e6', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b_1f3fb/512.gif" }, // مرحبا 👋
+            { id: 'e7', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/270c_1f3fb/512.gif" }, // وداعا / سلام ✌️
+            { id: 'e8', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.gif" }, // صدمة
+            { id: 'e9', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f634/512.gif" }, // شخير (نوم)
+            { id: 'e10', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.gif" }, // بوسة
+            { id: 'e11', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.gif" }, // نظارات
+            { id: 'e12', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f911/512.gif" }, // مصاري
+            { id: 'e13', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d_1f3fb/512.gif" }, // لايك
+            { id: 'e14', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44e_1f3fb/512.gif" }, // ديسلايك
+            { id: 'e15', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f608/512.gif" }, // شرير
+            { id: 'e16', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f92b/512.gif" }, // هسسسس
+            { id: 'e17', url: "https://fonts.gstatic.com/s/e/notoemoji/latest/1f389/512.gif" }  // احتفال
+        ];
 
-        function createEmoteUI() {
-            if (document.getElementById('super-emote-btn')) return;
+        var equippedEmotes = [];
+        try { equippedEmotes = JSON.parse(window.lsGet('ULT_EQUIPPED_EMOTES', '["e1","e6","e7","e3","e5"]')); } catch(e) { equippedEmotes = ["e1","e6","e7","e3","e5"]; }
 
-            emoteBtn = document.createElement('div');
-            emoteBtn.id = 'super-emote-btn';
-            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; pointer-events:auto;';
-            emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp" style="width:35px; height:35px; pointer-events:none;">';
+        // --- نظام السحب والإفلات الكامل (من وإلى أي مكان) ---
+        var dragItem = null;
+        var dragClone = null;
+        var dragSourceIdx = -1; // -1 يعني من تحت، وأي رقم تاني يعني من الـ 5 اللي فوق
 
-            panel = document.createElement('div');
-            panel.id = 'super-emote-panel';
-            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.95); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.9); pointer-events:auto;';
+        function startDragReal(e, src, emId, touchX, touchY, sourceIdx) {
+            window.playSndSafe('sfx-click'); 
+            dragItem = emId;
+            dragSourceIdx = sourceIdx;
+            dragClone = document.createElement('img');
+            dragClone.src = src;
+            dragClone.style.position = 'fixed';
+            dragClone.style.width = '65px';
+            dragClone.style.height = '65px';
+            dragClone.style.left = (touchX - 32.5) + 'px';
+            dragClone.style.top = (touchY - 32.5) + 'px';
+            dragClone.style.zIndex = '99999999';
+            dragClone.style.pointerEvents = 'none';
+            dragClone.style.filter = 'drop-shadow(0 10px 20px rgba(0,0,0,0.9))';
+            dragClone.style.transform = 'scale(1.2)';
+            document.body.appendChild(dragClone);
+        }
 
-            var stickers3D = [
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f618/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f970/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f61c/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp",
-                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f44d/512.webp"
-            ];
+        document.addEventListener('touchmove', function(e) {
+            if (!dragClone) return;
+            e.preventDefault(); 
+            var touch = e.touches ? e.touches[0] : e;
+            dragClone.style.left = (touch.clientX - 32.5) + 'px';
+            dragClone.style.top = (touch.clientY - 32.5) + 'px';
+        }, {passive: false});
 
-            for (var i = 0; i < stickers3D.length; i++) {
+        document.addEventListener('mousemove', function(e) {
+            if (!dragClone) return;
+            e.preventDefault();
+            dragClone.style.left = (e.clientX - 32.5) + 'px';
+            dragClone.style.top = (e.clientY - 32.5) + 'px';
+        });
+
+        function endDrag(e) {
+            if (!dragClone) return;
+            var touch = e.changedTouches ? e.changedTouches[0] : e;
+            var target = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            var slot = target ? target.closest('.emote-slot') : null;
+            
+            if (slot) {
+                // رميناه فوق خانة
+                var targetIdx = parseInt(slot.getAttribute('data-index'));
+                if (dragSourceIdx !== -1) {
+                    // سحب من فوق لفوق (تبديل)
+                    var temp = window.tempEquipped[dragSourceIdx];
+                    window.tempEquipped[dragSourceIdx] = window.tempEquipped[targetIdx];
+                    window.tempEquipped[targetIdx] = temp;
+                } else {
+                    // سحب من تحت لفوق
+                    if (targetIdx < window.tempEquipped.length) {
+                        window.tempEquipped[targetIdx] = dragItem; 
+                    } else {
+                        if (window.tempEquipped.length < 5) window.tempEquipped.push(dragItem);
+                    }
+                }
+                window.renderEmoteLoadout();
+                window.playSndSafe('sfx-win');
+            } else if (dragSourceIdx !== -1) {
+                // سحبناه من فوق ورميناه برا أو لتحت (حذف)
+                window.tempEquipped.splice(dragSourceIdx, 1);
+                window.renderEmoteLoadout();
+                window.playSndSafe('sfx-click');
+            } else if (!slot && dragSourceIdx === -1) {
+                // من تحت لبرا (إضافة بآخر مكان فاضي)
+                if (window.tempEquipped.length < 5) {
+                    window.tempEquipped.push(dragItem);
+                    window.renderEmoteLoadout();
+                    window.playSndSafe('sfx-win');
+                }
+            }
+            
+            dragClone.remove();
+            dragClone = null;
+            dragItem = null;
+            dragSourceIdx = -1;
+        }
+
+        document.addEventListener('touchend', endDrag);
+        document.addEventListener('mouseup', endDrag);
+
+        // 2. بناء "الخزانة" في النوافذ
+        var customModal = document.getElementById('custom-modal');
+        if (customModal && !document.getElementById('modal-emote-loadout')) {
+            var loadoutModal = document.createElement('div');
+            loadoutModal.className = 'm-content';
+            loadoutModal.id = 'modal-emote-loadout';
+            loadoutModal.innerHTML = `
+                <h3 style="color:var(--p); margin-top:0;">خزانة الستيكرات 🎒</h3>
+                <p style="color:#aaa; font-size:0.85rem; margin-bottom:10px;">اضغط <b style="color:#fff;">ضغطة مطولة</b> للسحب والتبديل! (المحدد: <span id="eq-count" style="color:#fff; font-weight:bold;">0</span>/5)</p>
+                
+                <div style="background:rgba(0,0,0,0.5); border-radius:15px; padding:10px; margin-bottom:15px; border:1px solid rgba(255,215,0,0.3);">
+                    <div id="selected-emotes-grid" style="display:flex; justify-content:center; gap:8px;"></div>
+                </div>
+                <hr style="border-color:rgba(255,215,0,0.2); margin-bottom:15px;">
+                <div id="available-emotes-grid" style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-height:35vh; overflow-y:auto; padding:5px; padding-bottom:15px;"></div>
+                
+                <button class="q-btn primary" onclick="window.saveEmoteLoadout()">حفظ التجهيزات ✔️</button>
+                <button class="q-btn danger" onclick="window.closeMod()" style="background:transparent; margin-top:10px;">إلغاء</button>
+            `;
+            customModal.appendChild(loadoutModal);
+        }
+
+        // وظيفة اللمس الذكية للسحب
+        function attachSmartTouch(btn, em, sourceIdx) {
+            let pressTimer = null;
+            let isDragStarted = false;
+            let startX = 0, startY = 0;
+
+            function startTouch(e) {
+                isDragStarted = false;
+                let touch = e.touches ? e.touches[0] : e;
+                startX = touch.clientX;
+                startY = touch.clientY;
+
+                pressTimer = setTimeout(function() {
+                    isDragStarted = true;
+                    startDragReal(e, em.url, em.id, startX, startY, sourceIdx);
+                }, 200); // سرعنا وقت الاستجابة ليكون أسلس
+            }
+
+            function moveTouch(e) {
+                if (!isDragStarted && pressTimer) {
+                    let touch = e.touches ? e.touches[0] : e;
+                    if (Math.abs(touch.clientX - startX) > 10 || Math.abs(touch.clientY - startY) > 10) {
+                        clearTimeout(pressTimer);
+                        pressTimer = null;
+                    }
+                }
+            }
+
+            function endTouch(e) {
+                if (pressTimer) {
+                    clearTimeout(pressTimer);
+                    pressTimer = null;
+                }
+                if (!isDragStarted) {
+                    // ضغطة عادية (نطة صغيرة فقط بدون صوت)
+                    btn.style.transform = 'scale(0.85)';
+                    setTimeout(()=> btn.style.transform = 'scale(1)', 150);
+                }
+            }
+
+            btn.addEventListener('touchstart', startTouch, {passive: true});
+            btn.addEventListener('touchmove', moveTouch, {passive: true});
+            btn.addEventListener('touchend', endTouch);
+            btn.addEventListener('mousedown', startTouch);
+            btn.addEventListener('mousemove', moveTouch);
+            btn.addEventListener('mouseup', endTouch);
+            btn.addEventListener('mouseleave', function(e) {
+                if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+            });
+        }
+
+        window.renderEmoteLoadout = function() {
+            var topGrid = document.getElementById('selected-emotes-grid');
+            var bottomGrid = document.getElementById('available-emotes-grid');
+            if (!topGrid || !bottomGrid) return;
+            
+            document.getElementById('eq-count').innerText = window.tempEquipped.length;
+            topGrid.innerHTML = ''; bottomGrid.innerHTML = '';
+
+            for(var i=0; i<5; i++) {
+                var slot = document.createElement('div');
+                slot.className = 'emote-slot';
+                slot.setAttribute('data-index', i);
+                slot.style = 'width:55px; height:55px; border-radius:12px; display:flex; justify-content:center; align-items:center; transition:0.2s; position:relative;';
+                
+                if(i < window.tempEquipped.length) {
+                    var emId = window.tempEquipped[i];
+                    var em = allEmotes.find(x => x.id === emId);
+                    slot.style.background = 'rgba(255,215,0,0.2)';
+                    slot.style.border = '2px solid #ffd700';
+                    slot.style.cursor = 'grab';
+                    slot.innerHTML = '<img src="' + em.url + '" style="width:45px; height:45px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5)); pointer-events:none;">';
+                    
+                    attachSmartTouch(slot, em, i);
+                } else {
+                    slot.style.background = 'rgba(255,255,255,0.05)';
+                    slot.style.border = '2px dashed rgba(255,255,255,0.2)';
+                }
+                topGrid.appendChild(slot);
+            }
+
+            allEmotes.forEach(function(em) {
+                if(window.tempEquipped.indexOf(em.id) !== -1) return; 
+
+                var btn = document.createElement('div');
+                btn.style = 'width:55px; height:55px; border-radius:12px; background:rgba(255,255,255,0.05); display:flex; justify-content:center; align-items:center; cursor:grab; transition:0.2s; position:relative;';
+                btn.innerHTML = '<img src="' + em.url + '" style="width:45px; height:45px; object-fit:contain; pointer-events:none;">';
+
+                attachSmartTouch(btn, em, -1);
+                bottomGrid.appendChild(btn);
+            });
+        };
+
+        window.openEmoteLoadout = function() {
+            window.tempEquipped = equippedEmotes.slice();
+            window.renderEmoteLoadout();
+            window.openMod('modal-emote-loadout');
+        };
+
+        window.saveEmoteLoadout = function() {
+            window.playSndSafe('sfx-win');
+            equippedEmotes = window.tempEquipped.slice();
+            window.lsSet('ULT_EQUIPPED_EMOTES', JSON.stringify(equippedEmotes));
+            window.showBottomToast('تم تجهيز الستيكرات بنجاح! 🎒');
+            window.closeMod();
+            buildInGamePanel();
+        };
+
+        // 3. بناء الزر واللوحة داخل التحدي
+        var emoteBtn = document.createElement('div');
+        emoteBtn.id = 'super-emote-btn';
+        emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:none; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; pointer-events:auto;';
+        emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.gif" style="width:35px; height:35px; pointer-events:none;">';
+
+        var inGamePanel = document.createElement('div');
+        inGamePanel.id = 'super-emote-panel';
+        inGamePanel.style = 'position:fixed; bottom:85px; right:20px; width:280px; background:rgba(0,0,0,0.95); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:10px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.9); pointer-events:auto;';
+
+        document.body.appendChild(inGamePanel);
+        document.body.appendChild(emoteBtn);
+
+        function buildInGamePanel() {
+            inGamePanel.innerHTML = '';
+            equippedEmotes.forEach(function(emId) {
+                var em = allEmotes.find(x => x.id === emId);
+                if(!em) return;
                 var sBtn = document.createElement('div');
-                sBtn.style = 'width:50px; height:50px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; justify-content:center; align-items:center; transition:0.2s; pointer-events:auto;';
-                var imgHtml = '<img src="' + stickers3D[i] + '" style="width:40px; height:40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); pointer-events:none;">';
+                sBtn.style = 'width:55px; height:55px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:12px; display:flex; justify-content:center; align-items:center; transition:0.2s; pointer-events:auto;';
+                var imgHtml = '<img src="' + em.url + '" style="width:45px; height:45px; object-fit:contain; pointer-events:none;">';
                 sBtn.innerHTML = imgHtml;
                 sBtn.setAttribute('data-emote', imgHtml);
 
                 sBtn.onclick = function(e) {
                     if (typeof window.sendEmoteOnline === 'function') window.sendEmoteOnline.call(this, e);
-                    panel.style.display = 'none';
+                    inGamePanel.style.display = 'none';
                     emoteBtn.style.transform = 'scale(1)';
                 };
-                panel.appendChild(sBtn);
-            }
-
-            emoteBtn.onclick = function() {
-                panel.style.display = (panel.style.display === 'none') ? 'flex' : 'none';
-                emoteBtn.style.transform = (panel.style.display === 'flex') ? 'scale(0.9)' : 'scale(1)';
-            };
-
-            document.body.appendChild(panel);
-            document.body.appendChild(emoteBtn);
+                inGamePanel.appendChild(sBtn);
+            });
         }
+        buildInGamePanel();
 
-        function removeEmoteUI() {
-            var b = document.getElementById('super-emote-btn');
-            var p = document.getElementById('super-emote-panel');
-            if (b) b.remove();
-            if (p) p.remove();
-        }
-
-        // رادار سريع جداً للفحص (كل 400 مللي ثانية)
-        setInterval(function() {
-            var vsHeader = document.getElementById('vs-header');
-            var gameScreen = document.getElementById('screen-game');
-            
-            // الفحص: إذا كانت شاشة اللعبة ظاهرة والهيدر تبع التحدي شغال
-            var isVisible = (gameScreen && gameScreen.style.display !== 'none' && vsHeader && vsHeader.style.display !== 'none');
-
-            if (isVisible) {
-                createEmoteUI();
-                // تأكيد وجود حاويات الرسائل
-                if (!document.getElementById('player1-emote-message')) {
-                    var p1Box = document.getElementById('p-left-box');
-                    if (p1Box) {
-                        p1Box.style.position = 'relative';
-                        var bubble1 = document.createElement('div');
-                        bubble1.id = 'player1-emote-message';
-                        bubble1.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
-                        p1Box.appendChild(bubble1);
-                    }
+        emoteBtn.onclick = function() {
+            var isGameActive = document.body.classList.contains('vs-mode-active');
+            if (isGameActive) {
+                if (inGamePanel.style.display === 'none') {
+                    inGamePanel.style.display = 'flex';
+                    emoteBtn.style.transform = 'scale(0.9)';
+                } else {
+                    inGamePanel.style.display = 'none';
+                    emoteBtn.style.transform = 'scale(1)';
                 }
             } else {
-                removeEmoteUI();
+                inGamePanel.style.display = 'none';
+                window.openEmoteLoadout();
             }
-        }, 400);
+        };
+
+        // 4. الرادار الذكي للظهور والاختفاء
+        setInterval(function() {
+            var screenStart = document.getElementById('screen-start');
+            var isStartScreen = (screenStart && window.getComputedStyle(screenStart).display !== 'none');
+            var isGameActive = document.body.classList.contains('vs-mode-active');
+            var customModal = document.getElementById('custom-modal');
+            var isModalOpen = (customModal && window.getComputedStyle(customModal).display !== 'none');
+
+            if ((isStartScreen || isGameActive) && !isModalOpen) {
+                emoteBtn.style.display = 'flex';
+            } else {
+                emoteBtn.style.display = 'none';
+                inGamePanel.style.display = 'none';
+            }
+
+            if (isGameActive) {
+                var p1Box = document.getElementById('p-left-box');
+                if (p1Box && !document.getElementById('player1-emote-message')) {
+                    p1Box.style.position = 'relative';
+                    var b1 = document.createElement('div');
+                    b1.id = 'player1-emote-message';
+                    b1.style = 'position:absolute; bottom:-65px; left:50%; transform:translateX(-50%); width:75px; height:75px; opacity:0; transition:0.3s; z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
+                    p1Box.appendChild(b1);
+                }
+                var p2Box = document.getElementById('p-right-box');
+                if (p2Box && !document.getElementById('player2-emote-message')) {
+                    p2Box.style.position = 'relative';
+                    var b2 = document.createElement('div');
+                    b2.id = 'player2-emote-message';
+                    b2.style = 'position:absolute; bottom:-65px; left:50%; transform:translateX(-50%); width:75px; height:75px; opacity:0; transition:0.3s; z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
+                    p2Box.appendChild(b2);
+                }
+            }
+        }, 300);
+
+        // 5. استقبال الستيكر (تكبير الحجم فقط، بدون إزعاج الأصوات)
+        var oldShowEmoteBubble = window.showEmoteBubble;
+        window.showEmoteBubble = function(id, eHtml) {
+            var cleanHtml = eHtml.replace('width:45px; height:45px;', 'width:70px; height:70px;');
+            if (oldShowEmoteBubble) oldShowEmoteBubble(id, cleanHtml);
+        };
+    });
+
+    // ==========================================
+    // إضافة خيار طلب الصداقة من التصنيف وشاشة التحدي (مع الذاكرة الذكية للرجوع)
+    // ==========================================
+    window.addEventListener('load', function() {
+        
+        // 1. تعديل نافذة "إدارة اللاعب" لتفتح لجميع اللاعبين (مع زر الصداقة والذاكرة الذكية)
+        window.openUserAction = function(uid, name, numId, role, avatar, hasNeon) { 
+            if (uid === authUid) return; // منع الضغط على نفسك
+            
+            // 🔥 السحر هون: نحفظ اسم النافذة المفتوحة حالياً قبل ما نفتح نافذة اللاعب
+            var activeModal = document.querySelector('.m-content[style*="display: flex"], .m-content[style*="display: block"]');
+            var prevModalId = activeModal ? activeModal.id : null;
+
+            window.selectedActionUser = { uid: uid, name: name, numId: numId, role: role, hasNeon: (hasNeon === 'true' || hasNeon === true) }; 
+            
+            var nameEl = document.getElementById('action-user-name'); if (nameEl) nameEl.innerText = name; 
+            var idEl = document.getElementById('action-user-id'); if (idEl) idEl.innerText = "ID: " + (numId || 'مخفي'); 
+            var imgEl = document.getElementById('action-user-img'); if (imgEl) imgEl.src = avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
+            
+            var promoteBtn = document.getElementById('btn-promote-user'); 
+            var neonBtn = document.getElementById('btn-toggle-neon'); 
+            var banBtn = document.getElementById('btn-ban-user');
+            
+            var em = window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''; 
+            var isOwn = window.isOwner(em); 
+            var isMd = window.isMod();
+
+            // إظهار أزرار الإدارة فقط للمشرفين أو المطور
+            if (isOwn) { 
+                window.safeShow('btn-promote-user', 'block'); if (promoteBtn) promoteBtn.innerText = (role === 'mod') ? 'إزالة الإشراف 🔻' : 'إعطاء إشراف ⭐️'; 
+                window.safeShow('btn-toggle-neon', 'block'); if (neonBtn) neonBtn.innerText = window.selectedActionUser.hasNeon ? 'إزالة الفوسفوري ❌' : 'إعطاء فوسفوري ذهبي ✨'; 
+                window.safeShow('btn-ban-user', 'block'); 
+            } else if (isMd) { 
+                window.safeHide('btn-promote-user'); window.safeHide('btn-toggle-neon'); window.safeShow('btn-ban-user', 'block'); 
+            } else {
+                window.safeHide('btn-promote-user'); window.safeHide('btn-toggle-neon'); window.safeHide('btn-ban-user'); 
+            }
+
+            // زراعة زر إضافة صديق
+            var actionModal = document.getElementById('modal-user-action');
+            var addFriendBtnId = 'btn-action-add-friend';
+            var existingAddBtn = document.getElementById(addFriendBtnId);
+            
+            if (!existingAddBtn) {
+                var btnContainer = actionModal.querySelector('div[style*="display:flex"]');
+                if (btnContainer) {
+                    var btnHtml = '<button id="' + addFriendBtnId + '" class="q-btn primary" style="background:#2ecc71; border-color:#2ecc71; color:#000; margin-bottom:10px; box-shadow:0 0 15px rgba(46,204,113,0.5);">إرسال طلب صداقة ➕👤</button>';
+                    btnContainer.insertAdjacentHTML('afterbegin', btnHtml);
+                    existingAddBtn = document.getElementById(addFriendBtnId);
+                }
+            }
+            
+            // تفعيل زر الصداقة ليرجعك للنافذة السابقة بعد الإرسال
+            if (existingAddBtn) {
+                existingAddBtn.onclick = function() {
+                    window.playSndSafe('sfx-click');
+                    window.sendFriendReq(uid, name);
+                    if (prevModalId && prevModalId !== 'modal-user-action') {
+                        window.openMod(prevModalId);
+                    } else {
+                        window.closeMod();
+                    }
+                };
+            }
+
+            // 🔥 تعديل زر "إلغاء" ليعيدك من مكان ما إجيت
+            var buttons = actionModal.querySelectorAll('button');
+            for (var i = 0; i < buttons.length; i++) {
+                if (buttons[i].innerText.includes('إلغاء') || buttons[i].getAttribute('onclick') === 'window.closeMod()') {
+                    buttons[i].onclick = function() {
+                        window.playSndSafe('sfx-click');
+                        if (prevModalId && prevModalId !== 'modal-user-action') {
+                            window.openMod(prevModalId); // يرجعك للمتصدرين أو أي قائمة كنت فيها
+                        } else {
+                            window.closeMod(); // لو ضغطت عليه من التحدي بيسكر النافذة وبس
+                        }
+                    };
+                }
+            }
+
+            window.openMod('modal-user-action'); 
+        };
+
+        // 2. تعديل قائمة المتصدرين لتسمح لجميع اللاعبين بالضغط
+        window.openLB = function() { 
+            var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); 
+            if(!window.db) return; 
+            window.db.collection("leaderboard_" + window.getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { 
+                var html = ''; if (!isGoogle) { html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; } var rank = 1; 
+                qSnap.forEach(function(doc) { 
+                    var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; var em = d.email || '';
+                    if (d.role === 'owner' || window.isOwner(em)) { roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; } else if (d.role === 'mod') { roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; }
+                    var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) { nameCls = 'neon-bg'; }
+                    var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); 
+                    
+                    // السماح للكل بالضغط (إلا حسابك)
+                    var rowClick = ''; 
+                    if (doc.id !== authUid) { 
+                        var safeName = d.name ? d.name.replace(/'/g, "\\'") : 'لاعب'; 
+                        var safeAvatar = d.avatar ? d.avatar : ''; 
+                        rowClick = "onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon === true || d.hasNeon === 'true') + ")\" style='cursor:pointer;'"; 
+                    }
+                    
+                    html += '<div class="lb-row' + isMe + '" ' + rowClick + '><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; 
+                }); 
+                if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; 
+            }).catch(function(){}); 
+        };
+
+        // 3. تفعيل الضغط على الخصم في شاشة التحدي
+        setInterval(function() {
+            var pRightBox = document.getElementById('p-right-box');
+            if (pRightBox && !pRightBox.hasAttribute('data-click-bound')) {
+                pRightBox.style.cursor = 'pointer';
+                pRightBox.setAttribute('data-click-bound', 'true'); // عشان ما نكرر الحدث
+                pRightBox.onclick = function() {
+                    if (isOnlineMode && onlineData) {
+                        window.playSndSafe('sfx-click');
+                        var oppId = (myMatchRole === 'p1') ? onlineData.p2_id : onlineData.p1_id;
+                        var oppName = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name;
+                        var oppAvatar = (myMatchRole === 'p1') ? onlineData.p2_avatar : onlineData.p1_avatar;
+                        var oppNeon = (myMatchRole === 'p1') ? onlineData.p2_neon : onlineData.p1_neon;
+                        
+                        if (oppId && oppName) {
+                            window.openUserAction(oppId, oppName, 'مخفي', 'user', oppAvatar, oppNeon);
+                        }
+                    }
+                };
+            }
+        }, 1000);
     });
 
 </script>
