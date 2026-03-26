@@ -1251,19 +1251,19 @@
     });
 
     // ==========================================
-    // زر الإيموجيات الخارق (نسخة الرادار الشامل والنهائي)
+    // زر الإيموجيات الخارق + بناء الفقاعات تحت الاسم (الحل الجذري والنهائي)
     // ==========================================
     setInterval(function() {
-        // 1. إنشاء الزر وإضافته لجسم الصفحة مباشرة (عشان ما يختفي بسبب اللعبة)
+        // 1. إنشاء الزر الدائري واللوحة
         if (!document.getElementById('super-emote-btn')) {
             var emoteBtn = document.createElement('div');
             emoteBtn.id = 'super-emote-btn';
-            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; display:none;'; 
+            emoteBtn.style = 'position:fixed; bottom:20px; right:20px; width:55px; height:55px; background: rgba(0,0,0,0.8); border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 0 15px #ffd700; z-index:2147483647; border:2px solid #ffd700; transition:0.3s; display:none; pointer-events:auto;'; 
             emoteBtn.innerHTML = '<img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp" style="width:35px; height:35px; pointer-events:none;">';
             
             var panel = document.createElement('div');
             panel.id = 'super-emote-panel';
-            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.8);';
+            panel.style = 'position:fixed; bottom:85px; right:20px; width:220px; background:rgba(0,0,0,0.9); border:2px solid #ffd700; border-radius:16px; padding:12px; display:none; flex-wrap:wrap; gap:12px; justify-content:center; z-index:2147483647; box-shadow:0 0 20px rgba(0,0,0,0.8); pointer-events:auto;';
             
             var stickers3D = [
                 "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", 
@@ -1278,7 +1278,7 @@
 
             for (var i = 0; i < stickers3D.length; i++) {
                 var sBtn = document.createElement('div');
-                sBtn.style = 'width:50px; height:50px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; justify-content:center; align-items:center; transition:0.2s;';
+                sBtn.style = 'width:50px; height:50px; cursor:pointer; background:rgba(255,255,255,0.1); border-radius:50%; display:flex; justify-content:center; align-items:center; transition:0.2s; pointer-events:auto;';
                 var imgHtml = '<img src="' + stickers3D[i] + '" style="width:40px; height:40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); pointer-events:none;">';
                 sBtn.innerHTML = imgHtml;
                 sBtn.setAttribute('data-emote', imgHtml);
@@ -1302,40 +1302,42 @@
             document.body.appendChild(emoteBtn);
         }
 
-        // 2. الرادار الشامل: متى نظهر الزر؟
-        var theBtn = document.getElementById('super-emote-btn');
-        var thePanel = document.getElementById('super-emote-panel');
-        var isGameActive = false;
-
-        // نبحث عن زر "انسحاب" في الشاشة (لأنه الدليل القاطع إننا جوا تحدي)
-        var elements = document.querySelectorAll('*');
-        for (var k = 0; k < elements.length; k++) {
-            var el = elements[k];
-            if (el.children.length === 0 && el.textContent && el.textContent.trim() === 'انسحاب') {
-                // إذا كان زر الانسحاب ظاهراً على الشاشة
-                if (window.getComputedStyle(el).display !== 'none' && el.offsetParent !== null) {
-                    isGameActive = true;
-                    break;
-                }
+        // 2. إصلاح المشكلة المخفية: بناء حاويات العرض للستيكرات وتحديد مكانها (تحت الاسم تماماً)
+        if (!document.getElementById('player1-emote-message')) {
+            var p1Box = document.getElementById('p-left-box');
+            if (p1Box) {
+                p1Box.style.position = 'relative';
+                var bubble1 = document.createElement('div');
+                bubble1.id = 'player1-emote-message';
+                bubble1.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
+                p1Box.appendChild(bubble1);
+            }
+        }
+        if (!document.getElementById('player2-emote-message')) {
+            var p2Box = document.getElementById('p-right-box');
+            if (p2Box) {
+                p2Box.style.position = 'relative';
+                var bubble2 = document.createElement('div');
+                bubble2.id = 'player2-emote-message';
+                bubble2.style = 'position:absolute; bottom:-45px; left:50%; transform:translateX(-50%); width:55px; height:55px; opacity:0; transition:0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index:100; pointer-events:none; display:flex; justify-content:center; align-items:center;';
+                p2Box.appendChild(bubble2);
             }
         }
 
-        // إخفاء إجباري للزر إذا كنا في الشاشة الرئيسية (حتى لو علق الكود)
-        var mainScreenCheck = document.getElementById('online-friends-list');
-        if (mainScreenCheck && window.getComputedStyle(mainScreenCheck).display !== 'none' && mainScreenCheck.offsetParent !== null) {
-            isGameActive = false;
-        }
+        // 3. الرادار العبقري (يعتمد على كلاس الشاشة نفسه مستحيل يغلط)
+        var theBtn = document.getElementById('super-emote-btn');
+        var thePanel = document.getElementById('super-emote-panel');
+        var isGameActive = document.body.classList.contains('vs-mode-active');
 
-        // التنفيذ: إظهار أو إخفاء الزر
         if (theBtn) {
             if (isGameActive) {
                 if (theBtn.style.display === 'none') theBtn.style.display = 'flex';
             } else {
                 theBtn.style.display = 'none';
-                if (thePanel) thePanel.style.display = 'none'; // سكر النافذة كمان
+                if (thePanel) thePanel.style.display = 'none'; 
             }
         }
-    }, 1000);
+    }, 500);
 
 </script>
 </body>
