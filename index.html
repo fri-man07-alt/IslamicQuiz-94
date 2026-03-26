@@ -1124,18 +1124,30 @@
                                         } 
                                     } 
                                     
-                                    if (data.requests) { 
-                                        var reqs = data.requests; 
-                                        var badge = document.getElementById('req-badge-ui'); 
-                                        if (badge) { 
-                                            badge.innerText = reqs.length; 
-                                            if (reqs.length > 0) {
-                                                window.safeShow('req-badge-ui', 'flex'); 
-                                            } else {
-                                                window.safeHide('req-badge-ui'); 
-                                            }
-                                        } 
-                                    } 
+     if (data.requests) { 
+        var reqs = data.requests; 
+        var badge = document.getElementById('req-badge-ui'); 
+        if (badge) { 
+            badge.innerText = reqs.length; 
+            if (reqs.length > 0) window.safeShow('req-badge-ui', 'flex'); else window.safeHide('req-badge-ui'); 
+        } 
+        var reqListCont = document.getElementById('friend-requests-list');
+        if (reqListCont) {
+            if (reqs.length === 0) {
+                reqListCont.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px;">لا يوجد طلبات صداقة حالياً.</p>';
+            } else {
+                var rHtml = '';
+                reqs.forEach(function(r) {
+                    rHtml += '<div style="background:rgba(255,255,255,0.05); padding:12px; margin-bottom:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.1);">';
+                    rHtml += '<div><span class="premium-name" style="font-size:1.1rem;">' + r.fromName + '</span><br><span style="color:#aaa; font-size:0.7rem;">ID: ' + r.fromNumId + '</span></div>';
+                    rHtml += '<button class="q-btn primary" style="width:auto; margin:0; padding:5px 15px; font-size:0.8rem;" onclick="window.acceptFriendReq(\'' + r.fromUid + '\', \'' + r.fromName.replace(/'/g, "\\'") + '\', \'' + r.fromNumId + '\')">قبول ✅</button>';
+                    rHtml += '</div>';
+                });
+                reqListCont.innerHTML = rHtml;
+            }
+        }
+    }
+
                                     
                                     if (data.friends && data.friends.length > 0) { 
                                         var frList = document.getElementById('online-friends-list'); 
