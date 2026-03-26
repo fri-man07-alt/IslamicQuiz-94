@@ -823,10 +823,44 @@
     // ==========================================
     // 8. الأصدقاء (حذف وبحث وحالة)
     // ==========================================
-    window.removeFriendDirect = function(fUid, fName) { window.showCustomConfirm("حذف صديق", "هل تريد بالتأكيد حذف " + fName + " من قائمة الأصدقاء؟ 🗑️", function() { var myRef = window.db.collection("users_v4").doc(authUid); var friendRef = window.db.collection("users_v4").doc(fUid); myRef.get().then(function(doc){ if(doc.exists) { var d = doc.data(); var newFriends = []; if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== fUid) newFriends.push(d.friends[i]); } } myRef.update({friends: newFriends}); } }); friendRef.get().then(function(doc){ if(doc.exists) { var d = doc.data(); var newFriends = []; if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== authUid) newFriends.push(d.friends[i]); } } friendRef.update({friends: newFriends}); } }); window.showBottomToast("تم حذف " + fName + " من الأصدقاء ✅"); window.closeMod(); }); };
-    window.searchFriend = function() { var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { if (!snap.empty) { var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var banBtnHtml = ''; if (window.isMod() && fId !== pID) { var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; banBtnHtml = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + (d.avatar||'') + "', " + (d.hasNeon===true||d.hasNeon==='true') + ")\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + banBtnHtml + ' </div>'; window.safeShow('search-result-container', 'block'); } } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } }).catch(function(){}); };
-    window.sendFriendReq = function(targetUid, fName) { if (!isGoogle) { window.showTopToast("سجل بجوجل أولاً! 🔒"); return; } window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { window.showSuccessModal('تم الإرسال!', 'تم إرسال طلب الصداقة لـ ' + fName, '💌', 'search-friend-result-stay'); document.getElementById('friend-id-input').value = ""; }).catch(function(){}); };
-    window.acceptFriendReq = function(fUid, fName, fNum) { window.playSndSafe('sfx-click'); var myRef = window.db.collection("users_v4").doc(authUid); var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; var friendObjForMe = { uid: fUid, name: fName, numId: fNum }; var friendObjForThem = { uid: authUid, name: loggedUser, numId: pID }; myRef.update({ requests: firebase.firestore.FieldValue.arrayRemove(reqObj), friends: firebase.firestore.FieldValue.arrayUnion(friendObjForMe) }); window.db.collection("users_v4").doc(fUid).update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); window.showTopToast('أصبح ' + fName + ' من أصدقائك الآن 🤝'); };
+     window.removeFriendDirect = function(fUid, fName) {
+        window.showCustomConfirm("حذف صديق", "هل تريد بالتأكيد حذف " + fName + " من قائمة الأصدقاء؟ 🗑️", function() {
+            var myRef = window.db.collection("users_v4").doc(authUid);
+            var friendRef = window.db.collection("users_v4").doc(fUid);
+            myRef.get().then(function(doc){ if(doc.exists) { var d = doc.data(); var newFriends = []; if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== fUid) newFriends.push(d.friends[i]); } } myRef.update({friends: newFriends}); } });
+            friendRef.get().then(function(doc){ if(doc.exists) { var d = doc.data(); var newFriends = []; if(d.friends) { for(var i=0; i<d.friends.length; i++) { if(d.friends[i].uid !== authUid) newFriends.push(d.friends[i]); } } friendRef.update({friends: newFriends}); } });
+            window.showBottomToast("تم إلغاء الصداقة مع " + fName + " للطرفين ✅"); 
+            window.openMod('modal-online-friends'); 
+        });
+    };
+
+    window.searchFriend = function() { 
+        var fId = document.getElementById('friend-id-input').value.trim(); 
+        var resContainer = document.getElementById('search-result-container'); 
+        if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } 
+        window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { 
+            if (!snap.empty) { 
+                var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var banBtnHtml = ''; if (window.isMod() && fId !== pID) { var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; banBtnHtml = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + (d.avatar||'') + "', " + (d.hasNeon===true||d.hasNeon==='true') + ")\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + d.name.replace(/'/g, "\\'") + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + banBtnHtml + ' </div>'; window.safeShow('search-result-container', 'block'); } 
+            } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } 
+        }).catch(function(){}); 
+    };
+
+    window.sendFriendReq = function(targetUid, fName) { 
+        if (!isGoogle) { window.showTopToast("سجل بجوجل أولاً! 🔒"); return; } 
+        window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { window.showSuccessModal('تم الإرسال!', 'تم إرسال طلب الصداقة لـ ' + fName, '💌', 'search-friend-result-stay'); document.getElementById('friend-id-input').value = ""; }).catch(function(){}); 
+    };
+
+    window.acceptFriendReq = function(fUid, fName, fNum) { 
+        window.playSndSafe('sfx-click'); 
+        var myRef = window.db.collection("users_v4").doc(authUid); 
+        var friendRef = window.db.collection("users_v4").doc(fUid);
+        var reqObj = { fromUid: fUid, fromName: fName, fromNumId: fNum }; 
+        var friendObjForMe = { uid: fUid, name: fName, numId: fNum }; 
+        var friendObjForThem = { uid: authUid, name: loggedUser, numId: pID }; 
+        myRef.update({ requests: firebase.firestore.FieldValue.arrayRemove(reqObj), friends: firebase.firestore.FieldValue.arrayUnion(friendObjForMe) }); 
+        friendRef.update({ friends: firebase.firestore.FieldValue.arrayUnion(friendObjForThem) }); 
+        window.showTopToast('أصبح ' + fName + ' من أصدقائك الآن 🤝'); 
+    };
     window.setMyStatus = function(statusBool) { isBusy = statusBool; window.lsSet('ULT_BUSY', isBusy ? 'true' : 'false'); window.updateStatusButtons(); window.playSndSafe('sfx-click'); window.saveProgress(false); };
     window.updateStatusButtons = function() { var btnOn = document.getElementById('btn-stat-online'); var btnBusy = document.getElementById('btn-stat-busy'); if (isBusy) { if(btnBusy) { btnBusy.style.border = '2px solid #ffd700'; btnBusy.style.color = '#ffd700'; } if(btnOn) { btnOn.style.border = '1px solid #555'; btnOn.style.color = '#aaa'; } } else { if(btnOn) { btnOn.style.border = '2px solid #ffd700'; btnOn.style.color = '#ffd700'; } if(btnBusy) { btnBusy.style.border = '1px solid #555'; btnBusy.style.color = '#aaa'; } } };
 
@@ -1180,6 +1214,55 @@
                 window.updateStatusButtons();
             }
         }, 3000);
+    });
+
+    // ==========================================
+    // إضافة ستيكرات 3D متحركة للتحديات (بدون لمس الـ HTML)
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', function() {
+        var emotesContainer = document.getElementById('emotes-container');
+        if (emotesContainer) {
+            // تفريغ الستيكرات القديمة العادية
+            emotesContainer.innerHTML = '';
+            
+            // روابط الستيكرات الـ 3D المتحركة (مرفوعة من جوجل الرسمية)
+            var stickers3D = [
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f602/512.webp", // ضحك
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f62d/512.webp", // بكاء
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f621/512.webp", // غضب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60d/512.webp", // حب
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.webp", // صدمة
+                "https://fonts.gstatic.com/s/e/notoemoji/latest/1f60e/512.webp"  // نظارات/ثقة
+            ];
+
+            // تنسيق الحاوية لتكون مرتبة
+            emotesContainer.style.display = 'flex';
+            emotesContainer.style.justifyContent = 'center';
+            emotesContainer.style.gap = '15px';
+            emotesContainer.style.padding = '10px';
+            emotesContainer.style.flexWrap = 'wrap';
+
+            // زرع الستيكرات الـ 3D
+            for (var i = 0; i < stickers3D.length; i++) {
+                var btn = document.createElement('div');
+                // تصميم الستيكر مع ظل 3D خفيف ليعطيه بروز
+                var imgHtml = '<img src="' + stickers3D[i] + '" style="width:45px; height:45px; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));">';
+                
+                btn.innerHTML = imgHtml;
+                btn.style.cursor = 'pointer';
+                btn.style.transition = 'transform 0.2s';
+                btn.setAttribute('data-emote', imgHtml);
+                
+                // تأثير التكبير عند اللمس
+                btn.onmouseover = function() { this.style.transform = 'scale(1.2)'; };
+                btn.onmouseout = function() { this.style.transform = 'scale(1)'; };
+                
+                // ربط الستيكر بدالة إرسال الأونلاين
+                btn.onclick = window.sendEmoteOnline;
+                
+                emotesContainer.appendChild(btn);
+            }
+        }
     });
 
 </script>
