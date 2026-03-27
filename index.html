@@ -1719,6 +1719,452 @@
         }, 1000);
     });
 
+    // ==========================================
+    // التحديث الملكي V48: نظام أسئلة محصن ضد الكراش + خلط عشوائي مستقل + ثبات الألقاب
+    // ==========================================
+    // التحديث الملكي V49: إصلاح زر المسابقات + المتميز أزرق ملكي + ثبات واستقرار
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', function() {
+
+        var customStyles = document.createElement('style');
+        customStyles.innerHTML = `
+            /* استايلات الألقاب الأساسية (الثابتة والآمنة) */
+            div[class*="حكمة"], div[class*="إمبراطور"], div[class*="لواء"], div[class*="أسد"], div[class*="فارس"], .title-special, .title-tiger, .title-cheetah { transition: none !important; animation: none !important; }
+            .ult-badge { position: relative !important; display: block !important; overflow: hidden !important; border: 2px solid #ffd700 !important; box-sizing: border-box !important; }
+            .ult-badge .badge-text { position: absolute !important; top: 50% !important; transform: translateY(-50%) !important; margin: 0 !important; font-family: 'Amiri', serif !important; font-weight: 900 !important; white-space: nowrap !important; display: flex !important; align-items: center !important; justify-content: flex-end !important; width: max-content !important; z-index: 10 !important; }
+            
+            /* السيوف ثابتة */
+            .ms-r, .ms-l { display: block !important; color: #fff !important; text-shadow: none !important; transform: none !important; animation: none !important; }
+            
+            /* تصميم قائمة الألقاب الكبيرة */
+            .ult-title { height: 75px !important; min-height: 75px !important; border-radius: 12px !important; }
+            .ult-title .badge-text { font-size: 1.55rem !important; right: 15px !important; gap: 5px !important; }
+            .ult-title .ms-l, .ult-title .ms-r { font-size: 1.35rem !important; }
+            .ult-title[class*="حكمة"], .ult-title.title-tiger { background: url('https://i.postimg.cc/4dS46P6L/Pngtree-3d-realistic-tiger-fur-animation-14476392.png') left -10px top -9px / auto 230% no-repeat, #000 !important; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5) !important;}
+            .ult-title[class*="إمبراطور"], .ult-title.title-cheetah { background: url('https://i.postimg.cc/9QV0yTLq/file-0000000002e47246a8e74ec6a7044090.png') left -10px top -9px / auto 230% no-repeat, #000 !important; border-color: #ff4d4d !important; box-shadow: 0 0 15px rgba(255, 77, 77, 0.3) !important;}
+            .ult-title[class*="لواء"], .ult-title[class*="أسد"], .ult-title.title-special { background: url('https://i.postimg.cc/qMK4bRNG/file-000000009fe87246bc1eaf17ce750a96.png') left -10px top -9px / auto 230% no-repeat, #000 !important; box-shadow: 0 0 20px rgba(255, 215, 0, 0.5) !important; }
+            
+            /* تصميم المتصدرين الصغير */
+            .ult-lb { width: 125px !important; min-width: 125px !important; height: 38px !important; min-height: 38px !important; border-radius: 6px !important; border-width: 1px !important; margin: auto 0 auto auto !important; }
+            .ult-lb .badge-text { font-size: 0.75rem !important; right: 4px !important; gap: 2px !important; }
+            .ult-lb .ms-l, .ult-lb .ms-r { font-size: 0.65rem !important; }
+            .ult-lb[class*="حكمة"], .ult-lb.title-tiger { background: url('https://i.postimg.cc/4dS46P6L/Pngtree-3d-realistic-tiger-fur-animation-14476392.png') left -2px top -4px / auto 170% no-repeat, #000 !important; }
+            .ult-lb[class*="إمبراطور"], .ult-lb.title-cheetah { background: url('https://i.postimg.cc/9QV0yTLq/file-0000000002e47246a8e74ec6a7044090.png') left -2px top -4px / auto 170% no-repeat, #000 !important; border-color: #ff4d4d !important; }
+            .ult-lb[class*="لواء"], .ult-lb[class*="أسد"], .ult-lb.title-special { background: url('https://i.postimg.cc/qMK4bRNG/file-000000009fe87246bc1eaf17ce750a96.png') left -2px top -4px / auto 170% no-repeat, #000 !important; }
+            
+            /* ألوان الألقاب الخاصة بنا */
+            .ult-badge[class*="حكمة"] .badge-text, .ult-badge.title-tiger .badge-text { color: #fff !important; text-shadow: 0 0 10px #ffd700, 2px 2px 5px #000 !important; }
+            .ult-badge[class*="إمبراطور"] .badge-text, .ult-badge.title-cheetah .badge-text { color: #ffd700 !important; text-shadow: 0 0 15px #ff0000, 2px 2px 5px #000 !important; }
+            .ult-badge[class*="لواء"] .badge-text, .ult-badge[class*="أسد"] .badge-text, .ult-badge.title-special .badge-text { color: #ffd700 !important; text-shadow: 0 0 15px #ff8c00, 2px 2px 5px #000 !important; }
+
+            /* العداد الزمني والارواح */
+            .cooldown-text { font-size: 0.8rem; color: #aaa; margin-top: 5px; }
+
+            /* تصميم بطاقات المسابقات */
+            .camp-card { width: 100%; height: 130px; border-radius: 16px; margin-bottom: 15px; position: relative; overflow: hidden; cursor: pointer; border: 2px solid #ffd700; display: flex; align-items: center; justify-content: flex-start; padding: 0 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.8); transition: 0.3s;}
+            .camp-card:active { transform: scale(0.96); }
+            .camp-bg-wisdom { background: url('https://i.postimg.cc/4dS46P6L/Pngtree-3d-realistic-tiger-fur-animation-14476392.png') left center / auto 140% no-repeat, #000 !important; }
+            .camp-bg-emperor { background: url('https://i.postimg.cc/9QV0yTLq/file-0000000002e47246a8e74ec6a7044090.png') left center / auto 140% no-repeat, #000 !important; border-color: #ff4d4d !important;}
+            .camp-overlay { position: absolute; inset: 0; background: linear-gradient(to left, rgba(0,0,0,0.1), rgba(0,0,0,0.9)); z-index: 1; }
+            .camp-title { position: relative; z-index: 2; color: #fff; font-family: 'Amiri', serif; font-size: 1.8rem; font-weight: 900; text-shadow: 0 0 15px #ffd700, 2px 2px 5px #000; }
+            .camp-title-emp { text-shadow: 0 0 15px #ff0000, 2px 2px 5px #000; color: #ffd700; }
+
+            /* الخريطة */
+            .map-scroll-area { position: relative; width: 100%; overflow-x: auto; padding: 70px 20px 40px 20px; display: flex; align-items: center; gap: 35px; direction: ltr; min-height: 180px;}
+            .map-line-bg { position: absolute; top: 50%; left: 20px; right: 20px; height: 6px; background: #333; z-index: 1; transform: translateY(-50%); }
+            .map-line-fill { position: absolute; top: 50%; left: 20px; height: 6px; background: linear-gradient(90deg, #ffd700, #ff8c00); z-index: 1; transform: translateY(-50%); transition: width 0.5s; }
+            .map-node-container { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+            .map-node { width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold; border: 3px solid #555; background: #1a1a1a; color: #aaa; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); transition: 0.3s;}
+            .map-node.completed { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; border-color: #fff; box-shadow: 0 0 15px rgba(255,215,0,0.6); }
+            .map-node.active { border-color: #00ff00; box-shadow: 0 0 20px #00ff00, inset 0 0 10px #00ff00; color: #00ff00; animation: pulseNode 1.5s infinite;}
+            .map-reward { position: absolute; top: -55px; display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+            .map-reward-icon { font-size: 1.8rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); }
+            .map-reward-txt { font-size: 0.7rem; color: #fff; text-shadow: 1px 1px 2px #000; margin-top: 2px; font-weight: bold; white-space: nowrap; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 8px; }
+            .map-reward.claimed { filter: grayscale(100%) opacity(0.4); pointer-events: none; }
+            @keyframes pulseNode { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        `;
+        document.head.appendChild(customStyles);
+
+        // ==========================================
+        // النظام الآمن لخلط الأسئلة
+        // ==========================================
+        function safeShuffleArray(array) {
+            var newArr = array.slice();
+            for (var i = newArr.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = newArr[i];
+                newArr[i] = newArr[j];
+                newArr[j] = temp;
+            }
+            return newArr;
+        }
+
+        // ==========================================
+        // نظام التخزين والإعدادات
+        // ==========================================
+        window.lsGet = window.lsGet || function(k, d) { return localStorage.getItem(k) || d; };
+        window.lsSet = window.lsSet || function(k, v) { localStorage.setItem(k, v); };
+
+        window.campaignsData = JSON.parse(window.lsGet('ULT_CAMPAIGNS_V3', JSON.stringify({
+            wisdom: { level: 1, lives: 5, rewards: [], lastDeath: 0 },
+            emperor: { level: 1, lives: 5, rewards: [], lastDeath: 0 }
+        })));
+        window.campQsTarget = 5;
+        window.activeCampId = null; 
+        window.isCampMode = false;
+
+        var campConfig = {
+            wisdom: { name: 'مسار منبع الحكمة', icon: '🐅', rewards: { 2: {i:'💰', n:'400 نقطة', v:400, t:'p', txt:'400'}, 4: {i:'💡', n:'+2 تلميح', v:2, t:'h', txt:'+2'}, 6: {i:'❤️', n:'روح إضافية', v:1, t:'l', txt:'+1'}, 8: {i:'💡', n:'+5 تلميح', v:5, t:'h', txt:'+5'}, 10: {i:'❤️', n:'روح إضافية', v:1, t:'l', txt:'+1'}, 12: {i:'👑', n:'منبع الحكمة', v:'t_حكمة', t:'title', txt:'منبع الحكمة'} } },
+            emperor: { name: 'مسار إمبراطور المعرفة', icon: '🐆', rewards: { 2: {i:'💰', n:'500 نقطة', v:500, t:'p', txt:'500'}, 4: {i:'💡', n:'+3 تلميح', v:3, t:'h', txt:'+3'}, 6: {i:'❤️', n:'روح إضافية', v:1, t:'l', txt:'+1'}, 8: {i:'💡', n:'+10 تلميح', v:10, t:'h', txt:'+10'}, 10: {i:'❤️', n:'روح إضافية', v:1, t:'l', txt:'+1'}, 12: {i:'👑', n:'إمبراطور المعرفة', v:'t_إمبراطور', t:'title', txt:'إمبراطور المعرفة'} } }
+        };
+
+        var originalSave = window.saveProgress;
+        window.saveProgress = function(skip) {
+            window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData));
+            if(originalSave) originalSave(skip);
+        };
+
+        // ==========================================
+        // حقن النوافذ (المسابقات والخريطة) - هذا ما كان يسبب الخطأ
+        // ==========================================
+        var customModal = document.getElementById('custom-modal');
+        if (customModal) {
+            if (!document.getElementById('modal-campaign-select')) {
+                var selectModal = document.createElement('div');
+                selectModal.className = 'm-content';
+                selectModal.id = 'modal-campaign-select';
+                selectModal.innerHTML = `
+                    <h2 style="color:var(--p); margin:0 0 15px 0;">أقسام المسابقات 🏆</h2>
+                    <div class="camp-card camp-bg-wisdom" onclick="window.openCampaignMap('wisdom')">
+                        <div class="camp-overlay"></div>
+                        <div class="camp-title">مسار منبع الحكمة 🐅</div>
+                    </div>
+                    <div class="camp-card camp-bg-emperor" onclick="window.openCampaignMap('emperor')">
+                        <div class="camp-overlay"></div>
+                        <div class="camp-title camp-title-emp">مسار إمبراطور المعرفة 🐆</div>
+                    </div>
+                    <button class="q-btn danger" onclick="window.closeMod()" style="background:transparent; margin-top:10px;">رجوع للرئيسية 🏠</button>
+                `;
+                customModal.appendChild(selectModal);
+            }
+            if (!document.getElementById('modal-campaign-map')) {
+                var mapModal = document.createElement('div');
+                mapModal.className = 'm-content';
+                mapModal.id = 'modal-campaign-map';
+                mapModal.style.maxWidth = '450px';
+                customModal.appendChild(mapModal);
+            }
+        }
+
+        // ==========================================
+        // تعديل الشاشة الرئيسية
+        // ==========================================
+        var screenStart = document.getElementById('screen-start');
+        if (screenStart) {
+            var hintsDiv = screenStart.querySelector('div[style*="رصيد التلميحات"]');
+            var ptsDiv = screenStart.querySelector('div[style*="النقاط"]');
+            var buttonsRow = screenStart.querySelector('div[style*="display: flex; gap: 10px"]');
+            
+            if (hintsDiv && ptsDiv) {
+                ptsDiv.parentNode.insertBefore(hintsDiv, ptsDiv);
+                hintsDiv.style.marginBottom = "5px";
+                hintsDiv.style.fontSize = "1.2rem";
+                ptsDiv.style.marginBottom = "15px";
+            }
+
+            var lbBtn = document.createElement('button');
+            lbBtn.className = "q-btn";
+            lbBtn.style = "width: 100%; border-color: var(--p); color: var(--p); background: rgba(255, 215, 0, 0.05); margin: 0 0 12px 0; font-size: 1.1rem; padding: 12px;";
+            lbBtn.innerHTML = "🏆 المتصدرين";
+            lbBtn.onclick = window.openLB;
+
+            if (buttonsRow) {
+                buttonsRow.parentNode.insertBefore(lbBtn, buttonsRow);
+                buttonsRow.innerHTML = `
+                    <button class="q-btn" style="flex: 1; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: #fff; font-size: 1.1rem; margin: 0; padding: 12px; border: 1px solid #2ecc71; box-shadow: 0 0 15px rgba(46,204,113,0.4);" onclick="window.openCampaignSelect()">🏆 المسابقات</button>
+                    <button class="q-btn primary" onclick="window.startG()" style="flex: 1; font-size: 1.1rem; margin: 0; padding: 12px;">التحدي العادي 🔥</button>
+                `;
+            }
+        }
+
+        // ==========================================
+        // وظائف فتح النوافذ والمسابقات
+        // ==========================================
+        window.openCampaignSelect = function() {
+            if (window.playSndSafe) window.playSndSafe('sfx-click');
+            if (window.openMod) window.openMod('modal-campaign-select');
+        };
+
+        window.openCampaignMap = function(campId) {
+            if (window.playSndSafe) window.playSndSafe('sfx-click');
+            window.activeCampId = campId;
+            var camp = window.campaignsData[campId];
+            var conf = campConfig[campId];
+            var livesDisplay = "";
+
+            if (camp.lives > 0) {
+                livesDisplay = `<span style="font-size:1.5rem;">❤️ ${camp.lives}</span>`;
+            } else {
+                var remaining = 1800 - Math.floor((Date.now() - camp.lastDeath) / 1000);
+                if (remaining < 0) remaining = 0;
+                var mins = Math.floor(remaining / 60);
+                var secs = remaining % 60;
+                livesDisplay = `
+                    <div style="text-align:center;">
+                        <span style="font-size:1.3rem; color:#ff4d4d; font-weight:bold;">⏳ ${mins}:${secs < 10 ? '0' + secs : secs}</span>
+                        <div class="cooldown-text">ستفتح المحاولات بعد هذا الوقت</div>
+                    </div>`;
+            }
+
+            var fillWidth = (camp.level > 1) ? ((camp.level - 1) * 80) : 0;
+            var mapHtml = `
+                <h3 style="color:var(--p); margin:0 0 15px 0;">${conf.name} ${conf.icon}</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#1a1a1a; padding:15px; border-radius:15px; border:1px solid #444; margin-bottom:20px;">
+                    <div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المراحل المجتازة</span><br><span style="color:#00d4ff; font-size:1.3rem;">${camp.level - 1} 🏅</span></div>
+                    <div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المحاولات المتبقية</span><br>${livesDisplay}</div>
+                </div>
+                <div class="map-scroll-area" id="camp-scroll-area">
+                    <div class="map-line-bg" style="width: 900px;"></div>
+                    <div class="map-line-fill" style="width: ${fillWidth}px; max-width: 900px;"></div>
+            `;
+
+            for (var i = 1; i <= 12; i++) {
+                var state = (i < camp.level) ? 'completed' : (i === camp.level ? 'active' : '');
+                var rwd = conf.rewards[i];
+                var claimed = camp.rewards.indexOf(i) !== -1 ? 'claimed' : '';
+                var rwdHtml = rwd ? `<div class="map-reward ${claimed}">
+                    <span class="map-reward-icon">${rwd.i}</span><span class="map-reward-txt">${rwd.txt}</span>
+                </div>` : '';
+
+                var lockIcon = (i > camp.level) ? '<i class="fas fa-lock map-lock"></i>' : '';
+
+                mapHtml += `<div class="map-node-container">
+                    ${rwdHtml}<div class="map-node ${state}">${i}</div>${lockIcon}
+                </div>`;
+            }
+
+            var btnDisabled = camp.lives <= 0 ? 'opacity:0.5; pointer-events:none;' : '';
+            mapHtml += `</div>
+                <p style="color:#ffd700; font-size:0.8rem; margin:10px 0;">أجب على 5 أسئلة متتالية لاجتياز المرحلة!</p>
+                <button class="q-btn primary" onclick="window.startCampLevel()" style="font-size:1.2rem; padding:10px; width:100%; ${btnDisabled}">بدء المرحلة ${camp.level} 🚀</button>
+                <button class="q-btn danger" onclick="window.openCampaignSelect()" style="background:transparent; margin-top:5px; width:100%;">رجوع للأقسام</button>
+            `;
+            
+            var mapModal = document.getElementById('modal-campaign-map');
+            if (mapModal) {
+                mapModal.innerHTML = mapHtml;
+                if (window.openMod) window.openMod('modal-campaign-map');
+                setTimeout(() => {
+                    var scrollArea = document.getElementById('camp-scroll-area');
+                    if(scrollArea) scrollArea.scrollLeft = (camp.level - 2) * 80;
+                }, 100);
+            }
+        };
+
+        // ==========================================
+        // وظائف اللعب (محمية ضد الشاشة السوداء)
+        // ==========================================
+        window.updateCampLivesUI = function() {
+            var ui = document.getElementById('camp-lives-ui');
+            if (ui) { ui.remove(); }
+        };
+
+        window.startCampLevel = function() {
+            var camp = window.campaignsData[window.activeCampId];
+            if (camp.lives <= 0) return;
+            
+            if (typeof qList === 'undefined' || !qList || qList.length < 5) { 
+                if (window.showTopToast) window.showTopToast("جاري تجهيز الأسئلة... يرجى الانتظار ثانية"); 
+                return; 
+            }
+            
+            window.isCampMode = true;
+            if (window.closeMod) window.closeMod();
+            if (window.safeHide) {
+                window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeHide('vs-header');
+            }
+            if (window.safeShow) {
+                window.safeShow('screen-game', 'block'); window.safeShow('normal-header', 'flex'); 
+                window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); 
+                window.safeShow('q-txt', 'flex');
+            }
+            window.updateCampLivesUI();
+
+            cur = 0; aud = 5; f50 = 5; window.qOrder = [];
+            var tempQs = [];
+            for (var i = 0; i < qList.length; i++) tempQs.push(i);
+            
+            // خلط آمن
+            tempQs = safeShuffleArray(tempQs);
+            for (var j = 0; j < window.campQsTarget; j++) {
+                window.qOrder.push(tempQs[j]);
+            }
+            window.loadCampQ();
+        };
+
+        window.loadCampQ = function() {
+            locked = false; 
+            if (window.safeHide) { window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); }
+            
+            if (cur >= window.campQsTarget) { window.winCampLevel(); return; }
+            
+            var targetQIndex = window.qOrder[cur];
+            var q = qList[targetQIndex];
+            
+            if (!q) {
+                if(window.goHomeG) window.goHomeG();
+                return;
+            }
+            
+            var progEl = document.getElementById('ui-prog');
+            if (progEl) progEl.innerText = "سؤال " + (cur+1) + " من " + window.campQsTarget;
+            var qTxt = document.getElementById('q-txt');
+            if (qTxt) qTxt.innerText = q.q;
+            
+            optsOrder = safeShuffleArray([0, 1, 2, 3]);
+            for (var i = 0; i < 4; i++) {
+                var btn = document.getElementById('opt'+i);
+                if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.innerText = q.o[optsOrder[i]]; }
+            }
+            var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud;
+            var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50;
+            var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = typeof totalHints !== 'undefined' ? totalHints : 0;
+        };
+
+        var originalHandleContinue = window.handleContinue;
+        window.handleContinue = function() {
+            if (!window.isCampMode) { if(originalHandleContinue) originalHandleContinue(); return; }
+            if (typeof lastAnswerCorrect !== 'undefined' && lastAnswerCorrect) { cur++; window.loadCampQ(); } else { window.loseCampLevel(); }
+        };
+
+        var originalGoHome = window.goHomeG;
+        window.goHomeG = function() {
+            window.isCampMode = false;
+            window.updateCampLivesUI(); 
+            if(originalGoHome) originalGoHome();
+        };
+
+        window.winCampLevel = function() {
+            var camp = window.campaignsData[window.activeCampId];
+            var conf = campConfig[window.activeCampId];
+            var rewardMsg = "";
+            var isClaimed = (camp.rewards.indexOf(camp.level) !== -1);
+            
+            var rwd = conf.rewards[camp.level];
+            if (rwd) {
+                if (!isClaimed) {
+                    if (rwd.t === 'p' && window.addPoints) window.addPoints(rwd.v);
+                    if (rwd.t === 'h' && window.addHints) window.addHints(rwd.v);
+                    if (rwd.t === 'l') { camp.lives += rwd.v; } 
+                    if (rwd.t === 'title' && typeof ownedTitles !== 'undefined') {
+                        if (ownedTitles.indexOf(rwd.v) === -1) {
+                            ownedTitles.push(rwd.v); 
+                            if(typeof newTitlesList !== 'undefined') newTitlesList.push(rwd.v);
+                            window.lsSet('ULT_NEW_TITLES', JSON.stringify(typeof newTitlesList !== 'undefined' ? newTitlesList : []));
+                        }
+                    }
+                    rewardMsg = "وربحت: " + rwd.n + " " + rwd.i;
+                    camp.rewards.push(camp.level);
+                } else {
+                    rewardMsg = "(المكافأة محصلة مسبقاً ✔️)";
+                }
+            }
+
+            if (camp.level >= 12) {
+                camp.level = 12; window.saveProgress(false);
+                if(window.showSuccessModal) window.showSuccessModal("ختمت المسار! 🎉", "لقد أنهيت مسار " + conf.name + " ببراعة! " + rewardMsg, "🏆", "modal-campaign-select");
+            } else {
+                camp.level++; window.saveProgress(false);
+                if(window.showSuccessModal) window.showSuccessModal("مرحلة مجتازة! 👏", "تم اجتياز المرحلة بنجاح! " + rewardMsg, "⭐", "modal-campaign-map");
+            }
+        };
+
+        window.loseCampLevel = function() {
+            var camp = window.campaignsData[window.activeCampId];
+            camp.lives--;
+            if (camp.lives <= 0) {
+                camp.lastDeath = Date.now();
+                window.saveProgress(false);
+                if(window.showSuccessModal) window.showSuccessModal("انتهت الأرواح! 💔", "خسرت جميع المحاولات. ستبدأ من جديد بعد 30 دقيقة.", "⏳", "modal-campaign-map");
+            } else {
+                window.saveProgress(false);
+                if(window.showSuccessModal) window.showSuccessModal("إجابة خاطئة! 💔", "بقي لديك " + camp.lives + " محاولات.", "💔", "modal-campaign-map");
+            }
+        };
+
+        // ==========================================
+        // وظائف المراقبة الدائمة (للنصوص والوقت والمتميز)
+        // ==========================================
+        
+        // 1. تحديث الألقاب ولقب "المتميز" الأزرق الملكي
+        setInterval(function() {
+            var badges = document.querySelectorAll('div[class*="حكمة"], div[class*="إمبراطور"], div[class*="لواء"], div[class*="أسد"], div[class*="فارس"], .title-special, .title-tiger, .title-cheetah');
+            badges.forEach(function(badge) {
+                if (!badge.classList.contains('ult-badge')) badge.classList.add('ult-badge');
+                
+                var textEl = badge.querySelector('.badge-text');
+                if (textEl && (badge.className.includes('لواء') || badge.className.includes('أسد') || badge.className.includes('فارس') || badge.className.includes('special'))) {
+                    var targetHTML = '<span class="ms-l">⚔️</span><span>أسد السنة</span><span class="ms-r">⚔️</span>';
+                    if (textEl.innerHTML !== targetHTML) textEl.innerHTML = targetHTML;
+                }
+                
+                var w = badge.getBoundingClientRect().width;
+                if (w > 0 && w < 160) { badge.classList.add('ult-lb'); badge.classList.remove('ult-title'); }
+                else if (w >= 160) { badge.classList.add('ult-title'); badge.classList.remove('ult-lb'); }
+            });
+
+            // جعل المتميز أزرق ملكي فخم وإلغاء خلفيته
+            var allSpans = document.querySelectorAll('span, div');
+            allSpans.forEach(function(s) {
+                if (s.childNodes.length === 1 && s.innerText && s.innerText.trim() === "المتميز") {
+                    s.style.setProperty('color', '#4169E1', 'important'); // أزرق ملكي
+                    s.style.setProperty('text-shadow', '0 0 5px rgba(65, 105, 225, 0.6)', 'important');
+                    s.style.setProperty('background', 'transparent', 'important');
+                    s.style.setProperty('box-shadow', 'none', 'important');
+                    if (s.parentElement && s.parentElement.tagName !== 'BODY') { 
+                        s.parentElement.style.setProperty('background', 'transparent', 'important'); 
+                        s.parentElement.style.setProperty('box-shadow', 'none', 'important'); 
+                    }
+                }
+            });
+        }, 150);
+
+        // 2. تحديث وقت الـ Cooldown 
+        setInterval(function() {
+            var now = Date.now();
+            var needsSave = false;
+            ['wisdom', 'emperor'].forEach(id => {
+                var camp = window.campaignsData[id];
+                if (camp.lives <= 0 && camp.lastDeath > 0) {
+                    var elapsed = Math.floor((now - camp.lastDeath) / 1000);
+                    var remaining = 1800 - elapsed; 
+                    if (remaining <= 0) { camp.lives = 5; camp.lastDeath = 0; needsSave = true; }
+                }
+            });
+            if (needsSave && window.saveProgress) window.saveProgress(false);
+
+            // تحديث النافذة المفتوحة
+            var mapModal = document.getElementById('modal-campaign-map');
+            if (mapModal && mapModal.style && mapModal.style.display === 'block' && window.activeCampId) {
+                window.openCampaignMap(window.activeCampId);
+            }
+        }, 1000);
+
+        // مسح "لواء" من قاعدة البيانات الأساسية
+        if (typeof titlesData !== 'undefined') {
+            titlesData['t_حكمة'] = { n: 'منبع الحكمة', c: 'title-tiger', shine: 'gold', msg: 'احصل عليه عند ختم مسار "منبع الحكمة" في المسابقات 🐅' };
+            titlesData['t_إمبراطور'] = { n: 'إمبراطور المعرفة', c: 'title-cheetah', shine: 'gold', msg: 'احصل عليه عند ختم مسار "إمبراطور المعرفة" في المسابقات 🐆' };
+            for (var key in titlesData) {
+                var cleanName = titlesData[key].n ? titlesData[key].n.replace(/[\u064B-\u065F]/g, '') : '';
+                if (cleanName.includes('لواء') || cleanName.includes('درع') || cleanName.includes('فارس') || cleanName.includes('أسد')) {
+                    titlesData[key].n = 'أسد السنة'; 
+                    titlesData[key].c = 'title-special'; 
+                    titlesData[key].msg = 'لقب خاص وحصري بمطور اللعبة 🦁';
+                }
+            }
+        }
+    });
+
 </script>
 </body>
 </html>
