@@ -2449,39 +2449,47 @@
 </script>
 
 <style>
-/* ======= 1. الحجم المثالي للألقاب العادية (مثل طالب علم) ======= */
-html body #screen-start #user-title-display > div {
+/* ======= 1. السر السحري: منع تمغط أي طبقة أو صورة داخل اللقب (تم إرجاعه!) ======= */
+html body #screen-start #user-title-display * {
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    object-fit: cover !important;
+}
+
+/* ======= 2. حجم موحد وأنيق لكل الألقاب بالرئيسية ======= */
+html body #screen-start #user-title-display > div,
+html body #screen-start #user-title-display .ult-badge {
     height: 45px !important;
+    max-height: 45px !important;
     min-height: 45px !important;
-    max-width: 200px !important;
+    max-width: 220px !important;
+    width: 100% !important;
     margin: 5px auto 10px auto !important;
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    overflow: hidden !important;
+    position: relative !important;
 }
 
-/* ======= 2. الحجم الفخم للألقاب اللي فيها صور (مثل الأسد) ======= */
-html body #screen-start #user-title-display > div[style*="background-image"] {
-    height: 60px !important; /* عطيناه ارتفاع أكبر لتبين الصورة */
-    min-height: 60px !important;
-    max-width: 250px !important; /* وعرض أكبر */
-    background-size: 100% 100% !important; /* عشان الصورة تعبي المستطيل بدون ما تنقص */
-    border-radius: 8px !important;
-}
-
-/* تظبيط الخطوط والسيوف */
+/* ======= 3. تظبيط الخطوط والسيوف لتناسب الحجم ======= */
 html body #screen-start #user-title-display .badge-text {
-    font-size: 1.1rem !important; 
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.9) !important;
-    margin: 0 !important;
+    font-size: 1.05rem !important; 
+    text-shadow: 2px 2px 4px #000, -1px -1px 3px #000 !important;
+    margin: 0 5px !important;
+    z-index: 2 !important;
+    position: relative !important;
 }
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
-    font-size: 0.9rem !important;
+    font-size: 0.85rem !important;
+    z-index: 2 !important;
+    position: relative !important;
 }
 
-/* ======= 3. إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
+/* ======= 4. إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
 .snow-overlay { display: none !important; }
 #loading-screen, .modal-overlay, #match-result-overlay {
     background-color: rgba(12, 16, 28, 0.98) !important; 
