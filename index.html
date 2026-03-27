@@ -2446,5 +2446,29 @@
     });
 
 </script>
+<style>
+/* ======= الضربة القاضية لتصغير اللقب وإصلاح الجوالات القديمة ======= */
+
+/* 1. تصغير اللقب في الشاشة الرئيسية مع الحفاظ على فخامته (تصغير نسبي) */
+html body #screen-start #user-title-display {
+    transform: scale(0.7) !important;
+    transform-origin: top center !important;
+    margin-top: -5px !important;
+    margin-bottom: -25px !important;
+}
+
+/* 2. مسح البياض وإصلاح الشاشة للهواتف القديمة */
+.snow-overlay {
+    display: none !important; /* إخفاء الطبقة البيضاء المزعجة للأجهزة القديمة */
+}
+#loading-screen, .modal-overlay, #match-result-overlay {
+    background-color: rgba(10, 15, 30, 0.98) !important; /* لون داكن وأنيق */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+div[style*="background: rgba(255, 255, 255"] {
+    background: rgba(0, 0, 0, 0.5) !important; /* تحويل أي بياض للون شفاف داكن */
+}
+</style>
 </body>
 </html>
