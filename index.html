@@ -2449,33 +2449,39 @@
 </script>
 
 <style>
-/* ======= الحجم المثالي والأنيق للقب في الشاشة الرئيسية ======= */
+/* ======= 1. الحجم المثالي للألقاب العادية (مثل طالب علم) ======= */
 html body #screen-start #user-title-display > div {
-    height: 45px !important; /* صغرنا الارتفاع ليكون أنيق */
+    height: 45px !important;
     min-height: 45px !important;
-    max-width: 220px !important; /* صغرنا العرض */
+    max-width: 200px !important;
     margin: 5px auto 10px auto !important;
-    padding: 0px 10px !important;
-    background-size: cover !important; 
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    border-radius: 10px !important;
+    border-radius: 12px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
 }
+
+/* ======= 2. الحجم الفخم للألقاب اللي فيها صور (مثل الأسد) ======= */
+html body #screen-start #user-title-display > div[style*="background-image"] {
+    height: 60px !important; /* عطيناه ارتفاع أكبر لتبين الصورة */
+    min-height: 60px !important;
+    max-width: 250px !important; /* وعرض أكبر */
+    background-size: 100% 100% !important; /* عشان الصورة تعبي المستطيل بدون ما تنقص */
+    border-radius: 8px !important;
+}
+
+/* تظبيط الخطوط والسيوف */
 html body #screen-start #user-title-display .badge-text {
-    font-size: 1rem !important; /* خط متناسق */
+    font-size: 1.1rem !important; 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.9) !important;
     margin: 0 !important;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;
 }
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
-    font-size: 0.85rem !important; /* تصغير السيوف والرموز شوي */
-    margin: 0 4px !important;
+    font-size: 0.9rem !important;
 }
 
-/* ======= إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
+/* ======= 3. إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
 .snow-overlay { display: none !important; }
 #loading-screen, .modal-overlay, #match-result-overlay {
     background-color: rgba(12, 16, 28, 0.98) !important; 
