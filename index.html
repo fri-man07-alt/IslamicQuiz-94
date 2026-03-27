@@ -2449,47 +2449,43 @@
 </script>
 
 <style>
-/* ======= 1. السر السحري: منع تمغط أي طبقة أو صورة داخل اللقب (تم إرجاعه!) ======= */
-html body #screen-start #user-title-display * {
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    object-fit: cover !important;
-}
-
-/* ======= 2. حجم موحد وأنيق لكل الألقاب بالرئيسية ======= */
+/* ======= 1. حجم موحد وثابت لكل الألقاب ======= */
 html body #screen-start #user-title-display > div,
-html body #screen-start #user-title-display .ult-badge {
-    height: 45px !important;
-    max-height: 45px !important;
-    min-height: 45px !important;
+html body #screen-start #user-title-display [style] {
+    height: 48px !important;       
+    min-height: 48px !important;
+    max-height: 48px !important;
+    width: 220px !important;       
     max-width: 220px !important;
-    width: 100% !important;
     margin: 5px auto 10px auto !important;
     border-radius: 10px !important;
+    overflow: hidden !important; /* قص أي جزء زائد من الصورة */
+    background-size: cover !important; 
+    background-position: center !important; 
+    background-repeat: no-repeat !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    overflow: hidden !important;
-    position: relative !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5) !important;
 }
 
-/* ======= 3. تظبيط الخطوط والسيوف لتناسب الحجم ======= */
+/* ======= 2. تظليل النص ليكون واضح جداً فوق الصور ======= */
 html body #screen-start #user-title-display .badge-text {
-    font-size: 1.05rem !important; 
-    text-shadow: 2px 2px 4px #000, -1px -1px 3px #000 !important;
+    font-size: 1.1rem !important; 
+    color: #fff !important;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 0 0 10px #000 !important;
     margin: 0 5px !important;
-    z-index: 2 !important;
+    z-index: 10 !important;
     position: relative !important;
 }
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
-    font-size: 0.85rem !important;
-    z-index: 2 !important;
+    font-size: 0.9rem !important;
+    z-index: 10 !important;
     position: relative !important;
 }
 
-/* ======= 4. إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
+/* ======= 3. إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
 .snow-overlay { display: none !important; }
 #loading-screen, .modal-overlay, #match-result-overlay {
     background-color: rgba(12, 16, 28, 0.98) !important; 
@@ -2497,6 +2493,18 @@ html body #screen-start #user-title-display .ms-r {
     -webkit-backdrop-filter: none !important;
 }
 </style>
+
+<script>
+/* ======= 4. الحارس البرمجي (يمنع تمغط الصورة نهائياً) ======= */
+setInterval(function(){
+    var titleElements = document.querySelectorAll('#user-title-display *');
+    for(var i = 0; i < titleElements.length; i++){
+        if(titleElements[i].style.backgroundSize === '100% 100%') {
+            titleElements[i].style.setProperty('background-size', 'cover', 'important');
+        }
+    }
+}, 500);
+</script>
 
 </body>
 </html>
