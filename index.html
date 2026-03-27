@@ -2449,24 +2449,30 @@
 </script>
 
 <style>
-/* ======= الإصلاح النهائي والأنيق للقب ======= */
+/* ======= الحجم المثالي والأنيق للقب في الشاشة الرئيسية ======= */
 html body #screen-start #user-title-display > div {
-    height: auto !important; 
-    min-height: 55px !important;
-    max-width: 250px !important; 
-    padding: 8px 10px !important; 
-    margin: 5px auto 15px auto !important;
-    transform: none !important; 
-    border-radius: 12px !important;
-    background-size: cover !important;
+    height: 45px !important; /* صغرنا الارتفاع ليكون أنيق */
+    min-height: 45px !important;
+    max-width: 220px !important; /* صغرنا العرض */
+    margin: 5px auto 10px auto !important;
+    padding: 0px 10px !important;
+    background-size: cover !important; 
     background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 html body #screen-start #user-title-display .badge-text {
-    font-size: 1.1rem !important; 
+    font-size: 1rem !important; /* خط متناسق */
+    margin: 0 !important;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8) !important;
 }
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
-    font-size: 0.9rem !important;
+    font-size: 0.85rem !important; /* تصغير السيوف والرموز شوي */
+    margin: 0 4px !important;
 }
 
 /* ======= إصلاح الشاشة البيضاء للأجهزة القديمة ======= */
@@ -2477,5 +2483,6 @@ html body #screen-start #user-title-display .ms-r {
     -webkit-backdrop-filter: none !important;
 }
 </style>
+
 </body>
 </html>
