@@ -139,19 +139,39 @@
         #screen-start {
             padding-top: 50px !important;
         }
-        /* 👑 تصغير اللقب في الشاشة الرئيسية ليكون أنيقاً 👑 */
-        #user-title-display > div {
-            height: 45px !important;
-            min-height: 45px !important;
-            max-width: 240px !important;
-            margin: 0 auto 15px auto !important;
+        /* 👑 الإجبار المطلق لتصغير اللقب بالشاشة الرئيسية فقط 👑 */
+        #screen-start .ult-badge, 
+        #screen-start div[class*="title-"],
+        #screen-start [id*="user-title"] > div,
+        #screen-start div[style*="background-image"] {
+            height: 55px !important;
+            min-height: 55px !important;
+            max-width: 260px !important;
+            margin: 5px auto 15px auto !important;
+            background-size: cover !important;
+            background-position: center !important;
             border-width: 2px !important;
         }
-        #user-title-display .badge-text {
+        #screen-start .badge-text {
             font-size: 1.1rem !important;
         }
-        #user-title-display .ms-l, #user-title-display .ms-r {
-            font-size: 1rem !important;
+        
+        /* 📱 إصلاح الشاشة الباهتة والبيضاء للهواتف القديمة 📱 */
+        .snow-overlay {
+            background: transparent !important;
+            opacity: 0.1 !important; /* تخفيف البياض */
+        }
+        body, html {
+            background-color: #121220 !important; /* إجبار الخلفية تكون داكنة */
+        }
+        .modal-overlay, #match-result-overlay, #loading-screen {
+            background: rgba(15, 20, 35, 0.95) !important; /* بديل الغباش القديم */
+            backdrop-filter: none !important;
+        }
+        /* منع أي طبقة بيضاء من تخريب الألوان */
+        div[style*="background: rgba(255, 255, 255"] {
+            background: rgba(20, 25, 40, 0.8) !important;
+            color: #fff !important;
         }
 
     </style>
