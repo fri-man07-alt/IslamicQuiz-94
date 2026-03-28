@@ -2449,76 +2449,96 @@
 </script>
 <style>
 /* =========================================
-   1. ترتيب الشاشة (تنزيل الاسم)
+   1. منع السكرول نهائياً (قفل الشاشة)
    ========================================= */
+body, html, #screen-start {
+    overflow: hidden !important; /* يمنع ظهور شريط التمرير */
+    max-height: 100vh !important;
+    touch-action: none !important; /* يمنع السحب بالإصبع للأسفل */
+}
+
+/* =========================================
+   2. تصغير المسافات بين العناصر (لتكفي الشاشة)
+   ========================================= */
+/* تصغير الاسم ورفعه */
 html body #screen-start > div:nth-child(2) {
-    margin-top: 35px !important; 
-    position: relative !important;
+    margin-top: 15px !important; 
+    transform: scale(0.9) !important; /* تصغير 10% */
     z-index: 10 !important;
 }
 
 /* =========================================
-   2. تصغير صندوق اللقب وترتيبه بالنص
+   3. قفل عرض اللقب بالقوة (عشان ما يعرض ع الشاشة)
    ========================================= */
 html body #screen-start #user-title-display {
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
+    margin: 2px 0 !important;
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
 }
 
-/* الشكل الأساسي لأي لقب (زجاجي وملموم) */
 html body #screen-start #user-title-display > div {
-    height: 50px !important; /* كبرناه شوي ليرتاح الحيوان */
-    min-height: 50px !important;
-    width: 230px !important; /* 🔥 هون حددنا العرض ليكون ملموم وأنيق 🔥 */
-    max-width: 230px !important; 
+    /* 🔥 قفلنا العرض من كل الجهات عشان ما يتمطط 🔥 */
+    width: 210px !important;
+    min-width: 210px !important;
+    max-width: 210px !important;
+    flex: 0 0 210px !important; 
+    
+    height: 44px !important;
     margin: 0 auto !important;
     border-radius: 20px !important;
     border: 1px solid rgba(255, 215, 0, 0.6) !important; 
     background-color: rgba(15, 20, 35, 0.7) !important; 
-    backdrop-filter: blur(5px) !important;
     display: flex !important;
     align-items: center !important;
-    
-    /* الأساس: النص بالمنتصف للألقاب العادية */
     justify-content: center !important;
     text-align: center !important;
-    background-position: center !important;
-    background-size: 100% 100% !important;
-    padding: 0 !important;
-    
     box-sizing: border-box !important;
     z-index: 10 !important;
-    position: relative !important;
-    overflow: hidden !important;
-}
-
-/* رفع الـ ID ليكون تحت اللقب مباشرة */
-#start-user-id-container, .user-id-box {
-    margin-top: 2px !important;
-    z-index: 10 !important;
-    position: relative !important;
 }
 
 /* =========================================
-   3. تكبير الحيوان (النمر/الأسد) وترتيب النص
+   4. ترتيب الحيوان وتكبيره
    ========================================= */
 html body #screen-start #user-title-display > div.title-special,
 html body #screen-start #user-title-display > div.title-tiger,
 html body #screen-start #user-title-display > div.title-cheetah {
     
-    /* إزاحة النص لليمين مع إبعاده عن الحافة */
     justify-content: flex-start !important; 
     text-align: right !important;
-    padding-right: 25px !important; /* مسافة أمان من اليمين */
-    padding-left: 0px !important; 
+    padding-right: 20px !important; 
+    padding-left: 0 !important;
     
-    /* 🔥 تكبير الحيوان وتثبيته على اليسار 🔥 */
+    /* تكبير الحيوان ليعبي اليسار */
     background-position: left center !important;
-    background-size: 95px 120% !important; /* كبرنا الحيوان ليملي المكان بشكل فخم */
+    background-size: 80px 110% !important; 
     background-repeat: no-repeat !important;
+}
+
+/* =========================================
+   5. تصغير كل الأزرار السفلية والنقاط
+   ========================================= */
+/* صندوق الـ ID */
+#start-user-id-container, .user-id-box {
+    margin: 2px auto 6px auto !important;
+    transform: scale(0.9) !important;
+}
+
+/* تقليل المسافات حول النصوص (600 سؤال، التلميحات) */
+#screen-start p, #screen-start h3, #screen-start span {
+    margin: 2px 0 !important;
+}
+
+/* تصغير كل الأزرار المتبقية لترتاح بالشاشة */
+#screen-start button, #screen-start .btn, #screen-start div[style*="display: flex"] {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    transform: scale(0.9) !important; /* 🔥 تصغير الزر كامل 🔥 */
+}
+
+/* رفع الزر الأحمر الأخير قليلاً لتجنب قصه من الأسفل */
+button[style*="red"], button[style*="#dc3545"], .battle-btn {
+    margin-bottom: 15px !important;
 }
 </style>
 
