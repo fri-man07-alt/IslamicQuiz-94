@@ -2448,54 +2448,95 @@
 
 </script>
 <style>
-/* ضمان مرونة صندوق اللقب ليتجاوب مع الكود البرمجي */
-#screen-start #user-title-display > div {
+/* 1. تصغير صندوق اللقب (طالب علم) وترتيبه بشكل أسطوري */
+html body #screen-start #user-title-display {
+    margin-top: 10px !important;
+    margin-bottom: 12px !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+html body #screen-start #user-title-display > div {
+    height: 44px !important;
+    min-height: 44px !important;
+    width: 220px !important; /* 🔥 هنا تم تصغير العرض ليصبح متناسقاً 🔥 */
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 215, 0, 0.6) !important; /* إطار ذهبي */
+    background-color: rgba(15, 20, 35, 0.7) !important; /* خلفية زجاجية أنيقة */
+    backdrop-filter: blur(5px) !important;
     display: flex !important;
     align-items: center !important;
     box-sizing: border-box !important;
+    z-index: 10 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* 2. ترتيب صندوق الـ ID تحته مباشرة */
+#start-user-id-container, .user-id-box {
+    margin-top: 5px !important;
+    z-index: 10 !important;
+    position: relative !important;
 }
 </style>
 
 <script>
-// كود ذكي للتحكم بتموضع الألقاب (يمين/يسار/منتصف)
+// 🌟 الكود الإجباري لترتيب الشاشة (الاسم والألقاب) 🌟
 setInterval(function() {
+    
+    // --- أولاً: تنزيل صندوق الاسم لتحت وإبعاده عن الزر العلوي ---
+    // نبحث عن الصندوق الذي يحتوي على الاسم (ابو ادم) ونعطيه مسافة من الأعلى
+    var allDivs = document.querySelectorAll('#screen-start > div');
+    if(allDivs.length > 1) {
+        // عادة صندوق الاسم يكون العنصر الثاني بعد الزر العلوي
+        var nameBox = allDivs[1]; 
+        // نتأكد أنه ليس صندوق اللقب أو الـ ID
+        if(nameBox.id !== 'user-title-display' && nameBox.id !== 'start-user-id-container') {
+            nameBox.style.setProperty('margin-top', '35px', 'important'); // 🔥 دفشة قوية لتحت 🔥
+            nameBox.style.setProperty('position', 'relative', 'important');
+            nameBox.style.setProperty('z-index', '10', 'important');
+        }
+    }
+
+    // --- ثانياً: حل مشكلة الألقاب والصور جذرياً ---
     var titleDiv = document.querySelector('#screen-start #user-title-display > div');
     
     if (titleDiv) {
         var text = titleDiv.innerText || "";
         
-        // 1. تحديد الألقاب التي تحتوي على صور (يمكنك إضافة المزيد هنا مستقبلاً)
-        var hasAnimal = text.includes("أسد") || text.includes("منبع الحكمة") || text.includes("امبراطور");
+        // التحقق من وجود أي لقب يحتاج مساحة للصورة
+        var hasImage = text.includes("أسد") || 
+                       text.includes("نمر") || 
+                       text.includes("فهد") || 
+                       text.includes("النمر") || 
+                       text.includes("الفهد") || 
+                       text.includes("امبراطور") || 
+                       text.includes("منبع الحكمة");
 
-        if (hasAnimal) {
-            // --- ألقاب الحيوانات (الصورة يسار، النص يمين) ---
-            
-            // ضبط الصورة لتكون على اليسار
+        if (hasImage) {
+            // 🦁 إذا اللقب فيه صورة 🦁 (النص يمين، الصورة يسار)
             titleDiv.style.setProperty('background-position', 'left center', 'important');
-            titleDiv.style.setProperty('background-size', 'contain', 'important'); // لضمان عدم تمطط الصورة
+            titleDiv.style.setProperty('background-size', 'contain', 'important');
             titleDiv.style.setProperty('background-repeat', 'no-repeat', 'important');
             
-            // دفع النص لليمين وإبعاد النص عن الصورة
-            titleDiv.style.setProperty('justify-content', 'flex-start', 'important'); // لليمين
-            titleDiv.style.setProperty('padding-left', '45px', 'important'); // ترك مسافة 45 بكسل للصورة على اليسار
+            titleDiv.style.setProperty('justify-content', 'flex-start', 'important'); 
+            titleDiv.style.setProperty('padding-left', '45px', 'important'); // مسافة آمنة للصورة
             titleDiv.style.setProperty('padding-right', '15px', 'important');
             titleDiv.style.setProperty('text-align', 'right', 'important');
-            
         } else {
-            // --- الألقاب العادية (النص بالمنتصف) ---
-            
-            // إرجاع الخلفية لوضعها الطبيعي
+            // 👤 إذا اللقب عادي (مثل "طالب علم") 👤 (النص بالمنتصف تماماً)
             titleDiv.style.setProperty('background-position', 'center', 'important');
             titleDiv.style.setProperty('background-size', '100% 100%', 'important');
             
-            // سنترة النص تماماً بالمنتصف وإلغاء المسافات الجانبية
             titleDiv.style.setProperty('justify-content', 'center', 'important');
             titleDiv.style.setProperty('padding-left', '0px', 'important');
             titleDiv.style.setProperty('padding-right', '0px', 'important');
             titleDiv.style.setProperty('text-align', 'center', 'important');
         }
     }
-}, 100); // سرعة الفحص 100 جزء من الثانية عشان ما يصير وميض بالشاشة
+}, 150); // فحص مستمر وسريع لضمان عدم تراجع التطبيق عن التعديل
 </script>
 
 </body>
