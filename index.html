@@ -2448,285 +2448,55 @@
 
 </script>
 <style>
-    /* الإعدادات العامة للجسم والخلفية */
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #0b1424; /* سماء ليلية داكنة */
-        color: #ffda44; /* لون ذهبي للنص الافتراضي */
-        direction: rtl; /* اتجاه النص من اليمين لليسار */
-    }
-
-    /* الحاوية الرئيسية للتطبيق */
-    #game-container {
-        width: 360px; /* حجم هاتف نموذجي للعرض */
-        height: 640px;
-        margin: 50px auto;
-        border: 1px solid #ffda44;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        background-color: #0d1a2d; /* سماء ليلية أغمق */
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-    }
-
-    /* حاوية الخلفية والنجوم */
-    #game-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        /* نجوم مبعثرة كخلفية */
-        background: 
-            radial-gradient(1px 1px at 25px 30px, #ffffff, rgba(0,0,0,0)),
-            radial-gradient(1.5px 1.5px at 50px 80px, #ffffff, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 110px 140px, #ffda44, rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 190px 40px, #ffffff, rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 240px 180px, #ffffff, rgba(0,0,0,0)),
-            radial-gradient(1.5px 1.5px at 310px 70px, #ffffff, rgba(0,0,0,0));
-        background-repeat: repeat;
-        background-size: 360px 360px;
-        opacity: 0.6; /* شفافية النجوم */
-    }
-
-    /* القمر الهلال على اليمين (مو بالمنتصف) */
-    #crescent-moon {
-        position: absolute;
-        top: 40px; /* الموضع الرأسي العلوي */
-        right: 40px; /* الموضع الأفقي الأيمن */
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        background: transparent;
-        /* إنشاء شكل هلال ذهبي عبر ظل خارجي */
-        box-shadow: 20px 0 0 0 #ffda44; 
-        transform: rotate(-15deg); /* تدوير طفيف لإعطاء شكل هلال طبيعي */
-        z-index: 1; /* تأكد من أنه خلف النصوص */
-    }
-
-    /* شريط العنوان العلوي (شعار لا إله إلا الله) */
-    #game-header {
-        position: relative;
-        z-index: 2;
-        padding: 20px 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    /* الرموز الجانبية (ملف شخصي، إشعارات، إلخ) */
-    .side-icons {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .circle-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 2px solid #ffda44;
-        background-color: rgba(13, 26, 45, 0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-        box-shadow: 0 0 10px rgba(255, 218, 68, 0.3);
-        cursor: pointer;
-    }
-    
-    .circle-icon img {
-        width: 22px;
-        height: 22px;
-    }
-
-    /* ترتيب الأيقونات الجانبية */
-    .left-icons { align-items: flex-start; }
-    .right-icons { align-items: flex-end; }
-
-    /* لوحة الملف الشخصي المركزية */
-    .profile-title-box {
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    /* شريط شعار التوحيد */
-    .title-phrase {
-        background-color: rgba(255, 218, 68, 0.1);
-        border: 1px solid #ffda44;
-        color: #ffda44;
-        padding: 6px 30px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 14px;
-        text-shadow: 0 0 3px rgba(255,255,255,0.7);
-    }
-
-    /* لوحة اسم اللاعب */
-    .name-box {
-        background-color: rgba(68, 85, 120, 0.4);
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        color: #ffda44;
-        padding: 8px 40px;
-        border-radius: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        text-shadow: 0 0 5px rgba(255, 218, 68, 0.7);
-    }
-
-    /* شريط اللقب */
-    .role-box {
-        background-color: #ffda44;
-        color: #0b1424;
-        padding: 4px 20px;
-        border-radius: 10px;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    /* المحتوى الرئيسي */
-    #game-content {
-        position: relative;
-        z-index: 2;
-        flex: 1;
-        padding: 0 15px 15px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
-    /* لوحة الـ ID وقابلية النسخ */
-    .id-copy-box {
-        background-color: rgba(13, 26, 45, 0.9);
-        border: 1px solid #ffda44;
-        color: #ffda44;
-        padding: 8px 20px;
-        border-radius: 10px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-    }
-    
-    /* لوحة الصعوبة */
-    .difficulty-text {
-        color: #ffda44;
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    
-    /* التلميحات */
-    .hints-row {
-        color: #00ffaa;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-
-    /* لوحة النقاط */
-    .points-box {
-        background-color: rgba(13, 26, 45, 0.9);
-        border: 1px solid #ffda44;
-        color: #ffda44;
-        padding: 10px 40px;
-        border-radius: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        text-shadow: 0 0 5px rgba(255, 218, 68, 0.7);
-    }
-
-    /* لوحة المتصدرين */
-    .leaderboard-box {
-        background-color: rgba(13, 26, 45, 0.9);
-        border: 1px solid #ffda44;
-        color: #fff;
-        padding: 8px 30px;
-        border-radius: 10px;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-    }
-
-    /* أزرار الإجراءات الرئيسية */
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-        width: 100%;
-        justify-content: center;
-    }
-
-    .action-btn {
-        flex: 1;
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-weight: bold;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        border: 1px solid rgba(255,255,255,0.3);
-        text-align: center;
-        transition: all 0.2s;
-    }
-
-    .action-btn:active { transform: scale(0.97); }
-
-    .btn-gold {
-        background-color: #ffda44;
-        color: #0b1424;
-    }
-    .btn-green {
-        background-color: #32cd32;
-        color: #0b1424;
-    }
-
-    /* زر التحدي المباشر الأحمر */
-    .battle-btn {
-        background-color: #dc143c;
-        color: #fff;
-        padding: 12px 20px;
-        border-radius: 10px;
-        font-weight: bold;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        border: 1px solid rgba(255,255,255,0.3);
-        width: calc(100% - 30px);
-        justify-content: center;
-        margin-top: auto;
-    }
-
-    /* زخرفة سفلي (أيقونات الثلج) */
-    .decoration-row {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        margin-top: 10px;
-    }
-    .snowman-emoji {
-        font-size: 16px;
-        color: rgba(255,255,255,0.4);
-    }
+/* ضمان مرونة صندوق اللقب ليتجاوب مع الكود البرمجي */
+#screen-start #user-title-display > div {
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+}
 </style>
+
+<script>
+// كود ذكي للتحكم بتموضع الألقاب (يمين/يسار/منتصف)
+setInterval(function() {
+    var titleDiv = document.querySelector('#screen-start #user-title-display > div');
+    
+    if (titleDiv) {
+        var text = titleDiv.innerText || "";
+        
+        // 1. تحديد الألقاب التي تحتوي على صور (يمكنك إضافة المزيد هنا مستقبلاً)
+        var hasAnimal = text.includes("أسد") || text.includes("منبع الحكمة") || text.includes("امبراطور");
+
+        if (hasAnimal) {
+            // --- ألقاب الحيوانات (الصورة يسار، النص يمين) ---
+            
+            // ضبط الصورة لتكون على اليسار
+            titleDiv.style.setProperty('background-position', 'left center', 'important');
+            titleDiv.style.setProperty('background-size', 'contain', 'important'); // لضمان عدم تمطط الصورة
+            titleDiv.style.setProperty('background-repeat', 'no-repeat', 'important');
+            
+            // دفع النص لليمين وإبعاد النص عن الصورة
+            titleDiv.style.setProperty('justify-content', 'flex-start', 'important'); // لليمين
+            titleDiv.style.setProperty('padding-left', '45px', 'important'); // ترك مسافة 45 بكسل للصورة على اليسار
+            titleDiv.style.setProperty('padding-right', '15px', 'important');
+            titleDiv.style.setProperty('text-align', 'right', 'important');
+            
+        } else {
+            // --- الألقاب العادية (النص بالمنتصف) ---
+            
+            // إرجاع الخلفية لوضعها الطبيعي
+            titleDiv.style.setProperty('background-position', 'center', 'important');
+            titleDiv.style.setProperty('background-size', '100% 100%', 'important');
+            
+            // سنترة النص تماماً بالمنتصف وإلغاء المسافات الجانبية
+            titleDiv.style.setProperty('justify-content', 'center', 'important');
+            titleDiv.style.setProperty('padding-left', '0px', 'important');
+            titleDiv.style.setProperty('padding-right', '0px', 'important');
+            titleDiv.style.setProperty('text-align', 'center', 'important');
+        }
+    }
+}, 100); // سرعة الفحص 100 جزء من الثانية عشان ما يصير وميض بالشاشة
+</script>
 
 </body>
 </html>
