@@ -2449,55 +2449,58 @@
 </script>
 <style>
 /* =========================================
-   1. صندوق اللقب الأساسي (عرض 200 بكسل ليكون أنيق)
+   1. تثبيت وتجميد شكل الصندوق لكل الألقاب (عادي أو حيوان)
    ========================================= */
 html body #screen-start #user-title-display {
-    margin: 2px 0 !important;
+    margin: 5px 0 !important;
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
 }
 
-html body #screen-start #user-title-display > div {
-    /* عرض الصندوق ثابت وملموم */
-    width: 200px !important; 
-    min-width: 200px !important;
-    max-width: 200px !important;
+/* النجمة (*) هون معناها: أي شي بيحطه التطبيق جوا الصندوق، اجبره يصير ميثيك! */
+html body #screen-start #user-title-display > * {
+    width: 210px !important; 
+    min-width: 210px !important;
     height: 46px !important;
     margin: 0 auto !important;
-    border-radius: 20px !important;
-    border: 1px solid rgba(255, 215, 0, 0.6) !important; 
-    background-color: rgba(15, 20, 35, 0.7) !important; 
     
-    /* توسيط النص للأسماء العادية (مثل طالب علم) */
+    /* 🔥 إجبار الخلفية تكون سودة والإطار ذهبي، لحل مشكلة اللون الأبيض/الأزرق 🔥 */
+    background: rgba(15, 20, 35, 0.9) !important; 
+    border: 1px solid #ffd700 !important; 
+    border-radius: 20px !important;
+    
+    /* إجبار النص يكون ذهبي حصراً */
+    color: #ffd700 !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 3px #000 !important;
+    
     display: flex !important;
     align-items: center !important;
     justify-content: center !important; 
-    text-align: center !important;
     padding: 0 !important;
-    box-sizing: border-box !important;
-    z-index: 10 !important;
-    
-    /* منع الصورة من الخروج عن حدود الصندوق */
     overflow: hidden !important; 
 }
 
+/* التخلص من اللون الأزرق اللي بيطلع بألقاب مثل "المتميز" */
+html body #screen-start #user-title-display * {
+    color: #ffd700 !important;
+}
+
 /* =========================================
-   2. ألقاب الحيوانات (أسد السنة، نمر، فهد)
+   2. الحجم المثالي للأسد/النمر (Contain)
    ========================================= */
-html body #screen-start #user-title-display > div.title-special,
-html body #screen-start #user-title-display > div.title-tiger,
-html body #screen-start #user-title-display > div.title-cheetah {
+html body #screen-start #user-title-display > .title-special,
+html body #screen-start #user-title-display > .title-tiger,
+html body #screen-start #user-title-display > .title-cheetah {
     
     /* إزاحة النص لليمين */
-    justify-content: flex-end !important; /* دفع النص لليمين */
-    padding-right: 15px !important; /* مسافة أمان من الحافة اليمين */
-    padding-left: 55px !important; /* مساحة مخصصة للحيوان على اليسار عشان ما يركب النص عليه */
+    justify-content: flex-end !important; 
+    padding-right: 20px !important; 
     
-    /* ضبط صورة الحيوان على اليسار بحجم مناسب وأنيق */
+    /* 🔥 السر هون: (contain) بتجبر الحيوان يلم حاله على قد الـ 46 بكسل تبع الصندوق 🔥 */
+    background-size: contain !important; 
     background-position: left center !important;
-    /* الحجم: الطول 90% من الصندوق عشان ما يطوف، والعرض تلقائي */
-    background-size: auto 90% !important; 
     background-repeat: no-repeat !important;
 }
 </style>
