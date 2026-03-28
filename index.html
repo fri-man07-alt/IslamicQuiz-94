@@ -2447,34 +2447,37 @@
 });
 
 </script>
-
 <style>
-/* ======= 1. قفل الشاشة وإنزال الاسم للأسفل ======= */
+/* ======= 1. قفل الشاشة واللون الليلي وإصلاح كارثة التداخل ======= */
 html, body {
     overflow: hidden !important; 
     height: 100vh !important;
     max-height: 100vh !important;
     touch-action: none !important;
+    background-color: #0c101c !important; 
 }
+
 #screen-start {
-    padding-top: 75px !important; /* 🌟 نزلنا الاسم لتحت 🌟 */
+    /* 🌟 65px مسافة آمنة جداً بتنزل الاسم ليرتاح بدون ما تدفش الزر الأحمر لبرا 🌟 */
+    padding-top: 65px !important; 
     overflow: hidden !important;
     height: 100vh !important;
     max-height: 100vh !important;
+    background-color: rgba(12, 16, 28, 0.9) !important; 
 }
 
-/* ======= 2. تنزيل اللقب وإلغاء المسافة بينه وبين الـ ID ======= */
+/* ======= 2. تنزيل اللقب ولصقه بالـ ID ======= */
 html body #screen-start #user-title-display > div {
-    height: 48px !important;
-    min-height: 48px !important;
-    width: 230px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    width: 220px !important;
     
-    /* 🌟 السر هنا: 40 من فوق لدفشه لتحت، و 0 من تحت ليلزق بالـ ID 🌟 */
-    margin: 40px auto 0px auto !important; 
+    /* 🌟 15px من فوق ليبعد عن الاسم، و 0 من تحت ليلزق بالـ ID 🌟 */
+    margin: 15px auto 0px auto !important; 
     
     border-radius: 12px !important;
     border: 1px solid #ffd700 !important;
-    background-color: #000000 !important; 
+    background-color: #080b12 !important; /* أسود ليلي فخم */
     
     display: flex !important;
     align-items: center !important;
@@ -2484,26 +2487,26 @@ html body #screen-start #user-title-display > div {
     background-size: 0 0 !important; 
 }
 
-/* رفع الـ ID ليلزق باللقب تماماً */
+/* 🌟 رفع الـ ID ليلزق باللقب تماماً 🌟 */
 #start-user-id-container {
-    margin-top: 0px !important; 
+    margin-top: 4px !important; 
 }
 
-/* ======= 3. تنسيق الأسد (بدون تغيير) ======= */
+/* ======= 3. تنسيق الأسد الفخم ======= */
 html body #screen-start #user-title-display > div[style*="url"],
 html body #screen-start #user-title-display > div[style*="background"] {
     justify-content: flex-start !important; 
-    padding-right: 20px !important; 
-    background-size: 110px 100% !important; 
+    padding-right: 15px !important; 
+    background-size: 100px 100% !important; 
     background-position: left center !important; 
     background-repeat: no-repeat !important;
-    background-color: #000000 !important; 
+    background-color: #080b12 !important; 
 }
 html body #screen-start #user-title-display img {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    width: 110px !important; 
+    width: 100px !important; 
     height: 100% !important;
     object-fit: cover !important;
     z-index: 1 !important;
@@ -2511,7 +2514,7 @@ html body #screen-start #user-title-display img {
 
 /* ======= 4. تنسيق النص ======= */
 html body #screen-start #user-title-display .badge-text {
-    font-size: 1.05rem !important;
+    font-size: 1rem !important;
     color: #ffd700 !important;
     font-weight: bold !important;
     text-shadow: 2px 2px 5px #000, -2px -2px 5px #000, 0 0 10px #000 !important;
@@ -2521,7 +2524,7 @@ html body #screen-start #user-title-display .badge-text {
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
     z-index: 5 !important;
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
     margin: 0 4px !important;
     position: relative !important;
 }
@@ -2532,15 +2535,20 @@ html body #screen-start #user-title-display .ms-r {
     border: 2px solid #ffd700 !important;
     background: rgba(0, 0, 0, 0.4) !important;
 }
+
+/* ======= 6. منع البياض المزعج نهائياً ======= */
 .snow-overlay { display: none !important; }
+div[style*="background: rgba(255, 255, 255"] {
+    display: none !important; 
+}
 
 /* =========================================================
-   ======= 6. ميزة رسالة العودة للتحدي (تصميم الرسالة) =======
+   ======= 7. ميزة رسالة العودة للتحدي (الـ Popup) =======
    ========================================================= */
 #resume-game-popup {
     position: fixed;
     top: 40px;
-    right: -100%; /* مخفية أقصى اليمين */
+    right: -100%; 
     width: 280px;
     background: rgba(15, 20, 35, 0.95);
     border: 2px solid #ffd700;
@@ -2548,12 +2556,12 @@ html body #screen-start #user-title-display .ms-r {
     padding: 20px;
     z-index: 999999;
     box-shadow: -5px 5px 20px rgba(0,0,0,0.8);
-    transition: right 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* حركة انزلاق احترافية */
+    transition: right 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     text-align: center;
     direction: rtl;
 }
 #resume-game-popup.show-popup {
-    right: 20px; /* تدخل للشاشة من اليمين */
+    right: 20px; 
 }
 #resume-game-popup h3 {
     color: white;
@@ -2591,33 +2599,19 @@ html body #screen-start #user-title-display .ms-r {
 </div>
 
 <script>
-// مراقبة خروج ورجوع اللاعب للتطبيق
 document.addEventListener("visibilitychange", function() {
     if (document.visibilityState === 'visible') {
-        // التطبيق رجع للشاشة، نتحقق إذا كان اللاعب داخل لعبة
         var startScreen = document.getElementById('screen-start');
-        
-        // إذا كانت الشاشة الرئيسية مخفية (يعني هو جوا تحدي حالياً)
         if (startScreen && startScreen.style.display === 'none') {
-            // إظهار الرسالة بحركة انزلاق
             document.getElementById('resume-game-popup').classList.add('show-popup');
         }
-    } else {
-        // التطبيق راح للخلفية (هنا ممكن تحط كود يوقف التايمر لو حبيت)
     }
 });
-
 function resumeGameYes() {
-    // إخفاء الرسالة
     document.getElementById('resume-game-popup').classList.remove('show-popup');
-    // 💡 ضع هنا كود اللعبة الخاص بك لاستكمال التايمر أو اللعب
 }
-
 function resumeGameNo() {
-    // إخفاء الرسالة
     document.getElementById('resume-game-popup').classList.remove('show-popup');
-    // 💡 ضع هنا كود اللعبة الخاص بك للخروج للصفحة الرئيسية وإلغاء التحدي
-    // مثال: showScreen('screen-start');
 }
 </script>
 
