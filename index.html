@@ -2448,96 +2448,79 @@
 
 </script>
 <style>
-/* 1. تصغير صندوق اللقب (طالب علم) وترتيبه بشكل أسطوري */
+/* =========================================
+   1. ترتيب الشاشة (تنزيل الاسم)
+   ========================================= */
+html body #screen-start > div:nth-child(2) {
+    margin-top: 35px !important; 
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+/* =========================================
+   2. تصغير صندوق اللقب وترتيبه بالنص
+   ========================================= */
 html body #screen-start #user-title-display {
     margin-top: 10px !important;
-    margin-bottom: 12px !important;
+    margin-bottom: 10px !important;
     display: flex !important;
     justify-content: center !important;
     width: 100% !important;
 }
 
+/* الشكل الأساسي لأي لقب (زجاجي وملموم) */
 html body #screen-start #user-title-display > div {
-    height: 44px !important;
-    min-height: 44px !important;
-    width: 220px !important; /* 🔥 هنا تم تصغير العرض ليصبح متناسقاً 🔥 */
+    height: 50px !important; /* كبرناه شوي ليرتاح الحيوان */
+    min-height: 50px !important;
+    width: 230px !important; /* 🔥 هون حددنا العرض ليكون ملموم وأنيق 🔥 */
+    max-width: 230px !important; 
     margin: 0 auto !important;
     border-radius: 20px !important;
-    border: 1px solid rgba(255, 215, 0, 0.6) !important; /* إطار ذهبي */
-    background-color: rgba(15, 20, 35, 0.7) !important; /* خلفية زجاجية أنيقة */
+    border: 1px solid rgba(255, 215, 0, 0.6) !important; 
+    background-color: rgba(15, 20, 35, 0.7) !important; 
     backdrop-filter: blur(5px) !important;
     display: flex !important;
     align-items: center !important;
+    
+    /* الأساس: النص بالمنتصف للألقاب العادية */
+    justify-content: center !important;
+    text-align: center !important;
+    background-position: center !important;
+    background-size: 100% 100% !important;
+    padding: 0 !important;
+    
     box-sizing: border-box !important;
     z-index: 10 !important;
     position: relative !important;
     overflow: hidden !important;
 }
 
-/* 2. ترتيب صندوق الـ ID تحته مباشرة */
+/* رفع الـ ID ليكون تحت اللقب مباشرة */
 #start-user-id-container, .user-id-box {
-    margin-top: 5px !important;
+    margin-top: 2px !important;
     z-index: 10 !important;
     position: relative !important;
 }
+
+/* =========================================
+   3. تكبير الحيوان (النمر/الأسد) وترتيب النص
+   ========================================= */
+html body #screen-start #user-title-display > div.title-special,
+html body #screen-start #user-title-display > div.title-tiger,
+html body #screen-start #user-title-display > div.title-cheetah {
+    
+    /* إزاحة النص لليمين مع إبعاده عن الحافة */
+    justify-content: flex-start !important; 
+    text-align: right !important;
+    padding-right: 25px !important; /* مسافة أمان من اليمين */
+    padding-left: 0px !important; 
+    
+    /* 🔥 تكبير الحيوان وتثبيته على اليسار 🔥 */
+    background-position: left center !important;
+    background-size: 95px 120% !important; /* كبرنا الحيوان ليملي المكان بشكل فخم */
+    background-repeat: no-repeat !important;
+}
 </style>
-
-<script>
-// 🌟 الكود الإجباري لترتيب الشاشة (الاسم والألقاب) 🌟
-setInterval(function() {
-    
-    // --- أولاً: تنزيل صندوق الاسم لتحت وإبعاده عن الزر العلوي ---
-    // نبحث عن الصندوق الذي يحتوي على الاسم (ابو ادم) ونعطيه مسافة من الأعلى
-    var allDivs = document.querySelectorAll('#screen-start > div');
-    if(allDivs.length > 1) {
-        // عادة صندوق الاسم يكون العنصر الثاني بعد الزر العلوي
-        var nameBox = allDivs[1]; 
-        // نتأكد أنه ليس صندوق اللقب أو الـ ID
-        if(nameBox.id !== 'user-title-display' && nameBox.id !== 'start-user-id-container') {
-            nameBox.style.setProperty('margin-top', '35px', 'important'); // 🔥 دفشة قوية لتحت 🔥
-            nameBox.style.setProperty('position', 'relative', 'important');
-            nameBox.style.setProperty('z-index', '10', 'important');
-        }
-    }
-
-    // --- ثانياً: حل مشكلة الألقاب والصور جذرياً ---
-    var titleDiv = document.querySelector('#screen-start #user-title-display > div');
-    
-    if (titleDiv) {
-        var text = titleDiv.innerText || "";
-        
-        // التحقق من وجود أي لقب يحتاج مساحة للصورة
-        var hasImage = text.includes("أسد") || 
-                       text.includes("نمر") || 
-                       text.includes("فهد") || 
-                       text.includes("النمر") || 
-                       text.includes("الفهد") || 
-                       text.includes("امبراطور") || 
-                       text.includes("منبع الحكمة");
-
-        if (hasImage) {
-            // 🦁 إذا اللقب فيه صورة 🦁 (النص يمين، الصورة يسار)
-            titleDiv.style.setProperty('background-position', 'left center', 'important');
-            titleDiv.style.setProperty('background-size', 'contain', 'important');
-            titleDiv.style.setProperty('background-repeat', 'no-repeat', 'important');
-            
-            titleDiv.style.setProperty('justify-content', 'flex-start', 'important'); 
-            titleDiv.style.setProperty('padding-left', '45px', 'important'); // مسافة آمنة للصورة
-            titleDiv.style.setProperty('padding-right', '15px', 'important');
-            titleDiv.style.setProperty('text-align', 'right', 'important');
-        } else {
-            // 👤 إذا اللقب عادي (مثل "طالب علم") 👤 (النص بالمنتصف تماماً)
-            titleDiv.style.setProperty('background-position', 'center', 'important');
-            titleDiv.style.setProperty('background-size', '100% 100%', 'important');
-            
-            titleDiv.style.setProperty('justify-content', 'center', 'important');
-            titleDiv.style.setProperty('padding-left', '0px', 'important');
-            titleDiv.style.setProperty('padding-right', '0px', 'important');
-            titleDiv.style.setProperty('text-align', 'center', 'important');
-        }
-    }
-}, 150); // فحص مستمر وسريع لضمان عدم تراجع التطبيق عن التعديل
-</script>
 
 </body>
 </html>
