@@ -2451,10 +2451,10 @@
 <style>
 /* ======= 1. إنزال الشاشة بالكامل للأسفل ليبتعد الاسم ======= */
 #screen-start {
-    padding-top: 65px !important; /* 🌟 مسافة كبيرة ومريحة جداً لإنزال الاسم 🌟 */
+    padding-top: 65px !important; 
 }
 
-/* ======= 2. التنسيق الافتراضي (لجميع الألقاب مثل "طالب علم") ======= */
+/* ======= 2. التنسيق الافتراضي للقب (طالب علم يقعد بالنص متل الباشا) ======= */
 html body #screen-start #user-title-display > div {
     height: 45px !important;
     min-height: 45px !important;
@@ -2466,38 +2466,49 @@ html body #screen-start #user-title-display > div {
     
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important; /* 🌟 الكلمة متمركزة في النص 🌟 */
+    justify-content: center !important; /* 🌟 تمركز الكلمة بالنص 🌟 */
     position: relative !important;
     overflow: hidden !important;
-    
-    /* إخفاء أي صورة خلفية افتراضية مساحتها كبيرة */
-    background-size: 0 0 !important; 
 }
 
-/* ======= 3. تنسيق خاص فقط للألقاب اللي فيها صور (مثل "الأسد") ======= */
-html body #screen-start #user-title-display > div[style*="url"] {
-    justify-content: flex-end !important; /* 🌟 دفع كلمة (أسد السنة) لليمين 🌟 */
+/* ======= 3. تنسيق الأسد (الضربة القاضية للتمغط) ======= */
+html body #screen-start #user-title-display > div[style*="url"],
+html body #screen-start #user-title-display > div[style*="background"] {
+    justify-content: flex-start !important; /* 🌟 في العربي هاد الأمر بياخد الكلمة لليمين 🌟 */
+    padding-right: 20px !important; /* إبعاد كلمة الأسد عن الحافة اليمنى */
     
-    /* إظهار صورة الأسد بشكل مثالي على اليسار */
-    background-size: auto 100% !important; /* الصورة تاخد كامل الارتفاع بدون ما تنفعص */
-    background-position: left center !important; /* تثبيت الأسد أقصى اليسار */
+    /* تثبيت صورة الأسد أقصى اليسار بحجم أنيق */
+    background-size: 70px 100% !important; /* عرض الأسد 70 بيكسل فقط */
+    background-position: left center !important; /* الأسد أقصى اليسار */
     background-repeat: no-repeat !important;
 }
 
-/* ======= 4. تنسيق النص (ليكون واضح وما يختفي) ======= */
+/* احتياط لو كانت الصورة عنصر img */
+html body #screen-start #user-title-display img {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 70px !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    z-index: 1 !important;
+}
+
+/* ======= 4. تنسيق النص (واضح ومظلل) ======= */
 html body #screen-start #user-title-display .badge-text {
     font-size: 1.05rem !important;
     color: #ffd700 !important;
     font-weight: bold !important;
     text-shadow: 2px 2px 5px #000, -2px -2px 5px #000, 0 0 10px #000 !important;
-    margin: 0 10px !important; /* إبعاد النص عن الحواف */
     z-index: 5 !important;
+    position: relative !important;
 }
 html body #screen-start #user-title-display .ms-l, 
 html body #screen-start #user-title-display .ms-r {
     z-index: 5 !important;
     font-size: 0.85rem !important;
-    margin: 0 3px !important;
+    margin: 0 4px !important;
+    position: relative !important;
 }
 
 /* ======= 5. تدوير حواف الـ ID ======= */
@@ -2507,7 +2518,7 @@ html body #screen-start #user-title-display .ms-r {
     background: rgba(0, 0, 0, 0.4) !important;
 }
 
-/* ======= 6. إصلاح الهاتف القديم وتثبيت الشاشة ======= */
+/* ======= 6. إصلاح الهاتف القديم ======= */
 .snow-overlay { display: none !important; }
 html, body {
     overflow: hidden !important; 
