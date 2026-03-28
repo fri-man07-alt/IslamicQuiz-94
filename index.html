@@ -2449,127 +2449,83 @@
 </script>
 <style>
 /* =========================================
-   1. ضغط الشاشة بالكامل (شفط الفراغات الجذري)
+   1. تنظيف أمان (إخفاء الثلج بدون تخريب شاشة التسجيل)
    ========================================= */
-html body #screen-start {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important; /* رص كل شي للأعلى */
-    align-items: center !important;
-    padding-top: 75px !important; /* مسافة بسيطة لشريط الحالة */
-    gap: 4px !important; /* 🔥 مسافة 4 بكسل فقط بين العناصر 🔥 */
-    overflow: hidden !important; 
-    max-height: 100vh !important;
-}
-
-/* إلغاء المسافات (Margins) التلقائية التي يفرضها التطبيق */
-html body #screen-start div,
-html body #screen-start p,
-html body #screen-start h3,
-html body #screen-start span,
-html body #screen-start button,
-html body #screen-start .btn {
-    margin: 0 !important;
-    padding: 0 !important;
-}
+body { background-color: #0c101c !important; }
+.snow-overlay { display: none !important; }
 
 /* =========================================
-   2. الاسم واللقب والـ ID (صندوق معلومات اللاعب)
+   2. صندوق اللقب (آمن ومستقل تماماً)
    ========================================= */
-/* الاسم (أبو آدم) */
-html body #screen-start > div:nth-child(2) {
-    transform: scale(0.9) !important;
-    margin-top: 5px !important; /* مسافة بسيطة من الزر العلوي */
-    margin-bottom: 2px !important;
-}
-
-/* صندوق اللقب (user-title-display) */
-html body #screen-start #user-title-display {
-    width: 100% !important;
+#user-title-display {
+    margin: 5px auto !important;
     display: flex !important;
     justify-content: center !important;
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    width: 100% !important;
 }
 
-/* الصندوق الداخلي للقب */
-html body #screen-start #user-title-display > div {
+#user-title-display > div {
     width: 200px !important;
-    max-width: 200px !important;
-    height: 42px !important; /* ارتفاع ملموم */
+    height: 42px !important;
+    /* خلفية داكنة إجبارية للصندوق عشان لقب المتميز ما يقلب أبيض */
     background: rgba(15, 20, 35, 0.95) !important; 
-    border: 1px solid #ffd700 !important; 
+    border: 1px solid #ffd700 !important;
     border-radius: 12px !important;
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: center !important; /* توسيط النص العادي */
     overflow: hidden !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
 }
 
-/* لضمان النص بالمنتصف للألقاب العادية (مثل طالب علم) */
-html body #screen-start #user-title-display > div {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    text-align: center !important;
-}
-
-/* الـ ID */
-html body #screen-start #start-user-id-container,
-html body #screen-start .user-id-box {
-    transform: scale(0.85) !important;
-    margin-top: 2px !important;
-    margin-bottom: 4px !important;
+/* إجبار النص يكون ذهبي وإلغاء أي لون أبيض أو أزرق بيفرضه التطبيق */
+#user-title-display > div *, #user-title-display span {
+    color: #ffd700 !important;
+    background: transparent !important;
+    border: none !important;
+    font-weight: bold !important;
+    text-shadow: 1px 1px 2px #000 !important;
 }
 
 /* =========================================
-   3. النصوص الوسطى (الأسئلة، التلميحات، النقاط)
+   3. ترتيب الحيوانات (حجم صغير ومناسب)
    ========================================= */
-/* ضغط النصوص لتقترب من بعضها */
-html body #screen-start p,
-html body #screen-start span {
-    margin-top: 1px !important;
-    margin-bottom: 1px !important;
-    line-height: 1.1 !important;
+#user-title-display > div.title-special,
+#user-title-display > div.title-tiger,
+#user-title-display > div.title-cheetah {
+    justify-content: flex-end !important; /* دفع النص لليمين */
+    padding-right: 15px !important;
+    /* الحجم الثابت للحيوان عشان ما يطوف */
+    background-size: 55px 38px !important; 
+    background-position: left 5px center !important;
+    background-repeat: no-repeat !important;
 }
 
 /* =========================================
-   4. الأزرار السفلية (قائمة اللعب الملمومة)
+   4. صندوق الـ ID وتصغير المسافات
    ========================================= */
-/* توحيد عرض الأزرار الكبيرة لتكون قائمة مرتبة */
-html body #screen-start button,
-html body #screen-start .btn {
-    width: 85% !important; 
-    min-height: 42px !important; /* ارتفاع أنيق وملموم */
+#start-user-id-container, .user-id-box {
+    margin: 5px auto !important;
+    transform: scale(0.9) !important;
+}
+
+/* تقريب النصوص (الأسئلة والنقاط) */
+#screen-start p, #screen-start span, #screen-start h3 {
     margin-top: 2px !important;
     margin-bottom: 2px !important;
-    border-radius: 12px !important; 
+}
+
+/* =========================================
+   5. الأزرار السفلية (أنيقة وملمومة)
+   ========================================= */
+#screen-start button, #screen-start .btn {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    min-height: 42px !important;
+    border-radius: 12px !important;
     transform: scale(0.95) !important;
 }
-
-/* زر التحدي المباشر أونلاين⚔️ */
-html body #screen-start .live-battle-button {
-    width: calc(100% - 30px) !important;
-    margin-top: 8px !important; /* فاصل بسيط ليكون الزر الأخير واضح */
-    margin-bottom: 15px !important;
-}
 </style>
-
-<script>
-// كود ترتيب التلميحات فوق النقاط (نفسه لضمان الاستقرار)
-var moveInterval = setInterval(function() {
-    var points = Array.from(document.querySelectorAll('#screen-start button, #screen-start div')).find(el => el.textContent && el.textContent.includes('النقاط:'));
-    var hints = Array.from(document.querySelectorAll('#screen-start p, #screen-start div, #screen-start span')).find(el => el.textContent && el.textContent.includes('رصيد التلميحات'));
-    
-    if (points && hints && points.parentNode) {
-        var hintsContainer = hints.closest('p') || hints;
-        points.parentNode.insertBefore(hintsContainer, points);
-        hintsContainer.style.margin = "0px 0 2px 0"; 
-        hintsContainer.style.textAlign = "center";
-        hintsContainer.style.color = "#4ade80"; 
-        clearInterval(moveInterval);
-    }
-}, 300);
-</script>
 
 </body>
 </html>
