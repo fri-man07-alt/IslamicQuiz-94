@@ -2449,46 +2449,50 @@
 </script>
 
 <style>
-/* ======= 1. إنزال الشاشة بالكامل للأسفل ليبتعد الاسم ======= */
+/* ======= 1. إنزال الشاشة بالكامل للأسفل ======= */
 #screen-start {
     padding-top: 65px !important; 
 }
 
-/* ======= 2. التنسيق الافتراضي للقب (طالب علم يقعد بالنص متل الباشا) ======= */
+/* ======= 2. التنسيق الافتراضي (طالب علم بالنص والخلفية كحلية) ======= */
 html body #screen-start #user-title-display > div {
-    height: 45px !important;
-    min-height: 45px !important;
-    width: 220px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    width: 230px !important;
     margin: 15px auto 10px auto !important; 
     border-radius: 12px !important;
     border: 1px solid #ffd700 !important;
-    background-color: rgba(10, 15, 25, 0.9) !important; 
+    background-color: rgba(10, 15, 30, 0.95) !important; /* 🌟 خلفية كحلية موحدة 🌟 */
     
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important; /* 🌟 تمركز الكلمة بالنص 🌟 */
+    justify-content: center !important; /* 🌟 طالب علم متمركز بالنص 🌟 */
     position: relative !important;
     overflow: hidden !important;
+    
+    /* إخفاء أي صورة للقب العادي عشان ما يتلخبط */
+    background-size: 0 0 !important; 
 }
 
-/* ======= 3. تنسيق الأسد (الضربة القاضية للتمغط) ======= */
+/* ======= 3. تنسيق الأسد (الكلمة يمين، والأسد يسار ومكبر شوي) ======= */
 html body #screen-start #user-title-display > div[style*="url"],
 html body #screen-start #user-title-display > div[style*="background"] {
-    justify-content: flex-start !important; /* 🌟 في العربي هاد الأمر بياخد الكلمة لليمين 🌟 */
-    padding-right: 20px !important; /* إبعاد كلمة الأسد عن الحافة اليمنى */
+    justify-content: flex-start !important; /* يدفش الكلمة لليمين */
+    padding-right: 20px !important; 
     
-    /* تثبيت صورة الأسد أقصى اليسار بحجم أنيق */
-    background-size: 70px 100% !important; /* عرض الأسد 70 بيكسل فقط */
-    background-position: left center !important; /* الأسد أقصى اليسار */
+    /* 🌟 تكبير الأسد لـ 95 بيكسل (أكبر من 70 وأرتب) 🌟 */
+    background-size: 95px 100% !important; 
+    background-position: left center !important; 
     background-repeat: no-repeat !important;
+    background-color: rgba(10, 15, 30, 0.95) !important; /* تأكيد اللون الكحلي الموحد */
 }
 
-/* احتياط لو كانت الصورة عنصر img */
+/* في حال اللعبة زرعت الأسد كصورة img */
 html body #screen-start #user-title-display img {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
-    width: 70px !important;
+    width: 95px !important; /* 🌟 تكبير لـ 95 بيكسل 🌟 */
     height: 100% !important;
     object-fit: cover !important;
     z-index: 1 !important;
@@ -2518,7 +2522,7 @@ html body #screen-start #user-title-display .ms-r {
     background: rgba(0, 0, 0, 0.4) !important;
 }
 
-/* ======= 6. إصلاح الهاتف القديم ======= */
+/* ======= 6. إصلاح الهاتف القديم وتثبيت الشاشة ======= */
 .snow-overlay { display: none !important; }
 html, body {
     overflow: hidden !important; 
