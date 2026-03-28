@@ -2449,112 +2449,127 @@
 </script>
 <style>
 /* =========================================
-   1. ضغط الشاشة بالكامل (شفط الفراغات)
+   1. ضغط الشاشة بالكامل (شفط الفراغات الجذري)
    ========================================= */
 html body #screen-start {
     display: flex !important;
     flex-direction: column !important;
-    justify-content: flex-start !important; /* رص العناصر للأعلى */
+    justify-content: flex-start !important; /* رص كل شي للأعلى */
     align-items: center !important;
-    padding-top: 70px !important; /* رفعنا كل شيء لفوق */
-    gap: 8px !important; /* 🔥 هذا هو السحر: مسافة 8 بكسل فقط بين كل عنصر والثاني 🔥 */
+    padding-top: 75px !important; /* مسافة بسيطة لشريط الحالة */
+    gap: 4px !important; /* 🔥 مسافة 4 بكسل فقط بين العناصر 🔥 */
     overflow: hidden !important; 
     max-height: 100vh !important;
 }
 
-/* إزالة كل المسافات العشوائية المبرمجة مسبقاً في التطبيق */
-html body #screen-start > div,
-html body #screen-start > button,
-html body #screen-start > p,
-html body #screen-start > span {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+/* إلغاء المسافات (Margins) التلقائية التي يفرضها التطبيق */
+html body #screen-start div,
+html body #screen-start p,
+html body #screen-start h3,
+html body #screen-start span,
+html body #screen-start button,
+html body #screen-start .btn {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* =========================================
-   2. ترتيب الاسم واللقب والـ ID (صندوق اللاعب)
+   2. الاسم واللقب والـ ID (صندوق معلومات اللاعب)
    ========================================= */
 /* الاسم (أبو آدم) */
 html body #screen-start > div:nth-child(2) {
     transform: scale(0.9) !important;
+    margin-top: 5px !important; /* مسافة بسيطة من الزر العلوي */
+    margin-bottom: 2px !important;
 }
 
-/* صندوق اللقب (المتميز / أسد السنة) */
+/* صندوق اللقب (user-title-display) */
 html body #screen-start #user-title-display {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
 }
 
+/* الصندوق الداخلي للقب */
 html body #screen-start #user-title-display > div {
     width: 200px !important;
     max-width: 200px !important;
-    height: 40px !important; /* أنحف وأرتب */
+    height: 42px !important; /* ارتفاع ملموم */
     background: rgba(15, 20, 35, 0.95) !important; 
     border: 1px solid #ffd700 !important; 
-    border-radius: 12px !important; /* حواف تشبه جواكر */
+    border-radius: 12px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     overflow: hidden !important;
 }
 
-/* نسف الألوان البيضاء/الزرقاء الإجبارية */
-html body #screen-start #user-title-display > div *,
-html body #screen-start #user-title-display > div::before {
-    background: transparent !important; 
-    color: #ffd700 !important; 
-    text-shadow: 1px 1px 2px #000 !important;
-    font-weight: bold !important;
-    border: none !important;
+/* لضمان النص بالمنتصف للألقاب العادية (مثل طالب علم) */
+html body #screen-start #user-title-display > div {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    text-align: center !important;
 }
 
-/* ترتيب صور الحيوانات (أسد/نمر) */
-html body #screen-start #user-title-display > div.title-special,
-html body #screen-start #user-title-display > div.title-tiger,
-html body #screen-start #user-title-display > div.title-cheetah {
-    justify-content: flex-end !important;
-    padding-right: 15px !important;
-    background-size: 55px 35px !important; /* حجم صغير وملموم */
-    background-position: left 5px center !important;
-    background-repeat: no-repeat !important;
-}
-
-/* صندوق الـ ID */
-#start-user-id-container, .user-id-box {
+/* الـ ID */
+html body #screen-start #start-user-id-container,
+html body #screen-start .user-id-box {
     transform: scale(0.85) !important;
-    margin-bottom: 5px !important; /* فاصل بسيط بين معلومات اللاعب واللعبة */
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
 }
 
 /* =========================================
-   3. ترتيب منطقة اللعب والأزرار (ستايل جواكر)
+   3. النصوص الوسطى (الأسئلة، التلميحات، النقاط)
    ========================================= */
-/* ضغط النصوص (600 سؤال، التلميحات) */
-#screen-start p, #screen-start span {
+/* ضغط النصوص لتقترب من بعضها */
+html body #screen-start p,
+html body #screen-start span {
+    margin-top: 1px !important;
+    margin-bottom: 1px !important;
     line-height: 1.1 !important;
-    font-size: 0.95rem !important;
 }
 
-/* الأزرار العريضة (المتصدرين، النقاط، تحدي مباشر) */
-#screen-start button, #screen-start .btn {
-    width: 85% !important; /* توحيد عرض الأزرار لتبدو كقائمة أنيقة */
-    min-height: 42px !important; /* ارتفاع أقل وأكثر أناقة */
-    padding: 8px 10px !important;
-    border-radius: 12px !important; /* حواف مثل جواكر */
+/* =========================================
+   4. الأزرار السفلية (قائمة اللعب الملمومة)
+   ========================================= */
+/* توحيد عرض الأزرار الكبيرة لتكون قائمة مرتبة */
+html body #screen-start button,
+html body #screen-start .btn {
+    width: 85% !important; 
+    min-height: 42px !important; /* ارتفاع أنيق وملموم */
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+    border-radius: 12px !important; 
     transform: scale(0.95) !important;
 }
 
-/* صف الأزرار المقسوم (المسابقات + التحدي العادي) */
-html body #screen-start div[style*="display: flex"]:not(#user-title-display) {
-    width: 85% !important;
-    justify-content: space-between !important;
-    gap: 10px !important; /* مسافة بين الزرين */
-}
-html body #screen-start div[style*="display: flex"]:not(#user-title-display) button {
-    width: 48% !important; /* كل زر يأخذ نصف المساحة */
-    margin: 0 !important;
+/* زر التحدي المباشر أونلاين⚔️ */
+html body #screen-start .live-battle-button {
+    width: calc(100% - 30px) !important;
+    margin-top: 8px !important; /* فاصل بسيط ليكون الزر الأخير واضح */
+    margin-bottom: 15px !important;
 }
 </style>
+
+<script>
+// كود ترتيب التلميحات فوق النقاط (نفسه لضمان الاستقرار)
+var moveInterval = setInterval(function() {
+    var points = Array.from(document.querySelectorAll('#screen-start button, #screen-start div')).find(el => el.textContent && el.textContent.includes('النقاط:'));
+    var hints = Array.from(document.querySelectorAll('#screen-start p, #screen-start div, #screen-start span')).find(el => el.textContent && el.textContent.includes('رصيد التلميحات'));
+    
+    if (points && hints && points.parentNode) {
+        var hintsContainer = hints.closest('p') || hints;
+        points.parentNode.insertBefore(hintsContainer, points);
+        hintsContainer.style.margin = "0px 0 2px 0"; 
+        hintsContainer.style.textAlign = "center";
+        hintsContainer.style.color = "#4ade80"; 
+        clearInterval(moveInterval);
+    }
+}, 300);
+</script>
 
 </body>
 </html>
