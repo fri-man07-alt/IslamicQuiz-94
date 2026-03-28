@@ -2449,59 +2449,110 @@
 </script>
 <style>
 /* =========================================
-   1. تثبيت وتجميد شكل الصندوق لكل الألقاب (عادي أو حيوان)
+   1. ضغط الشاشة بالكامل (شفط الفراغات)
    ========================================= */
-html body #screen-start #user-title-display {
-    margin: 5px 0 !important;
+html body #screen-start {
     display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-
-/* النجمة (*) هون معناها: أي شي بيحطه التطبيق جوا الصندوق، اجبره يصير ميثيك! */
-html body #screen-start #user-title-display > * {
-    width: 210px !important; 
-    min-width: 210px !important;
-    height: 46px !important;
-    margin: 0 auto !important;
-    
-    /* 🔥 إجبار الخلفية تكون سودة والإطار ذهبي، لحل مشكلة اللون الأبيض/الأزرق 🔥 */
-    background: rgba(15, 20, 35, 0.9) !important; 
-    border: 1px solid #ffd700 !important; 
-    border-radius: 20px !important;
-    
-    /* إجبار النص يكون ذهبي حصراً */
-    color: #ffd700 !important;
-    font-weight: bold !important;
-    text-shadow: 1px 1px 3px #000 !important;
-    
-    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important; /* رص العناصر للأعلى */
     align-items: center !important;
-    justify-content: center !important; 
-    padding: 0 !important;
+    padding-top: 70px !important; /* رفعنا كل شيء لفوق */
+    gap: 8px !important; /* 🔥 هذا هو السحر: مسافة 8 بكسل فقط بين كل عنصر والثاني 🔥 */
     overflow: hidden !important; 
+    max-height: 100vh !important;
 }
 
-/* التخلص من اللون الأزرق اللي بيطلع بألقاب مثل "المتميز" */
-html body #screen-start #user-title-display * {
-    color: #ffd700 !important;
+/* إزالة كل المسافات العشوائية المبرمجة مسبقاً في التطبيق */
+html body #screen-start > div,
+html body #screen-start > button,
+html body #screen-start > p,
+html body #screen-start > span {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /* =========================================
-   2. الحجم المثالي للأسد/النمر (Contain)
+   2. ترتيب الاسم واللقب والـ ID (صندوق اللاعب)
    ========================================= */
-html body #screen-start #user-title-display > .title-special,
-html body #screen-start #user-title-display > .title-tiger,
-html body #screen-start #user-title-display > .title-cheetah {
-    
-    /* إزاحة النص لليمين */
-    justify-content: flex-end !important; 
-    padding-right: 20px !important; 
-    
-    /* 🔥 السر هون: (contain) بتجبر الحيوان يلم حاله على قد الـ 46 بكسل تبع الصندوق 🔥 */
-    background-size: contain !important; 
-    background-position: left center !important;
+/* الاسم (أبو آدم) */
+html body #screen-start > div:nth-child(2) {
+    transform: scale(0.9) !important;
+}
+
+/* صندوق اللقب (المتميز / أسد السنة) */
+html body #screen-start #user-title-display {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+html body #screen-start #user-title-display > div {
+    width: 200px !important;
+    max-width: 200px !important;
+    height: 40px !important; /* أنحف وأرتب */
+    background: rgba(15, 20, 35, 0.95) !important; 
+    border: 1px solid #ffd700 !important; 
+    border-radius: 12px !important; /* حواف تشبه جواكر */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+/* نسف الألوان البيضاء/الزرقاء الإجبارية */
+html body #screen-start #user-title-display > div *,
+html body #screen-start #user-title-display > div::before {
+    background: transparent !important; 
+    color: #ffd700 !important; 
+    text-shadow: 1px 1px 2px #000 !important;
+    font-weight: bold !important;
+    border: none !important;
+}
+
+/* ترتيب صور الحيوانات (أسد/نمر) */
+html body #screen-start #user-title-display > div.title-special,
+html body #screen-start #user-title-display > div.title-tiger,
+html body #screen-start #user-title-display > div.title-cheetah {
+    justify-content: flex-end !important;
+    padding-right: 15px !important;
+    background-size: 55px 35px !important; /* حجم صغير وملموم */
+    background-position: left 5px center !important;
     background-repeat: no-repeat !important;
+}
+
+/* صندوق الـ ID */
+#start-user-id-container, .user-id-box {
+    transform: scale(0.85) !important;
+    margin-bottom: 5px !important; /* فاصل بسيط بين معلومات اللاعب واللعبة */
+}
+
+/* =========================================
+   3. ترتيب منطقة اللعب والأزرار (ستايل جواكر)
+   ========================================= */
+/* ضغط النصوص (600 سؤال، التلميحات) */
+#screen-start p, #screen-start span {
+    line-height: 1.1 !important;
+    font-size: 0.95rem !important;
+}
+
+/* الأزرار العريضة (المتصدرين، النقاط، تحدي مباشر) */
+#screen-start button, #screen-start .btn {
+    width: 85% !important; /* توحيد عرض الأزرار لتبدو كقائمة أنيقة */
+    min-height: 42px !important; /* ارتفاع أقل وأكثر أناقة */
+    padding: 8px 10px !important;
+    border-radius: 12px !important; /* حواف مثل جواكر */
+    transform: scale(0.95) !important;
+}
+
+/* صف الأزرار المقسوم (المسابقات + التحدي العادي) */
+html body #screen-start div[style*="display: flex"]:not(#user-title-display) {
+    width: 85% !important;
+    justify-content: space-between !important;
+    gap: 10px !important; /* مسافة بين الزرين */
+}
+html body #screen-start div[style*="display: flex"]:not(#user-title-display) button {
+    width: 48% !important; /* كل زر يأخذ نصف المساحة */
+    margin: 0 !important;
 }
 </style>
 
