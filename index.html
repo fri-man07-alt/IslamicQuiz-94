@@ -596,8 +596,11 @@
         </div>
     </div>
 <script>
-    // تحميل صورة المجرة مسبقاً لتظهر في العجلة فوراً
+    // تحميل الصور مسبقاً لتكون سريعة وفورية عند فتح اللعبة
     var preGal = new Image(); preGal.src = 'https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png';
+    var preSunnah = new Image(); preSunnah.src = 'https://i.postimg.cc/qMK4bRNG/file_000000009fe87246bc1eaf17ce750a96.png';
+    var preWisdom = new Image(); preWisdom.src = 'https://i.postimg.cc/9QV0yTLq/file_0000000002e47246a8e74ec6a7044090.png';
+    var preEmp = new Image(); preEmp.src = 'https://i.postimg.cc/4dS46P6L/Pngtree_3d_realistic_tiger_fur_animation_14476392.png';
 
     // ==========================================
     // 0. التنسيقات الجذرية المصلحة 100% 
@@ -619,20 +622,20 @@
         
         /* الألقاب العادية (بدون لمعة لطالب علم والمتميز) */
         .title-طالب { background: linear-gradient(135deg, #2a2a2a 0%, #111 100%) !important; border: 1px solid #888 !important; }
-        .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 1px solid #b388ff !important; background-size: 200% 200% !important; animation: forceBgMove 4s infinite alternate !important;}
+        .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 1px solid #b388ff !important; }
         
-        /* باقي الألقاب (مع لمعة) */
+        /* باقي الألقاب (مع لمعة وحركة) */
         .title-حافظ { background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), linear-gradient(135deg, #2d1b0d 0%, #4a2e15 50%, #2d1b0d 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px #000, 0 0 15px rgba(255, 215, 0, 0.6) !important; background-size: 200% 200% !important; animation: forceBgMove 8s infinite alternate !important;}
         .title-سيد { background-color: #0288d1 !important; background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.9) 2px, transparent 3px), radial-gradient(circle at 30px 25px, rgba(255,255,255,0.7) 1.5px, transparent 2px), linear-gradient(135deg, #b3e5fc 0%, #4fc3f7 50%, #0288d1 100%) !important; background-size: 40px 40px, 50px 50px, 100% 100% !important; animation: innerSnowFall 3s linear infinite !important; border: 2px solid #fff !important; }
         
-        /* حكيم الأمة (معدل لتكون الخلفية متحركة كما طلبت) */
+        /* حكيم الأمة */
         .title-حكيم { background-image: url('https://www.transparenttextures.com/patterns/black-scales.png'), linear-gradient(0deg, #300 0%, #900 30%, #f40 70%, #fc0 100%) !important; border: 2px solid #f40 !important; background-size: 200% 200% !important; animation: fireMoving 10s ease-in-out infinite !important;}
         
         .title-تاج { background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(270deg, #111 0%, #2a2a2a 50%, #000 100%) !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 8s infinite alternate !important;}
         .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 10s infinite alternate !important;}
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; }
 
-        /* الألقاب الأسطورية الثلاثة (خلفيات دم الغزال الصافية) */
+        /* الألقاب الأسطورية الثلاثة */
         .title-sunnah, .title-wisdom, .title-emperor { background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; position: relative; overflow: hidden; }
         .title-sunnah { border: 2px solid #ff3333 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important; }
         .title-wisdom { border: 2px solid #00d4ff !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #00d4ff !important; }
@@ -652,6 +655,18 @@
             pointer-events: none; 
             z-index: 1; 
         }
+
+        /* تصغير وترتيب الصورة والاسم في الشاشة الرئيسية */
+        .main-mythic {
+            height: 55px !important;
+            min-width: 180px !important;
+            justify-content: center !important;
+        }
+        .main-mythic .mythic-img {
+            height: 75px !important; /* حجم مصغر مناسب للشاشة الرئيسية */
+            top: 0px !important; /* الرأس يلمس الحافة العلوية */
+            left: 5px !important;
+        }
         
         /* تصغير وترتيب الصورة والاسم داخل المتصدرين (LB) */
         .small-mythic {
@@ -665,10 +680,14 @@
         }
         .small-mythic .mythic-img { 
             left: -5px; 
-            top: 50%; 
-            transform: translateY(-50%);
-            height: 35px; /* حجم أيقونة صغير وواضح على اليسار */
+            top: 0px !important; /* ملامسة الحافة العلوية في كل مكان */
+            height: 45px !important; 
             width: auto;
+        }
+
+        /* لضمان الحافة العلوية في قائمة الألقاب */
+        .title-sunnah .mythic-img, .title-wisdom .mythic-img, .title-emperor .mythic-img {
+            top: 0px !important;
         }
 
         /* النص الأسطوري */
@@ -702,7 +721,7 @@
         .admin-placeholder-btn { color: #aaa; font-weight: bold; font-size: 0.9rem; margin: 0 5px; cursor: pointer; transition: 0.3s; border-bottom: 1px dashed transparent; }
         .admin-placeholder-btn:hover { color: var(--p); border-bottom-color: var(--p); transform: translateY(-2px); }
 
-        /* عجلة الحظ (خلفية المجرة وإشعار اليومي) */
+        /* عجلة الحظ */
         .lucky-spin-container { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .circular-spin-container { position: relative; width: 260px; height: 260px; border-radius: 50%; border: 4px solid var(--p); background-image: url('https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png') !important; background-size: cover !important; background-position: center !important; margin: 20px auto; box-shadow: 0 0 30px rgba(255,215,0,0.3), inset 0 0 50px rgba(0,0,0,0.8); overflow: hidden; }
         .daily-spin-counter { color: #ffd700; font-weight: bold; font-size: 0.9rem; text-shadow: 0 0 10px #ff0000; margin-top: -10px; margin-bottom: 10px; }
@@ -854,9 +873,55 @@
     ];
     try { for (var j = 0; j < qDataRawLast.length; j++) { qList.push({ q: qDataRawLast[j][0], o: [qDataRawLast[j][1], qDataRawLast[j][2], qDataRawLast[j][3], qDataRawLast[j][4]], exp: qDataRawLast[j][5] || "" }); } } catch (e) {}
 
-    window.useAud = function() { if (aud <= 0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
-    window.use50 = function() { if (f50 <= 0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++) { if (optsOrder[i] !== 0 && h < 2) { var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
-    window.useHint = function() { if (totalHints <= 0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
+    window.useAud = function() { 
+        if (locked) return; 
+        if (window.isCampMode) {
+            var camp = window.campaignsData[window.activeCampId];
+            if (camp.audUsed) return;
+            camp.audUsed = true;
+            window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData));
+            var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = "0";
+        } else {
+            if (aud <= 0) return; aud--; 
+            var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; 
+        }
+        var p = Math.floor(Math.random()*31)+60; 
+        var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; 
+        window.openMod('modal-aud'); 
+    };
+
+    window.use50 = function() { 
+        if (locked) return; 
+        if (window.isCampMode) {
+            var camp = window.campaignsData[window.activeCampId];
+            if (camp.f50Used) return;
+            camp.f50Used = true;
+            window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData));
+            var c50 = document.getElementById('c-50'); if (c50) c50.innerText = "0";
+        } else {
+            if (f50 <= 0) return; f50--; 
+            var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; 
+        }
+        var h = 0; 
+        for (var i=0; i<4; i++) { if (optsOrder[i] !== 0 && h < 2) { var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } 
+    };
+
+    window.useHint = function() { 
+        if (locked) return; 
+        if (window.isCampMode) {
+            var camp = window.campaignsData[window.activeCampId];
+            if (camp.hintUsed) return;
+            camp.hintUsed = true;
+            window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData));
+            var ch = document.getElementById('c-hint'); if (ch) ch.innerText = "0";
+        } else {
+            if (totalHints <= 0) return; totalHints--; 
+            var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; window.saveProgress(false); 
+        }
+        var correctIdx = optsOrder.indexOf(0); 
+        var btn = document.getElementById('opt'+correctIdx); 
+        if (btn) btn.style.border='3px solid var(--p)'; 
+    };
 
     // ==========================================
     // 3. دوال الواجهة، الحفظ، وعجلة الحظ، والصور
@@ -968,7 +1033,7 @@
     window.closeMod = function() { window.playSndSafe('sfx-click'); window.safeHide('custom-modal'); };
 
     // ==========================================
-    // 4. تنسيق الألقاب (الصورة المطلقة، الاسم يمين، والمتصدرين)
+    // 4. تنسيق الألقاب
     // ==========================================
     window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { 
         var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.5rem; color:#ff4d4d; z-index:10; text-shadow:0 0 5px #000;"></i>' : ''; 
@@ -994,17 +1059,15 @@
         var smallClass = isSmall ? 'small-mythic' : '';
 
         if (isSmall) { 
-            // المتصدرين: اللقب صغير ومرتب
             wrapperStyle = 'padding:2px 5px; min-width:90px; width:max-content; display:flex; align-items:center; justify-content:flex-end; border-radius:6px; margin:0; position:relative; overflow:hidden;'; 
             fontSize = isMythic ? '0.75rem' : '0.65rem'; checkSpan = ''; lockSpan = '';
         } else if (inList) { 
-            // قائمة الألقاب
             wrapperStyle = 'width:100%; min-height:75px; margin-bottom:12px; border-radius:12px; display:flex; align-items:center; padding:0; ' + cursor; 
             fontSize = isMythic ? '1.4rem' : '1.3rem'; 
         } else { 
-            // الصفحة الرئيسية
-            wrapperStyle = 'min-width:180px; margin-top:5px; border-radius:8px; display:flex; align-items:center; justify-content:center; height:55px; padding:0;'; 
+            wrapperStyle = 'min-width:180px; margin-top:5px; border-radius:8px; display:flex; align-items:center; justify-content:center; height:55px; padding:0; position:relative; overflow:hidden;'; 
             fontSize = isMythic ? '1.2rem' : '1.0rem'; 
+            if (isMythic) smallClass = 'main-mythic'; 
         } 
 
         if (isMythic) {
@@ -1056,15 +1119,32 @@
     window.closeGrandPrize = function() { var modalContent = document.getElementById('modal-grand-prize'); if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } window.openMod('modal-luckyspin'); window.updateStatsUI(); };
 
     // ==========================================
-    // 6. المسابقات وجوائزها الجديدة (نجمة الحظ)
+    // 6. المسابقات 
     // ==========================================
     window.isCampMode = false; window.campTimerInterval = null;
-    window.campaignsData = JSON.parse(window.lsGet('ULT_CAMPAIGNS_V3', JSON.stringify({ wisdom: { level: 1, lives: 5, gotTrophy: false, cooldown: 0 }, emperor: { level: 1, lives: 5, gotTrophy: false, cooldown: 0 } })));
-    if(window.campaignsData.wisdom.gotTrophy === undefined) window.campaignsData.wisdom.gotTrophy = false; if(window.campaignsData.emperor.gotTrophy === undefined) window.campaignsData.emperor.gotTrophy = false; if(window.campaignsData.wisdom.cooldown === undefined) window.campaignsData.wisdom.cooldown = 0; if(window.campaignsData.emperor.cooldown === undefined) window.campaignsData.emperor.cooldown = 0;
+    window.campaignsData = JSON.parse(window.lsGet('ULT_CAMPAIGNS_V3', JSON.stringify({ 
+        wisdom: { level: 1, lives: 5, gotTrophy: false, cooldown: 0, audUsed: false, f50Used: false, hintUsed: false }, 
+        emperor: { level: 1, lives: 5, gotTrophy: false, cooldown: 0, audUsed: false, f50Used: false, hintUsed: false } 
+    })));
+    if(window.campaignsData.wisdom.gotTrophy === undefined) window.campaignsData.wisdom.gotTrophy = false; 
+    if(window.campaignsData.emperor.gotTrophy === undefined) window.campaignsData.emperor.gotTrophy = false; 
+    if(window.campaignsData.wisdom.cooldown === undefined) window.campaignsData.wisdom.cooldown = 0; 
+    if(window.campaignsData.emperor.cooldown === undefined) window.campaignsData.emperor.cooldown = 0;
+    if(window.campaignsData.wisdom.audUsed === undefined) {
+        window.campaignsData.wisdom.audUsed = false; window.campaignsData.wisdom.f50Used = false; window.campaignsData.wisdom.hintUsed = false;
+        window.campaignsData.emperor.audUsed = false; window.campaignsData.emperor.f50Used = false; window.campaignsData.emperor.hintUsed = false;
+    }
     
     window.openCampaignSelect = function() { window.playSndSafe('sfx-click'); window.openMod('modal-campaign-select'); };
     window.openCampaignMap = function(campId) { 
-        clearInterval(window.campTimerInterval); window.playSndSafe('sfx-click'); window.activeCampId = campId; var camp = window.campaignsData[campId]; var conf = { wisdom: { name: 'منبع الحكمة', icon: '🐅' }, emperor: { name: 'إمبراطور المعرفة', icon: '🐆' } }[campId]; var now = Date.now(); if (camp.lives <= 0) { if (now >= camp.cooldown) { camp.lives = 5; camp.cooldown = 0; window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); } } 
+        clearInterval(window.campTimerInterval); window.playSndSafe('sfx-click'); window.activeCampId = campId; var camp = window.campaignsData[campId]; var conf = { wisdom: { name: 'منبع الحكمة', icon: '🐅' }, emperor: { name: 'إمبراطور المعرفة', icon: '🐆' } }[campId]; var now = Date.now(); 
+        if (camp.lives <= 0) { 
+            if (now >= camp.cooldown) { 
+                camp.lives = 5; camp.cooldown = 0; 
+                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; // استعادة وسائل المساعدة عند انتهاء الوقت
+                window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); 
+            } 
+        } 
         
         var html = '<h3 style="color:var(--p); text-align:center; margin-bottom:10px;">مسار ' + conf.name + ' ' + conf.icon + '</h3>' + '<div style="background:#1a1a1a; padding:10px; border-radius:15px; border:1px solid #444; margin-bottom:15px; display:flex; justify-content:space-around;">' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المستوى</span><br><span style="color:#00d4ff; font-size:1.3rem;">' + Math.min(camp.level, 12) + ' / 12</span></div>' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">الأرواح</span><br><div id="camp-lives-display" style="font-size:1.2rem;">❤️ ' + camp.lives + '</div></div></div>'; 
         
@@ -1085,8 +1165,6 @@
             if (isPassed && !isBoss) nodeContent = '✔️'; 
             
             var rewardHtml = ''; 
-            
-            // نصوص الجوائز
             if (i === 2) rewardHtml = '<div class="node-reward" style="top:-25px;">ضربة حظ</div>'; 
             if (i === 4) rewardHtml = '<div class="node-reward" style="top:-35px;"><span style="font-size:1.2rem; color:#ff4d4d;">❤️</span><br>+1 روح</div>'; 
             if (i === 6) rewardHtml = '<div class="node-reward" style="top:-25px;">حظ + 💡</div>'; 
@@ -1099,12 +1177,80 @@
         } 
         html += '</div></div>'; 
         
-        if (camp.level > 12) { html += '<button class="q-btn" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; background:#2ecc71; color:#000; font-weight:bold; margin-top:20px;" disabled>لقد ختمت هذا المسار! 🎉</button>'; } else if (camp.lives <= 0) { html += '<button id="camp-cooldown-btn" class="q-btn danger" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; margin-top:20px;" disabled>انتظر ⏳</button>'; window.startCampCooldownTimer(campId); } else { html += '<button class="q-btn primary" onclick="window.startCampLevel()" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; border:none; margin-top:20px;">بدء المرحلة ' + camp.level + ' 🚀</button>'; } html += '<button class="q-btn danger" onclick="window.openCampaignSelect()" style="width:100%; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; margin-top:10px; padding:10px; border-radius:10px;">رجوع</button>'; document.getElementById('modal-campaign-map').innerHTML = html; window.openMod('modal-campaign-map'); 
+        if (camp.level > 12) { 
+            html += '<button class="q-btn" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; background:#2ecc71; color:#000; font-weight:bold; margin-top:20px;" disabled>لقد ختمت هذا المسار! 🎉</button>'; 
+        } else if (camp.lives <= 0) { 
+            html += '<button id="camp-cooldown-btn" class="q-btn danger" style="width:100%; font-size:1.5rem; font-weight:bold; padding:12px; border-radius:10px; margin-top:20px; letter-spacing:2px; font-family:monospace;" disabled>30:00</button>'; 
+            window.startCampCooldownTimer(campId); 
+        } else { 
+            html += '<button class="q-btn primary" onclick="window.startCampLevel()" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; border:none; margin-top:20px;">بدء المرحلة ' + camp.level + ' 🚀</button>'; 
+        } 
+        html += '<button class="q-btn danger" onclick="window.openCampaignSelect()" style="width:100%; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; margin-top:10px; padding:10px; border-radius:10px;">رجوع</button>'; 
+        document.getElementById('modal-campaign-map').innerHTML = html; window.openMod('modal-campaign-map'); 
     };
     
-    window.startCampCooldownTimer = function(campId) { clearInterval(window.campTimerInterval); window.campTimerInterval = setInterval(function() { var camp = window.campaignsData[campId]; var now = Date.now(); var diff = camp.cooldown - now; var btn = document.getElementById('camp-cooldown-btn'); if (diff <= 0) { clearInterval(window.campTimerInterval); camp.lives = 5; camp.cooldown = 0; window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); if(btn) { btn.disabled = false; btn.className = "q-btn primary"; btn.style.background = "var(--p)"; btn.style.color = "#000"; btn.innerText = "بدء المرحلة " + camp.level + " 🚀"; btn.onclick = window.startCampLevel; } var livesUI = document.getElementById('camp-lives-display'); if(livesUI) livesUI.innerText = "❤️ 5"; } else { if(btn) { var m = Math.floor(diff / 60000); var s = Math.floor((diff % 60000) / 1000); btn.innerText = "انتظر " + (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s) + " ⏳"; } } }, 1000); };
-    window.startCampLevel = function() { var camp = window.campaignsData[window.activeCampId]; if (camp.lives <= 0) { window.showTopToast("عليك الانتظار حتى تعود الأرواح! ⏳"); return; } window.isCampMode = true; window.closeMod(); window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); cur = 0; window.qOrder = []; let temp = []; for(let i=0; i<qList.length; i++) temp.push(i); temp = temp.sort(() => Math.random() - 0.5); for(let k=0; k<5; k++) window.qOrder.push(temp[k]); window.loadCampQ(); };
-    window.loadCampQ = function() { locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); if (cur >= 5) { window.winCampLevel(); return; } var q = qList[window.qOrder[cur]]; document.getElementById('ui-prog').innerText = "سؤال " + (cur+1) + " من 5"; document.getElementById('q-txt').innerText = q.q; optsOrder = window.shuffle([0,1,2,3]); for(let i=0; i<4; i++) { let b = document.getElementById('opt'+i); b.className = 'q-btn vs-option-btn'; b.style.visibility = 'visible'; b.style.background = ''; b.style.border = ''; b.style.boxShadow = ''; b.style.color = '#fff'; b.innerText = q.o[optsOrder[i]]; } };
+    window.startCampCooldownTimer = function(campId) { 
+        clearInterval(window.campTimerInterval); 
+        window.campTimerInterval = setInterval(function() { 
+            var camp = window.campaignsData[campId]; 
+            var now = Date.now(); 
+            var diff = camp.cooldown - now; 
+            var btn = document.getElementById('camp-cooldown-btn'); 
+            if (diff <= 0) { 
+                clearInterval(window.campTimerInterval); 
+                camp.lives = 5; camp.cooldown = 0; 
+                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; // استعادة وسائل المساعدة بعد انتهاء العد التنازلي
+                window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); 
+                if(btn) { 
+                    btn.disabled = false; 
+                    btn.className = "q-btn primary"; 
+                    btn.style.background = "var(--p)"; btn.style.color = "#000"; 
+                    btn.innerText = "بدء المرحلة " + camp.level + " 🚀"; 
+                    btn.onclick = window.startCampLevel; 
+                } 
+                var livesUI = document.getElementById('camp-lives-display'); 
+                if(livesUI) livesUI.innerText = "❤️ 5"; 
+            } else { 
+                if(btn) { 
+                    var m = Math.floor(diff / 60000); 
+                    var s = Math.floor((diff % 60000) / 1000); 
+                    btn.innerText = (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s); 
+                } 
+            } 
+        }, 1000); 
+    };
+
+    window.startCampLevel = function() { 
+        var camp = window.campaignsData[window.activeCampId]; 
+        if (camp.lives <= 0) { window.showTopToast("عليك الانتظار حتى تعود الأرواح! ⏳"); return; } 
+        window.isCampMode = true; 
+
+        window.closeMod(); window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); 
+        cur = 0; window.qOrder = []; 
+        let temp = []; for(let i=0; i<qList.length; i++) temp.push(i); temp = temp.sort(() => Math.random() - 0.5); 
+        for(let k=0; k<5; k++) window.qOrder.push(temp[k]); 
+        window.loadCampQ(); 
+    };
+
+    window.loadCampQ = function() { 
+        locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); 
+        if (cur >= 5) { window.winCampLevel(); return; } 
+        var q = qList[window.qOrder[cur]]; 
+        document.getElementById('ui-prog').innerText = "سؤال " + (cur+1) + " من 5"; 
+        document.getElementById('q-txt').innerText = q.q; 
+        optsOrder = window.shuffle([0,1,2,3]); 
+        for(let i=0; i<4; i++) { 
+            let b = document.getElementById('opt'+i); 
+            b.className = 'q-btn vs-option-btn'; b.style.visibility = 'visible'; b.style.background = ''; b.style.border = ''; b.style.boxShadow = ''; b.style.color = '#fff'; 
+            b.innerText = q.o[optsOrder[i]]; 
+        } 
+        
+        // إظهار رصيد وسائل المساعدة الخاصة بالمسابقة (إما 1 أو 0) بناء على ما هو مسجل في قاعدة البيانات
+        var camp = window.campaignsData[window.activeCampId];
+        var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = camp.audUsed ? "0" : "1";
+        var c50 = document.getElementById('c-50'); if (c50) c50.innerText = camp.f50Used ? "0" : "1";
+        var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = camp.hintUsed ? "0" : "1";
+    };
     
     window.winCampLevel = function() { 
         var camp = window.campaignsData[window.activeCampId]; var wonLevel = camp.level; camp.level++; var rewardMsg = "اجتزت المرحلة بنجاح"; var rewardIcon = "⭐"; var isGrand = false; 
@@ -1125,7 +1271,71 @@
     // ==========================================
     window.startG = function() { isOnlineMode = false; window.isCampMode = false; if (qList.length === 0) { window.showTopToast("عذراً، الأسئلة قيد التحميل..."); return; } window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } if (qOrder.length === 0) { answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); for (var i = 0; i < qList.length; i++) qOrder.push(i); window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); } window.shuffle(qOrder); window.loadQ(); };
     window.loadQ = function() { locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); if (cur >= qList.length) { window.openMod('modal-win'); return; } var q = qList[qOrder[cur]]; var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i = 0; i < 4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; };
-    window.checkAns = function(idx) { if (locked) return; locked = true; if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; if (isCorrect) { if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } window.safeShow('post-ans-actions', 'block'); } else { if (btn) btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); if(window.isCampMode) { var camp = window.campaignsData[window.activeCampId]; camp.lives--; if (camp.lives <= 0) { camp.cooldown = Date.now() + (45 * 60 * 1000); } window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); setTimeout(function() { window.isCampMode = false; window.goHomeG(); window.openCampaignMap(window.activeCampId); window.showTopToast("أجبت بشكل خاطئ وانكسر قلب 💔"); }, 2000); } else { var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } window.safeShow('post-ans-actions', 'block'); } } };
+    
+    window.checkAns = function(idx) { 
+        if (locked) return; locked = true; 
+        if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
+        var isCorrect = (idx !== -1 && optsOrder[idx] === 0); lastAnswerCorrect = isCorrect; 
+        var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; 
+        
+        if (isCorrect) { 
+            if(btn) btn.classList.add('correct'); window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; 
+            if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } 
+            var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } 
+            window.safeShow('post-ans-actions', 'block'); 
+        } else { 
+            if (btn) btn.classList.add('wrong'); 
+            var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); 
+            
+            if(window.isCampMode) { 
+                var camp = window.campaignsData[window.activeCampId]; 
+                var oldLives = camp.lives;
+                camp.lives--; 
+                
+                var heartOverlay = document.createElement('div');
+                heartOverlay.id = 'heart-break-overlay';
+                heartOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;justify-content:center;align-items:center; flex-direction:column;';
+                heartOverlay.innerHTML = '<div id="hb-anim-container" style="position:relative; font-size:140px; transition:all 0.4s ease-out;"><span id="hb-icon">❤️</span><span id="hb-num" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:50px; color:white; font-weight:900; font-family:Arial, sans-serif; text-shadow:2px 2px 4px #000;">' + oldLives + '</span></div>';
+                document.body.appendChild(heartOverlay);
+
+                try {
+                    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    var osc = ctx.createOscillator();
+                    var gain = ctx.createGain();
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.type = 'triangle'; osc.frequency.setValueAtTime(150, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 1.5);
+                    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.5);
+                    osc.start(); osc.stop(ctx.currentTime + 2);
+                } catch(e) { window.playSndSafe('sfx-lose'); }
+
+                setTimeout(function() {
+                    var ic = document.getElementById('hb-icon');
+                    var nm = document.getElementById('hb-num');
+                    var ct = document.getElementById('hb-anim-container');
+                    if(ic) { ic.innerText = '💔'; ic.style.color = '#ff3333'; }
+                    if(nm) nm.innerText = camp.lives;
+                    if(ct) { ct.style.transform = 'scale(1.2) rotate(-5deg)'; ct.style.filter = 'grayscale(0.6)'; }
+                }, 600);
+
+                if (camp.lives <= 0) { camp.cooldown = Date.now() + (30 * 60 * 1000); } 
+                window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); 
+                
+                setTimeout(function() { 
+                    if(heartOverlay) heartOverlay.remove();
+                    window.isCampMode = false; 
+                    window.goHomeG(); 
+                    window.openCampaignMap(window.activeCampId); 
+                }, 2500); 
+            } else { 
+                window.playSndSafe('sfx-lose');
+                var eb = document.getElementById('explanation-box'); if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } 
+                window.safeShow('post-ans-actions', 'block'); 
+            } 
+        } 
+    };
+    
     window.handleContinue = function() { if (lastAnswerCorrect) { cur++; if(window.isCampMode) window.loadCampQ(); else window.loadQ(); } else { if(!window.isCampMode) { window.openMod('modal-lose-menu'); } } };
 
     // ==========================================
@@ -1164,10 +1374,6 @@
     window.promoteToMod = function(uid, name) { window.showCustomConfirm("تأكيد الإجراء", "هل أنت متأكد من تعيين " + name + " كمشرف؟ 👮", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف نجاح! ✅"); window.openLB(); }).catch(function(){}); }); };
     window.giveNeon = function(uid, name) { window.showCustomConfirm("تأكيد الإجراء", "هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟ ✨", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.openLB(); }).catch(function(){}); }); };
     window.banUser = function(uid, name) { window.showCustomConfirm("تأكيد الحظر", "هل أنت متأكد من حظر " + name + "؟ 🚫", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.openLB(); }).catch(function(){}); }); };
-    
-    window.openManageBanned = function() { window.closeMod(); window.showTopToast("صفحة إدارة المحظورين تحت التطوير"); };
-    window.openManageMods = function() { window.closeMod(); window.showTopToast("صفحة إدارة المشرفين تحت التطوير"); };
-    window.openManageNeon = function() { window.closeMod(); window.showTopToast("صفحة إدارة الأسماء الفوسفورية تحت التطوير"); };
 
     // ==========================================
     // 9. الأونلاين 
