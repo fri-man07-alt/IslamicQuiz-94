@@ -596,12 +596,15 @@
         </div>
     </div>
 <script>
+    // تحميل صورة المجرة مسبقاً لتظهر في العجلة فوراً
+    var preGal = new Image(); preGal.src = 'https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png';
+
     // ==========================================
     // 0. التنسيقات الجذرية المصلحة 100% (CSS Injected)
     // ==========================================
     var mStyles = document.createElement('style');
     mStyles.innerHTML = `
-        /* لمعة الألقاب */
+        /* لمعة الألقاب العادية */
         @keyframes titleShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
         @keyframes forceBgMove { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
         @keyframes fireMoving { 0% { background-position: 0% 0%; } 50% { background-position: 100% 200%; } 100% { background-position: 0% 0%; } }
@@ -623,7 +626,7 @@
         .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 10s infinite alternate !important;}
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; }
 
-        /* الألقاب الأسطورية الثلاثة (إزالة السواد + صورة 150px ملتصقة بالأعلى + دم الغزال) */
+        /* الألقاب الأسطورية الثلاثة (الصورة يسار، الاسم يمين، دم الغزال صافي) */
         .title-sunnah { 
             background: url('https://i.postimg.cc/qMK4bRNG/file_000000009fe87246bc1eaf17ce750a96.png') left 0px top -10px / 150px no-repeat, linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; 
             background-blend-mode: lighten !important;
@@ -640,13 +643,11 @@
             border: 2px solid #ff9800 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff9800 !important; 
         }
         
-        /* نصوص الألقاب - توسيط طبيعي، والأسطوري يدفش لليمين */
+        /* النص على اليمين والصورة على اليسار */
         .legendary-badge { display: flex; align-items: center; position: relative; overflow: hidden; z-index: 1; filter: none !important; opacity: 1 !important; }
         .legendary-badge .badge-text { position: relative; z-index: 2; width: 100%; display: flex; align-items: center; justify-content: center; color: #ffd700; text-shadow: 2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Amiri', serif; font-weight: 900; }
-        
-        /* إبعاد النص عن الصورة في الألقاب الأسطورية */
-        .title-sunnah, .title-wisdom, .title-emperor { justify-content: flex-end !important; padding-right: 15px !important; padding-left: 150px !important; }
-        .title-sunnah .badge-text, .title-wisdom .badge-text, .title-emperor .badge-text { justify-content: flex-end !important; text-align: right !important; font-size: 1.4rem !important;}
+        .title-sunnah, .title-wisdom, .title-emperor { justify-content: flex-start !important; padding-right: 15px !important; padding-left: 150px !important; }
+        .title-sunnah .badge-text, .title-wisdom .badge-text, .title-emperor .badge-text { justify-content: flex-start !important; text-align: right !important; font-size: 1.4rem !important;}
 
         .mythic-modal-bg { background-color: #4A0000 !important; background-image: radial-gradient(circle, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; font-weight: 900 !important; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5) !important; }
         
@@ -656,10 +657,12 @@
         #preset-imgs-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-height: 50vh; overflow-y: auto; padding: 10px; }
         .theme-opt { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.3s; pointer-events: auto; }
         
-        /* إصلاح عجلة الحظ بالكامل */
+        /* إصلاح عجلة الحظ بالكامل (خلفية المجرة داخل الدائرة بالكامل) */
         .lucky-spin-container { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .circular-spin-container { position: relative; width: 260px; height: 260px; border-radius: 50%; border: 4px solid var(--p); background: rgba(0,0,0,0.5); margin: 20px auto; box-shadow: 0 0 30px rgba(255,215,0,0.3), inset 0 0 50px rgba(0,0,0,0.8); }
-        .spin-center-img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; object-fit: cover; border-radius: 50%; z-index: 5; box-shadow: 0 0 20px rgba(0,0,0,0.8); border: 2px solid #ffd700;}
+        .circular-spin-container { position: relative; width: 260px; height: 260px; border-radius: 50%; border: 4px solid var(--p); 
+            background-image: url('https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png') !important;
+            background-size: cover !important; background-position: center !important; margin: 20px auto; box-shadow: 0 0 30px rgba(255,215,0,0.3), inset 0 0 50px rgba(0,0,0,0.8); 
+        }
         .spin-item { position: absolute; width: 50px; height: 50px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: bold; color: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transform: translate(-50%, -50%); transition: all 0.3s ease; z-index: 10; border: 2px solid #fff; }
         .spin-item.active { transform: translate(-50%, -50%) scale(1.3); z-index: 20; border-color: var(--p); box-shadow: 0 0 20px var(--p); }
         .item-gold { background: linear-gradient(135deg, #ffd700, #ff8c00); }
@@ -692,7 +695,7 @@
     try { 
         var firebaseConfig = { apiKey: "AIzaSyB5aIAXxxtpVCyvu4aveECY3CtfU0kQlAg", authDomain: "islamicquiz-94.firebaseapp.com", projectId: "islamicquiz-94", storageBucket: "islamicquiz-94.appspot.com" }; 
         if (typeof firebase !== 'undefined') { if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); } window.db = firebase.firestore(); window.auth = firebase.auth(); } 
-    } catch(e) { console.error(e); }
+    } catch(e) {}
 
     var DEVELOPER_EMAIL = "Fri-man07@hotmail.com"; var currentUserRole = 'user'; var hasNeonUser = false; var sndOn = true;
     var qList = []; var aud = 5; var f50 = 5; var cur = 0; var locked = false; var qOrder = []; var optsOrder = []; var currentRunCorrect = 0; var lastAnswerCorrect = false;
@@ -718,7 +721,7 @@
     window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
 
     // ==========================================
-    // 2. الألقاب والأسئلة (دالة الخلط)
+    // 2. الألقاب والأسئلة ووسائل المساعدة
     // ==========================================
     window.shuffle = function(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var temp = a[i]; a[i] = a[j]; a[j] = temp; } return a; };
 
@@ -750,13 +753,14 @@
     ];
     try { for (var j = 0; j < qDataRawLast.length; j++) { qList.push({ q: qDataRawLast[j][0], o: [qDataRawLast[j][1], qDataRawLast[j][2], qDataRawLast[j][3], qDataRawLast[j][4]], exp: qDataRawLast[j][5] || "" }); } } catch (e) {}
 
-    // ==========================================
-    // 3. دوال الواجهة وعجلة الحظ ووسائل المساعدة
-    // ==========================================
-    window.useAud = function() { if (aud <= 0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) { var correctAnsText = qList[qOrder[cur]].o[0]; apa.innerText = correctAnsText + "\n(" + p + "%)"; } window.openMod('modal-aud'); };
+    // وسائل المساعدة 
+    window.useAud = function() { if (aud <= 0 || locked) return; aud--; var p = Math.floor(Math.random()*31)+60; var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var apa = document.getElementById('aud-pop-ans'); if (apa) apa.innerText = qList[qOrder[cur]].o[0]+"\n("+p+"%)"; window.openMod('modal-aud'); };
     window.use50 = function() { if (f50 <= 0 || locked) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var h = 0; for (var i=0; i<4; i++) { if (optsOrder[i] !== 0 && h < 2) { var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
     window.useHint = function() { if (totalHints <= 0 || locked) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; window.saveProgress(false); };
 
+    // ==========================================
+    // 3. دوال الواجهة، الحفظ، وعجلة الحظ
+    // ==========================================
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
     window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.className = "show"; window.playSndSafe('sfx-click'); setTimeout(function() { t.className = ""; }, 3000); };
@@ -816,11 +820,7 @@
             var hasTrophy = false;
             if(window.campaignsData && window.campaignsData.wisdom && window.campaignsData.wisdom.gotTrophy) hasTrophy = true;
             if(window.campaignsData && window.campaignsData.emperor && window.campaignsData.emperor.gotTrophy) hasTrophy = true;
-            
-            if (!hasTrophy) {
-                window.showTopToast("هذه الصورة مقفلة! 🔒 اختم المسابقات للحصول عليها");
-                return;
-            }
+            if (!hasTrophy) { window.showTopToast("هذه الصورة مقفلة! 🔒 اختم المسابقات للحصول عليها"); return; }
         }
         currentAvatar = url; window.lsSet('ULT_AVATAR', currentAvatar); 
         var btnImg = document.getElementById('profile-img-btn'); var settingsPreview = document.getElementById('current-profile-preview'); var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); 
@@ -842,15 +842,30 @@
             var googleBtn = document.getElementById('profile-google-link-btn'); if (googleBtn) googleBtn.style.display = isGoogle ? 'none' : 'flex';
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { if (isOwn) badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (isMd) badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; else badgeEl.innerHTML = ''; }
+            
+            var devControls = document.getElementById('admin-buttons-container');
+            if (isOwn) {
+                 devControls.style.display = 'flex';
+                 document.getElementById('btn-mod-list').style.display = 'block';
+                 document.getElementById('btn-neon-list').style.display = 'block';
+            } else if (isMd) {
+                 devControls.style.display = 'flex';
+                 document.getElementById('btn-mod-list').style.display = 'none';
+                 document.getElementById('btn-neon-list').style.display = 'none';
+            } else {
+                 devControls.style.display = 'none';
+            }
         }
     };
     window.closeMod = function() { window.playSndSafe('sfx-click'); window.safeHide('custom-modal'); };
 
-    // عجلة الحظ (تم الإصلاح وإضافة صورة المجرة للمنتصف)
+    // ==========================================
+    // عجلة الحظ تعمل وتظهر كامل الدائرة
+    // ==========================================
     window.renderLuckySpin = function() { 
         var sc = document.getElementById('spin-count'); if (sc) sc.innerText = spins; 
         var container = document.getElementById('spin-circular-grid'); if (!container) return; 
-        var html = '<img src="https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png" class="spin-center-img">'; 
+        var html = ''; 
         var radius = 100; 
         for (var i = 0; i < spinPrizes.length; i++) { 
             var p = spinPrizes[i]; var angle = (i * (2 * Math.PI) / spinPrizes.length) - (Math.PI / 2); var x = radius * Math.cos(angle) + 130; var y = radius * Math.sin(angle) + 130; 
@@ -892,11 +907,10 @@
     window.closeGrandPrize = function() { var modalContent = document.getElementById('modal-grand-prize'); if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } window.openMod('modal-luckyspin'); window.updateStatsUI(); };
 
     // ==========================================
-    // 4. تنسيق الألقاب (القفل الحمراء، وإزالة البهتان)
+    // 4. تنسيق الألقاب (القفل وإزالة البهتان)
     // ==========================================
     window.generateTitleHtml = function(id, t, isActive, isOwned, inList, isSmall) { 
         var titleName = t.n; 
-        
         var lockSpan = (!isOwned && inList && !isSmall) ? '<i class="fas fa-lock" style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:1.5rem; color:#ff4d4d; z-index:10; text-shadow:0 0 5px #000;"></i>' : ''; 
         var checkSpan = (isActive && inList && !isSmall) ? '<i class="fas fa-check" style="color:#2ecc71; font-size:1.5rem; font-weight:bold; position:absolute; right:15px; top:50%; transform:translateY(-50%); z-index:10; text-shadow:0 0 5px #000;"></i>' : ''; 
         var newBadge = ''; 
@@ -1149,11 +1163,9 @@
             if(btn) btn.classList.add('correct'); 
             window.playSndSafe('sfx-win'); window.addPoints(10); currentRunCorrect++; 
             if (answeredQs.indexOf(qOrder[cur]) === -1) { answeredQs.push(qOrder[cur]); window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); } 
-            
             var eb = document.getElementById('explanation-box'); 
             if (eb) { var expText = qList[qOrder[cur]].exp; eb.innerHTML = expText ? expText : "إجابة مسجلة."; window.safeShow('explanation-box', 'block'); } 
             window.safeShow('post-ans-actions', 'block'); 
-
         } else { 
             if (btn) btn.classList.add('wrong'); 
             window.playSndSafe('sfx-lose'); 
@@ -1173,7 +1185,7 @@
                     window.goHomeG();
                     window.openCampaignMap(window.activeCampId);
                     window.showTopToast("أجبت بشكل خاطئ وانكسر قلب 💔");
-                }, 2000); // ينتظر ثانيتين ليرى الإجابة الصحيحة ثم يطرده للخريطة
+                }, 2000); 
                 
             } else {
                 var eb = document.getElementById('explanation-box'); 
@@ -1184,17 +1196,54 @@
     };
 
     window.handleContinue = function() { 
-        if (lastAnswerCorrect) { 
-            cur++; 
-            if(window.isCampMode) window.loadCampQ(); else window.loadQ(); 
-        } else { 
-            if(!window.isCampMode) { 
-                window.openMod('modal-lose-menu'); 
-            } 
-        } 
+        if (lastAnswerCorrect) { cur++; if(window.isCampMode) window.loadCampQ(); else window.loadQ(); } 
+        else { if(!window.isCampMode) { window.openMod('modal-lose-menu'); } } 
     };
 
-    window.openLB = function() { var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); if(!window.db) return; window.db.collection("leaderboard_" + window.getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { var html = ''; if (!isGoogle) { html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; } var rank = 1; qSnap.forEach(function(doc) { var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; var em = d.email || ''; if (d.role === 'owner' || window.isOwner(em)) { roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; } else if (d.role === 'mod') { roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; } var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) { nameCls = 'neon-bg'; } var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); var rowClick = ''; if (window.isMod() && doc.id !== authUid) { var safeName = d.name ? d.name.replace(/'/g, "\\'") : 'لاعب'; var safeAvatar = d.avatar ? d.avatar : ''; rowClick = "onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon === true || d.hasNeon === 'true') + ")\" style='cursor:pointer;'"; } html += '<div class="lb-row' + isMe + '" ' + rowClick + '><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; }).catch(function(){}); };
+    window.openLB = function() { var container = document.getElementById('lb-list-container'); if(container) container.innerHTML = 'جاري التحميل...'; window.openMod('modal-leaderboard'); if(!window.db) return; window.db.collection("leaderboard_" + window.getWeekString()).where("score", ">", 0).orderBy("score", "desc").limit(20).get().then(function(qSnap) { var html = ''; if (!isGoogle) { html += '<div style="background:rgba(255, 77, 77, 0.2); border:1px solid #ff4d4d; color:#ff4d4d; padding:10px; border-radius:10px; margin-bottom:12px; font-weight:bold; text-align:center;">سجل دخول بجوجل لتنافس 🔒</div>'; } var rank = 1; qSnap.forEach(function(doc) { var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; var tObj = titlesData[d.title] || titlesData['t1']; var roleBadge = ''; var em = d.email || ''; if (d.role === 'owner' || window.isOwner(em)) { roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; } else if (d.role === 'mod') { roleBadge = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; } var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) { nameCls = 'neon-bg'; } var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); var safeName = d.name ? d.name.replace(/'/g, "\\'") : 'لاعب'; var safeAvatar = d.avatar ? d.avatar : ''; var rowClick = "onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon === true || d.hasNeon === 'true') + ")\" style='cursor:pointer;'"; html += '<div class="lb-row' + isMe + '" ' + rowClick + '><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; rank++; }); if(container) container.innerHTML = html || '<p>لا يوجد متصدرين</p>'; }).catch(function(){}); };
+
+    // ==========================================
+    // 7. إدارة المستخدمين وتخصيص الصلاحيات للمتصدرين
+    // ==========================================
+    window.openUserAction = function(targetUid, targetName, targetNumId, targetRole, targetAvatar, targetHasNeon) {
+        if (!authUid || !window.db) return;
+        var myRole = window.lsGet('ULT_ROLE', currentUserRole); 
+        if (authUid && window.isOwner(window.auth && window.auth.currentUser ? window.auth.currentUser.email : '')) myRole = 'owner';
+        
+        var html = '<div style="text-align:center; padding: 20px;">' +
+                   '<img src="' + (targetAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--p); object-fit:cover; margin-bottom:15px;">' +
+                   '<h2 style="color:transparent; background-image:' + (targetHasNeon ? 'linear-gradient(90deg, #ff00de, #ff8c00)' : 'linear-gradient(90deg, #ffd700, #fff)') + '; -webkit-background-clip:text; background-clip:text; font-weight:900; font-size:1.8rem;">' + targetName + '</h2>' +
+                   '<p style="color:#aaa; font-size:0.9rem; margin-top:5px; margin-bottom: 25px;">#' + targetNumId + '</p>' +
+                   '<div style="display:flex; flex-direction:column; gap:10px;">' +
+                   '<button class="q-btn primary" onclick="window.addFriend(\'' + targetUid + '\', \'' + targetName + '\')">➕ اضافة صديق</button>';
+
+        if ((myRole === 'mod' || myRole === 'owner') && targetRole === 'user') {
+            html += '<button class="q-btn danger" onclick="window.banUser(\'' + targetUid + '\', \'' + targetName + '\')">🚫 حظر</button>';
+        }
+
+        if (myRole === 'owner') {
+             if (targetRole === 'user') {
+                 html += '<button class="q-btn primary" onclick="window.promoteToMod(\'' + targetUid + '\', \'' + targetName + '\')">👮 اضافة مشرف</button>';
+                 html += '<button class="q-btn neon-bg" style="color:#000;" onclick="window.giveNeon(\'' + targetUid + '\', \'' + targetName + '\')">✨ اعطاء اسم فوسفوري</button>';
+             } else if (targetRole === 'mod') {
+                 html += '<button class="q-btn danger" onclick="window.demoteFromMod(\'' + targetUid + '\', \'' + targetName + '\')">🗑️ ازالة مشرف</button>';
+             }
+        }
+        html += '<button class="q-btn danger" style="background:transparent; border:1px solid #ff4d4d; color:#ff4d4d; margin-top:15px;" onclick="window.closeMod()">إلغاء</button></div></div>';
+        document.getElementById('modal-user-action').innerHTML = html;
+        window.openMod('modal-user-action');
+    };
+
+    window.demoteFromMod = function(uid, name) { window.showCustomConfirm("تأكيد الإجراء", "هل أنت متأكد من ازالة رتبة المشرف من " + name + "؟ 🗑️", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.openLB(); }).catch(function(){}); }); };
+    window.promoteToMod = function(uid, name) { window.showCustomConfirm("تأكيد الإجراء", "هل أنت متأكد من تعيين " + name + " كمشرف؟ 👮", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف نجاح! ✅"); window.openLB(); }).catch(function(){}); }); };
+    window.giveNeon = function(uid, name) { window.showCustomConfirm("تأكيد الإجراء", "هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟ ✨", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.openLB(); }).catch(function(){}); }); };
+    window.banUser = function(uid, name) { window.showCustomConfirm("تأكيد الحظر", "هل أنت متأكد من حظر " + name + "؟ 🚫", function() { window.closeMod(); window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.openLB(); }).catch(function(){}); }); };
+    window.addFriend = function(uid, name) { window.closeMod(); window.showTopToast("تم ارسال طلب الصداقة لـ " + name + " (تحت التطوير)"); };
+    
+    window.openManageBanned = function() { window.closeMod(); window.showTopToast("صفحة إدارة المحظورين تحت التطوير"); };
+    window.openManageMods = function() { window.closeMod(); window.showTopToast("صفحة إدارة المشرفين تحت التطوير"); };
+    window.openManageNeon = function() { window.closeMod(); window.showTopToast("صفحة إدارة الأسماء الفوسفورية تحت التطوير"); };
+
     var matchRef = null; var matchmakingUnsubscribe = null; var onlineMatchId = null; var myMatchRole = null; var onlineTimerInterval = null; var currentTurnUid = null; var isOnlineMode = false; var onlineData = {}; var turnTimeLeft = 25; var randomMatchTimeout = null; var inviteInterval = null;
     window.startMatchmaking = function(type, friendUid, friendName) { if (!authUid) { window.showTopToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } if (qList.length < 10) { window.showTopToast("خطأ: الأسئلة قيد التحميل..."); return; } if (type === 'friend') { window.db.collection("users_v4").doc(friendUid).get().then(function(doc){ if(doc.exists && (doc.data().isBusy === true || doc.data().isBusy === 'true')) { window.showTopToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴"); } else { window.proceedMatchmaking(type, friendUid, friendName); } }); } else { window.proceedMatchmaking(type, friendUid, friendName); clearTimeout(randomMatchTimeout); randomMatchTimeout = setTimeout(function() { var loadingModal = document.getElementById('modal-loading-online'); if (loadingModal && loadingModal.style.display === 'flex') { window.cancelMatchmaking(); window.showTopToast("لا يوجد لاعبين متاحين حالياً ⏳"); } }, 30000); } };
     window.proceedMatchmaking = function(type, friendUid, friendName) { window.openMod('modal-loading-online'); var waitMsg = document.getElementById('wait-msg-ui'); if (type === 'friend') { if (waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if (waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; } var waitMyImg = document.getElementById('wait-my-img'); if (waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var waitMyName = document.getElementById('wait-my-name'); if (waitMyName) waitMyName.innerText = loggedUser; var matchQs = []; var tempQ = []; for (var i=0; i<qList.length; i++) tempQ.push(i); window.shuffle(tempQ); for (var i=0; i<10; i++) matchQs.push(tempQ[i]); var matchData = { p1_id: authUid, p1_name: loggedUser, p1_avatar: currentAvatar, p1_neon: hasNeonUser, p1_score: 0, p1_ready: false, p2_id: (type === 'friend') ? friendUid : null, p2_name: (type === 'friend') ? friendName : '', p2_avatar: '', p2_neon: false, p2_score: 0, p2_ready: false, status: 'waiting', type: type, current_turn: authUid, questions: matchQs, current_q_index: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp() }; if (type === 'friend') { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.db.collection("users_v4").doc(friendUid).update({ challenges: firebase.firestore.FieldValue.arrayUnion({ matchId: ref.id, fromUid: authUid, fromName: loggedUser }) }); window.listenToMatch(ref.id); }).catch(function(){}); } else { window.db.collection("matches_v4").where("status", "==", "waiting").get().then(function(snap) { var foundMatch = null; snap.forEach(function(doc) { if(doc.data().type === 'random' && doc.data().p1_id !== authUid) { foundMatch = doc; } }); if (!foundMatch) { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); } else { clearTimeout(randomMatchTimeout); foundMatch.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.startVSGame(foundMatch.id, "p2"); }); } }).catch(function(e){ window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); }); } };
@@ -1222,9 +1271,9 @@
                                 var d = doc.data(); 
                                 if (d.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
                                 loggedUser = d.name || user.displayName || 'أسطورة'; pID = d.numId || pID; pts = parseInt(d.score || pts); 
-                                if (d.hints !== undefined) totalHints = parseInt(d.hints); if (d.spins !== undefined) spins = parseInt(d.spins); if (d.ownedTitles) ownedTitles = d.ownedTitles; if (d.title) activeTitleId = d.title; if (d.answeredQs) answeredQs = d.answeredQs; if (d.avatar) currentAvatar = d.avatar; if (d.randomWinStreak !== undefined) randomWinStreak = parseInt(d.randomWinStreak); if (d.role) currentUserRole = d.role; if (d.hasNeon === true || d.hasNeon === 'true') hasNeonUser = true; 
+                                if (d.hints !== undefined) totalHints = parseInt(d.hints); if (d.spins !== undefined) spins = parseInt(d.spins); if (d.ownedTitles) ownedTitles = d.ownedTitles; if (d.title) activeTitleId = d.title; if (d.answeredQs) answeredQs = d.answeredQs; if (d.avatar) currentAvatar = d.avatar; if (d.randomWinStreak !== undefined) randomWinStreak = parseInt(d.randomWinStreak); if (d.role) { currentUserRole = d.role; window.lsSet('ULT_ROLE', d.role); } if (d.hasNeon === true || d.hasNeon === 'true') hasNeonUser = true; 
                             } 
-                            if (window.isOwner(user.email)) { currentUserRole = 'owner'; hasNeonUser = true; pID = "11111111"; if (ownedTitles.indexOf('t_sunnah') === -1) { ownedTitles.push('t_sunnah'); } } 
+                            if (window.isOwner(user.email)) { currentUserRole = 'owner'; window.lsSet('ULT_ROLE', 'owner'); hasNeonUser = true; pID = "11111111"; if (ownedTitles.indexOf('t_sunnah') === -1) { ownedTitles.push('t_sunnah'); } } 
                             if (typeof window.finishLoading === 'function') window.finishLoading(false); 
                         }).catch(function() { if (typeof window.finishLoading === 'function') window.finishLoading(false); }); 
                     } else { if (typeof window.finishLoading === 'function') window.finishLoading(false); }
@@ -1236,3 +1285,5 @@
         if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } 
     });
 </script>
+</body>
+</html>
