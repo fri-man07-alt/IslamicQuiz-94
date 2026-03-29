@@ -656,15 +656,18 @@
             z-index: 1; 
         }
 
-        /* تصغير وترتيب الصورة والاسم في الشاشة الرئيسية */
+        /* تصغير وترتيب الصورة والاسم وفرض اللون الأحمر الميثيك في الشاشة الرئيسية */
         .main-mythic {
+            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
             height: 55px !important;
             min-width: 180px !important;
             justify-content: center !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.4) !important;
         }
         .main-mythic .mythic-img {
-            height: 75px !important; /* حجم مصغر مناسب للشاشة الرئيسية */
-            top: 0px !important; /* الرأس يلمس الحافة العلوية */
+            height: 75px !important; 
+            top: 0px !important; 
             left: 5px !important;
         }
         
@@ -680,7 +683,7 @@
         }
         .small-mythic .mythic-img { 
             left: -5px; 
-            top: 0px !important; /* ملامسة الحافة العلوية في كل مكان */
+            top: 0px !important; 
             height: 45px !important; 
             width: auto;
         }
@@ -707,7 +710,7 @@
         .small-mythic .mythic-txt { 
             width: auto;
             padding: 0 !important; 
-            padding-left: 25px !important; /* لترك مساحة للحيوان على اليسار */
+            padding-left: 25px !important; 
             text-align: right !important; 
             font-size: 0.75rem !important; 
             display: block !important; 
@@ -992,9 +995,9 @@
             't_emperor': '#2a0000'
         };
         var bg = colors[activeTitleId] || '#111111';
-        document.body.style.backgroundColor = bg;
+        document.body.style.setProperty('background-color', bg, 'important');
         var ss = document.getElementById('screen-start');
-        if (ss) ss.style.backgroundColor = bg;
+        if (ss) ss.style.setProperty('background-color', bg, 'important');
     };
 
     window.updateStatsUI = function() { var uiPts = document.getElementById('ui-pts'); if (uiPts) uiPts.innerText = pts; var savedHintsUI = document.getElementById('saved-hints-ui'); if (savedHintsUI) savedHintsUI.innerText = totalHints; var spinCount = document.getElementById('spin-count'); if (spinCount) spinCount.innerText = spins; window.updateTitleDisplay(); };
@@ -1122,11 +1125,36 @@
         });
     };
 
+    // دوال الإجراءات مع التأكيد القياسي لحمايتها من الانهيار
     window.unbanUser = function(uid) {
-        window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); window.openAdminList('banned'); });
+        if(confirm("هل أنت متأكد من إزالة الحظر؟")) {
+            window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); window.openAdminList('banned'); });
+        }
     };
     window.removeNeon = function(uid, name) {
-        window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم إزالة الفوسفوري عن " + name); var c = document.getElementById('modal-admin-list'); if(c && c.style.display !== 'none') window.openAdminList('neon'); else window.openLB(); });
+        if(confirm("هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟ ❌")) {
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم إزالة الفوسفوري عن " + name); var c = document.getElementById('modal-admin-list'); if(c && c.style.display !== 'none') window.openAdminList('neon'); else window.openLB(); });
+        }
+    };
+    window.demoteFromMod = function(uid, name) { 
+        if(confirm("هل أنت متأكد من ازالة رتبة المشرف من " + name + "؟ 🗑️")) {
+            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.openLB(); });
+        }
+    };
+    window.promoteToMod = function(uid, name) { 
+        if(confirm("هل أنت متأكد من تعيين " + name + " كمشرف؟ 👮")) { 
+            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف بنجاح! ✅"); window.openLB(); }); 
+        } 
+    };
+    window.giveNeon = function(uid, name) { 
+        if(confirm("هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟ ✨")) { 
+            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.openLB(); }); 
+        } 
+    };
+    window.banUser = function(uid, name) { 
+        if(confirm("هل أنت متأكد من حظر " + name + "؟ 🚫")) { 
+            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.openLB(); }); 
+        } 
     };
 
     window.openManageBanned = function() { window.openAdminList('banned'); };
@@ -1160,6 +1188,22 @@
                 });
             }
 
+            // تطبيق تأثيرات القفل على صورة الكأس في صفحة البروفايل
+            var trophyImg = document.querySelector('.preset-img-opt[src="https://i.postimg.cc/Rh90Sysy/Pngtree-beautiful-trophy-4541793.png"]');
+            if (trophyImg) {
+                var hasTrophy = false;
+                if(window.campaignsData && window.campaignsData.wisdom && window.campaignsData.wisdom.gotTrophy) hasTrophy = true;
+                if(window.campaignsData && window.campaignsData.emperor && window.campaignsData.emperor.gotTrophy) hasTrophy = true;
+                if (!hasTrophy) {
+                    trophyImg.style.filter = 'grayscale(100%) opacity(0.4)';
+                    trophyImg.style.border = '2px solid #ff4d4d';
+                } else {
+                    trophyImg.style.filter = 'none';
+                    trophyImg.style.border = '2px solid transparent';
+                }
+            }
+
+            // إظهار أزرار المطور وتفعيل عملها بربطها الصحيح
             var devControls = document.getElementById('admin-buttons-container');
             if (isOwn) {
                  devControls.style.display = 'flex';
@@ -1174,6 +1218,11 @@
             } else {
                  devControls.style.display = 'none';
             }
+            
+            // ربط الدوال بأزرار القوائم بشكل سليم
+            var btnBan = document.getElementById('btn-ban-list'); if(btnBan) btnBan.onclick = window.openManageBanned;
+            var btnMod = document.getElementById('btn-mod-list'); if(btnMod) btnMod.onclick = window.openManageMods;
+            var btnNeon = document.getElementById('btn-neon-list'); if(btnNeon) btnNeon.onclick = window.openManageNeon;
         }
     };
     window.closeMod = function() { window.playSndSafe('sfx-click'); window.safeHide('custom-modal'); };
@@ -1287,7 +1336,7 @@
         if (camp.lives <= 0) { 
             if (now >= camp.cooldown) { 
                 camp.lives = 5; camp.cooldown = 0; 
-                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; // استعادة وسائل المساعدة عند انتهاء الوقت
+                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; 
                 window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); 
             } 
         } 
@@ -1344,7 +1393,7 @@
             if (diff <= 0) { 
                 clearInterval(window.campTimerInterval); 
                 camp.lives = 5; camp.cooldown = 0; 
-                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; // استعادة وسائل المساعدة بعد انتهاء العد التنازلي
+                camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; 
                 window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); 
                 if(btn) { 
                     btn.disabled = false; 
@@ -1390,7 +1439,6 @@
             b.innerText = q.o[optsOrder[i]]; 
         } 
         
-        // إظهار رصيد وسائل المساعدة الخاصة بالمسابقة (إما 1 أو 0) بناء على ما هو مسجل في قاعدة البيانات
         var camp = window.campaignsData[window.activeCampId];
         var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = camp.audUsed ? "0" : "1";
         var c50 = document.getElementById('c-50'); if (c50) c50.innerText = camp.f50Used ? "0" : "1";
