@@ -621,8 +621,8 @@
         .shine-blue::after { background: linear-gradient(to right, rgba(0,212,255,0) 0%, rgba(0,212,255,0.6) 50%, rgba(0,212,255,0) 100%); }
         
         /* الألقاب العادية (بدون لمعة لطالب علم والمتميز) */
-        .title-طالب { background: linear-gradient(135deg, #2a2a2a 0%, #111 100%) !important; border: 1px solid #888 !important; }
-        .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 1px solid #b388ff !important; }
+        .title-طالب { background: linear-gradient(135deg, #2a2a2a 0%, #111 100%) !important; border: 1px solid #888 !important; animation: none !important; }
+        .title-متميز { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%) !important; border: 1px solid #b388ff !important; animation: none !important; }
         
         /* باقي الألقاب (مع لمعة وحركة) */
         .title-حافظ { background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), linear-gradient(135deg, #2d1b0d 0%, #4a2e15 50%, #2d1b0d 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px #000, 0 0 15px rgba(255, 215, 0, 0.6) !important; background-size: 200% 200% !important; animation: forceBgMove 8s infinite alternate !important;}
@@ -635,7 +635,7 @@
         .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 10s infinite alternate !important;}
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; }
 
-        /* الألقاب الأسطورية الثلاثة */
+        /* الألقاب الأسطورية الثلاثة بخلفية دم الغزال الصافية في كل مكان */
         .title-sunnah, .title-wisdom, .title-emperor { background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; position: relative; overflow: hidden; }
         .title-sunnah { border: 2px solid #ff3333 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important; }
         .title-wisdom { border: 2px solid #00d4ff !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #00d4ff !important; }
@@ -659,6 +659,9 @@
             height: 55px !important;
             min-width: 180px !important;
             justify-content: center !important;
+            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
+            border: 2px solid #ffd700 !important;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.4) !important;
         }
         .main-mythic .mythic-img {
             height: 75px !important; 
@@ -768,6 +771,41 @@
     var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
     var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = []; var isBusy = false; 
 
+    // تعريف دوال التأكيد و الرسائل لضمان عمل الأزرار بشكل سليم 100%
+    window.showCustomConfirm = function(title, msg, onConfirm) {
+        var modal = document.getElementById('modal-custom-confirm');
+        if(!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modal-custom-confirm';
+            modal.className = 'm-content';
+            document.getElementById('custom-modal').appendChild(modal);
+        }
+        modal.innerHTML = '<h3 style="color:var(--p); text-align:center;">' + title + '</h3><p style="text-align:center; margin:15px 0; font-size:1.1rem;">' + msg + '</p><div style="display:flex; justify-content:center; gap:10px;"><button id="confirm-yes" class="q-btn primary" style="width:45%; margin:0;">تأكيد</button><button id="confirm-no" class="q-btn danger" style="width:45%; margin:0; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;">إلغاء</button></div>';
+        
+        document.getElementById('confirm-yes').onclick = function() {
+            window.playSndSafe('sfx-click');
+            onConfirm();
+        };
+        document.getElementById('confirm-no').onclick = function() {
+            window.playSndSafe('sfx-click');
+            window.closeMod();
+        };
+        window.openMod('modal-custom-confirm');
+    };
+
+    window.showSuccessModal = function(title, msg, icon, backModalId) {
+        var modal = document.getElementById('modal-success-msg');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modal-success-msg';
+            modal.className = 'm-content';
+            document.getElementById('custom-modal').appendChild(modal);
+        }
+        modal.innerHTML = '<h3 style="color:#2ecc71; text-align:center; margin-bottom:15px;">' + title + '</h3><div style="font-size:3rem; text-align:center; margin-bottom:10px;">' + icon + '</div><p style="text-align:center; margin-bottom:20px; font-size:1.1rem;">' + msg + '</p><button class="q-btn primary" onclick="window.openCampaignMap(window.activeCampId)">متابعة</button>';
+        window.openMod('modal-success-msg');
+        window.playSndSafe('sfx-win');
+    };
+
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null) ? d : v; } catch(e) { return d; } };
     window.lsSet = function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} };
     window.generateNumID = function() { return Math.floor(10000000 + Math.random() * 89999999).toString(); };
@@ -784,8 +822,13 @@
     try { answeredQs = JSON.parse(window.lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
     try { newTitlesList = JSON.parse(window.lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
 
-    window.isOwner = function(email) { return (currentUserRole === 'owner' || (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase())); };
-    window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
+    // إصلاح التحقق من المطور والمشرف لتعمل الأزرار بشكل صحيح لجميع اللاعبين
+    window.isOwner = function(email) { 
+        return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); 
+    };
+    window.isMod = function() { 
+        return (currentUserRole === 'mod' || currentUserRole === 'owner'); 
+    };
 
     // ==========================================
     // 2. الألقاب وعجلة الحظ والأسئلة ووسائل المساعدة
@@ -825,6 +868,7 @@
         ["من هو الصحابي الملقب بـ (ذو الشهادتين) لأن النبي ﷺ جعل شهادته بشهادة رجلين؟", "خزيمة بن ثابت", "سلمان الفارسي", "عمار بن ياسر", "صهيب الرومي", "صدق النبي ﷺ في بيع فرس لأعرابي دون أن يشهد البيعة."],
         ["ما هي السورة التي نُسخت فيها آية (المصابرة) من مقاتلة الواحد لعشرة إلى مقاتلة الواحد لاثنين؟", "سورة الأنفال", "سورة التوبة", "سورة آل عمران", "سورة محمد", "(الآن خفف الله عنكم وعلم أن فيكم ضعفا...)."],
         
+        // علوم القرآن 
         ["ما هي السورة التي تنتهي جميع آياتها بحرف (الدال)؟", "سورة الإخلاص", "سورة المسد", "سورة الفلق", "سورة الكوثر", "قل هو الله أحد، الله الصمد... تنتهي جميعها بحرف الدال."],
         ["في أي سورة ذُكرت قصة (أصحاب الأخدود)؟", "سورة البروج", "سورة الغاشية", "سورة الفجر", "سورة الطارق", "الذين شقوا الأخدود وأحرقوا فيه المؤمنين بالله."],
         ["ما هي السورة التي سُميت باسم (أحد أركان الإسلام)؟", "سورة الحج", "سورة الصيام", "سورة الزكاة", "سورة الصلاة", "الحج هو الركن الخامس من أركان الإسلام."],
@@ -841,6 +885,7 @@
         ["ما هي السورة التي وردت فيها بسملتان؟", "سورة النمل", "سورة هود", "سورة البقرة", "سورة طه", "واحدة في البداية، والثانية في كتاب سليمان لبلقيس."],
         ["ما هي السورة التي ذكرت (النجم الطارق) الذي يثقب السماء بضيائه؟", "سورة الطارق", "سورة النجم", "سورة التكوير", "سورة الانفطار", "(والسماء والطارق * وما أدراك ما الطارق * النجم الثاقب)."],
 
+        // الأنبياء 
         ["من هو النبي الذي صام عن الكلام ثلاثة أيام كآية من الله تعالى؟", "زكريا عليه السلام", "يحيى عليه السلام", "أيوب عليه السلام", "عيسى عليه السلام", "قال آيتك ألا تكلم الناس ثلاثة أيام إلا رمزا."],
         ["من هو النبي الذي قتله بنو إسرائيل بنشره بالمنشار نصفين؟", "زكريا عليه السلام", "يحيى عليه السلام", "إلياس عليه السلام", "جرجيس عليه السلام", "اختبأ في شجرة فنشروه مع الشجرة نصفين."],
         ["ما هو اسم الملك الذي كان يحكم بابل في عهد إبراهيم عليه السلام وحاجه في ربه؟", "النمرود بن كنعان", "بختنصر", "فرعون", "جالوت", "ادعى الألوهية وقال (أنا أحيي وأميت)."],
@@ -854,6 +899,7 @@
         ["من هو النبي الذي سخر الله له الريح والجن وألان له الحديد؟", "داود عليه السلام", "سليمان عليه السلام", "ذو القرنين", "صالح عليه السلام", "ألان الله له الحديد فصنع منه الدروع السابغات."],
         ["ما هو اسم الجبل الذي رست عليه سفينة نوح عليه السلام بعد الطوفان؟", "جبل الجودي", "جبل الطور", "جبل الجلجلة", "جبل عرفات", "(واستوت على الجودي وقيل بعداً للقوم الظالمين)."],
 
+        // تاريخ عام
         ["ما هي العاصمة الأولى للدولة الأموية في الأندلس؟", "قرطبة", "إشبيلية", "غرناطة", "طليطلة", "جعلها عبد الرحمن الداخل عاصمة للإمارة الأموية."],
         ["متى وقعت معركة (عين جالوت) التي هزم فيها المسلمون المغول؟", "658 هـ (1260 م)", "688 هـ (1289 م)", "648 هـ (1250 م)", "668 هـ (1270 م)", "بقيادة سيف الدين قطز والظاهر بيبرس."],
         ["من هو الخليفة العباسي الذي أمر ببناء مدينة (سامراء) لتكون مقراً لجيشه؟", "المعتصم بالله", "المأمون", "الواثق", "المتوكل", "بناها لتجنب احتكاك جنوده الترك بعامة الناس في بغداد."],
@@ -1044,8 +1090,6 @@
             });
         }
     };
-    window.openNotifications = window.openFriendRequests;
-    window.showNotifications = window.openFriendRequests;
 
     window.acceptFriend = function(reqUid, reqName, reqNumId) {
         var myReqObj = { fromUid: reqUid, fromName: reqName, fromNumId: reqNumId };
@@ -1110,7 +1154,6 @@
         });
     };
 
-    // استخدام دالة تأكيد مخصصة لضمان عمل الأزرار دون مشاكل
     window.unbanUser = function(uid) {
         window.showCustomConfirm("تأكيد", "هل أنت متأكد من إزالة الحظر؟", function() {
             window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); window.openAdminList('banned'); });
@@ -1123,22 +1166,22 @@
     };
     window.demoteFromMod = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "هل أنت متأكد من ازالة رتبة المشرف من " + name + "؟", function() {
-            window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.closeMod(); });
+            window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.closeMod(); window.openLB(); });
         });
     };
     window.promoteToMod = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "هل أنت متأكد من تعيين " + name + " كمشرف؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف بنجاح! ✅"); window.closeMod(); }); 
+            window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف بنجاح! ✅"); window.closeMod(); window.openLB(); }); 
         }); 
     };
     window.giveNeon = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.closeMod(); }); 
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.closeMod(); window.openLB(); }); 
         }); 
     };
     window.banUser = function(uid, name) { 
         window.showCustomConfirm("تأكيد الحظر", "هل أنت متأكد من حظر " + name + "؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.closeMod(); }); 
+            window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.closeMod(); window.openLB(); }); 
         }); 
     };
 
@@ -1157,7 +1200,6 @@
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { if (isOwn) badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (isMd) badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; else badgeEl.innerHTML = ''; }
             
-            // قفل صورة الكأس في البروفايل بصرياً
             var trophyImg = document.querySelector('.preset-img-opt[src="https://i.postimg.cc/Rh90Sysy/Pngtree-beautiful-trophy-4541793.png"]');
             if (trophyImg) {
                 var hasTrophy = false;
@@ -1231,7 +1273,6 @@
             fontSize = isMythic ? '1.2rem' : '1.0rem'; 
             if (isMythic) {
                 smallClass = 'main-mythic'; 
-                // فرض لون دم الغزال للألقاب الأسطورية في الشاشة الرئيسية بشكل إجباري
                 wrapperStyle += ' background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important;';
             }
         } 
@@ -1286,7 +1327,6 @@
     window.closeGrandPrize = function() { 
         var modalContent = document.getElementById('modal-grand-prize'); 
         if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } 
-        // توجيه اللاعب إذا كان عائداً من المسابقات
         if (window.isCampMode === false && window.activeCampId) {
             window.openCampaignMap(window.activeCampId);
         } else {
@@ -1438,7 +1478,10 @@
         else if (wonLevel === 12) { var targetTitle = (window.activeCampId === 'wisdom') ? 't_wisdom' : 't_emperor'; if (ownedTitles.indexOf(targetTitle) === -1) { ownedTitles.push(targetTitle); newTitlesList.push(targetTitle); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); var tName = (window.activeCampId === 'wisdom') ? 'منبع الحكمة 🐅' : 'إمبراطور المعرفة 🐆'; rewardMsg = "لقد ختمت المسار وفزت بلقب: " + tName; rewardIcon = "👑"; isGrand = true; } } 
         else { window.addPoints(100); } 
         
-        window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); window.saveProgress(false); window.isCampMode = false; window.goHomeG(); window.showGrandPrize(rewardMsg, rewardIcon, isGrand);
+        window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); window.saveProgress(false); window.isCampMode = false; window.goHomeG(); 
+        
+        if (isGrand) { window.showGrandPrize(rewardMsg, rewardIcon, true); } 
+        else { window.showSuccessModal("أحسنت! 🎉", rewardMsg, rewardIcon, "modal-campaign-map"); } 
     };
 
     // ==========================================
@@ -1586,7 +1629,7 @@
         window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { 
             window.showTopToast('تم إرسال طلب الصداقة لـ ' + fName); 
             var inp = document.getElementById('friend-id-input'); if(inp) inp.value = ""; 
-            window.closeMod(); // إغلاق النافذة بنجاح
+            window.closeMod(); 
         }).catch(function(){}); 
     };
 
@@ -1605,8 +1648,16 @@
     window.startVSCountdown = function() { window.safeHide('ready-area-left'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); var cdInt = setInterval(function() { count--; if (count > 0) { if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); } else if (count === 0) { if (cdDiv) cdDiv.innerHTML = 'انطلق!'; window.playSndSafe('sfx-win'); } else { clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } } }, 1000); };
     window.renderOnlineTurn = function() { locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i=0; i<4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; if (currentTurnUid === authUid) { if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); } else { if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); } onlineTimerInterval = setInterval(function() { turnTimeLeft--; if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } if (turnTimeLeft <= 0) { clearInterval(onlineTimerInterval); if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } } }, 1000); };
     window.submitOnlineAnswer = function(idx) { locked = true; clearInterval(onlineTimerInterval); var isCorrect = (idx !== -1 && optsOrder[idx] === 0); var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; if (btn) { if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } } var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid }; if (isCorrect) { if (myMatchRole === 'p1') { updateObj.p1_score = onlineData.p1_score + 1; } else { updateObj.p2_score = onlineData.p2_score + 1; } } if (nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; } setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000); };
-    window.askSurrender = function() { window.showCustomConfirm("تأكيد الانسحاب", "هل تريد الانسحاب من التحدي؟ ستعتبر خاسراً! 🏳️", function() { window.confirmSurrender(); }); };
+    
+    // دالة الانسحاب بتأكيد النظام الجديد
+    window.askSurrender = function() { 
+        window.showCustomConfirm("تأكيد الانسحاب", "هل تريد الانسحاب من التحدي؟ ستعتبر خاسراً! 🏳️", function() { 
+            window.confirmSurrender(); 
+        }); 
+    };
+    
     window.confirmSurrender = function() { window.closeMod(); if (!isOnlineMode) return; if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
+    
     window.endOnlineMatch = function() { clearInterval(onlineTimerInterval); if (matchmakingUnsubscribe) { matchmakingUnsubscribe(); } window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeHide('btn-surrender'); var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; var isWin = false; var isDraw = false; if (onlineData.forfeited_by) { isWin = (onlineData.forfeited_by !== authUid); } else { if (myScore > oppScore) { isWin = true; } else if (myScore === oppScore) { isDraw = true; } } var pLeftStatus = document.getElementById('vs-left-status'); var pRightStatus = document.getElementById('vs-right-status'); if (pLeftStatus) { pLeftStatus.className = "match-status-text"; } if (pRightStatus) { pRightStatus.className = "match-status-text"; } if (isWin) { if (pLeftStatus) { pLeftStatus.innerText = "فزت 🏆"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "خسر 💀"; pRightStatus.classList.add("status-lose"); pRightStatus.style.color="#ff4d4d"; pRightStatus.style.display = "block"; } } else if (isDraw) { if (pLeftStatus) { pLeftStatus.innerText = "تعادل 🤝"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.color="#eee"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "تعادل 🤝"; pRightStatus.classList.add("status-win"); pRightStatus.style.color="#eee"; pRightStatus.style.display = "block"; } } else { if (pLeftStatus) { pLeftStatus.innerText = "خسرت 💀"; pLeftStatus.classList.add("status-lose"); pLeftStatus.style.color="#ff4d4d"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "فاز 🏆"; pRightStatus.classList.add("status-win"); pRightStatus.style.display = "block"; } } var rTitle = document.getElementById('mr-title'); var rDesc = document.getElementById('mr-desc'); var rIcon = document.getElementById('mr-icon'); var rBtn = document.getElementById('btn-rematch'); if (rBtn) { if (onlineData.type === 'friend') { rBtn.style.display = 'block'; } else { rBtn.style.display = 'none'; } } var rewardPts = 0; var titleMsg = ""; if (isWin) { rewardPts = (onlineData.type === 'random') ? 150 : 50; if(typeof window.addPoints === 'function') window.addPoints(rewardPts); window.playSndSafe('sfx-win'); if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } } else if (isDraw) { window.playSndSafe('sfx-click'); if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } else { window.playSndSafe('sfx-lose'); if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } if (onlineData.type === 'random') { randomWinStreak = 0; } } window.saveProgress(false); window.safeShow('match-result-overlay', 'flex'); 
     };
 
@@ -1671,6 +1722,5 @@
         if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } 
     });
 </script>
-
 </body>
 </html>
