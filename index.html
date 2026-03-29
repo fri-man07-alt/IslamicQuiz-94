@@ -635,7 +635,7 @@
         .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 10s infinite alternate !important;}
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; }
 
-        /* الألقاب الأسطورية الثلاثة بخلفية دم الغزال الصافية في كل مكان */
+        /* الألقاب الأسطورية الثلاثة */
         .title-sunnah, .title-wisdom, .title-emperor { background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; position: relative; overflow: hidden; }
         .title-sunnah { border: 2px solid #ff3333 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important; }
         .title-wisdom { border: 2px solid #00d4ff !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #00d4ff !important; }
@@ -643,7 +643,6 @@
 
         .legendary-badge { display: flex; align-items: center; justify-content: center; position: relative; box-sizing: border-box; border-radius: 8px; }
         
-        /* الصورة الأسطورية - التموضع من الأعلى لإلصاق الرأس بالحافة ومسح السواد بـ lighten */
         .mythic-img { 
             position: absolute; 
             left: -10px; 
@@ -656,14 +655,10 @@
             z-index: 1; 
         }
 
-        /* تصغير وترتيب الصورة والاسم وفرض اللون الأحمر الميثيك في الشاشة الرئيسية */
         .main-mythic {
-            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
             height: 55px !important;
             min-width: 180px !important;
             justify-content: center !important;
-            border: 2px solid #ffd700 !important;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.4) !important;
         }
         .main-mythic .mythic-img {
             height: 75px !important; 
@@ -671,7 +666,6 @@
             left: 5px !important;
         }
         
-        /* تصغير وترتيب الصورة والاسم داخل المتصدرين (LB) */
         .small-mythic {
             justify-content: flex-end; 
             padding: 2px 5px !important;
@@ -688,12 +682,10 @@
             width: auto;
         }
 
-        /* لضمان الحافة العلوية في قائمة الألقاب */
         .title-sunnah .mythic-img, .title-wisdom .mythic-img, .title-emperor .mythic-img {
             top: 0px !important;
         }
 
-        /* النص الأسطوري */
         .mythic-txt { 
             position: relative; 
             z-index: 2; 
@@ -706,7 +698,6 @@
             font-weight: 900; 
         }
         
-        /* إظهار النص الأسطوري بداخل المتصدرين على اليمين */
         .small-mythic .mythic-txt { 
             width: auto;
             padding: 0 !important; 
@@ -720,11 +711,9 @@
 
         .mythic-modal-bg { background-color: #4A0000 !important; background-image: radial-gradient(circle, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; font-weight: 900 !important; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5) !important; }
         
-        /* تنسيق أزرار الإدارة بالبروفايل */
         .admin-placeholder-btn { color: #aaa; font-weight: bold; font-size: 0.9rem; margin: 0 5px; cursor: pointer; transition: 0.3s; border-bottom: 1px dashed transparent; }
         .admin-placeholder-btn:hover { color: var(--p); border-bottom-color: var(--p); transform: translateY(-2px); }
 
-        /* عجلة الحظ */
         .lucky-spin-container { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .circular-spin-container { position: relative; width: 260px; height: 260px; border-radius: 50%; border: 4px solid var(--p); background-image: url('https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png') !important; background-size: cover !important; background-position: center !important; margin: 20px auto; box-shadow: 0 0 30px rgba(255,215,0,0.3), inset 0 0 50px rgba(0,0,0,0.8); overflow: hidden; }
         .daily-spin-counter { color: #ffd700; font-weight: bold; font-size: 0.9rem; text-shadow: 0 0 10px #ff0000; margin-top: -10px; margin-bottom: 10px; }
@@ -737,7 +726,6 @@
         .item-orange { background: linear-gradient(135deg, #ff9800, #ff5722); }
         .mythic-bg { background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; box-shadow: 0 0 15px #8A0303 !important; }
         
-        /* خريطة المسابقات */
         .camp-map-scroll { width: 100%; overflow-x: auto; padding: 40px 0 15px 0; direction: rtl; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
         .camp-map-scroll::-webkit-scrollbar { height: 8px; }
         .camp-map-scroll::-webkit-scrollbar-thumb { background: var(--p); border-radius: 4px; }
@@ -757,7 +745,6 @@
         #preset-imgs-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-height: 50vh; overflow-y: auto; padding: 10px; }
         .theme-opt { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.3s; pointer-events: auto; }
 
-        /* تعديل حجم صور الأونلاين التحدي العشوائي والأصدقاء */
         #wait-my-img, #wait-opp-img, #p-left-img, #p-right-img {
             width: 80px !important;
             height: 80px !important;
@@ -797,10 +784,7 @@
     try { answeredQs = JSON.parse(window.lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
     try { newTitlesList = JSON.parse(window.lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
 
-    window.isOwner = function(email) { 
-        if(currentUserRole === 'owner') return true; 
-        return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); 
-    };
+    window.isOwner = function(email) { return (currentUserRole === 'owner' || (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase())); };
     window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
 
     // ==========================================
@@ -841,7 +825,6 @@
         ["من هو الصحابي الملقب بـ (ذو الشهادتين) لأن النبي ﷺ جعل شهادته بشهادة رجلين؟", "خزيمة بن ثابت", "سلمان الفارسي", "عمار بن ياسر", "صهيب الرومي", "صدق النبي ﷺ في بيع فرس لأعرابي دون أن يشهد البيعة."],
         ["ما هي السورة التي نُسخت فيها آية (المصابرة) من مقاتلة الواحد لعشرة إلى مقاتلة الواحد لاثنين؟", "سورة الأنفال", "سورة التوبة", "سورة آل عمران", "سورة محمد", "(الآن خفف الله عنكم وعلم أن فيكم ضعفا...)."],
         
-        // علوم القرآن 
         ["ما هي السورة التي تنتهي جميع آياتها بحرف (الدال)؟", "سورة الإخلاص", "سورة المسد", "سورة الفلق", "سورة الكوثر", "قل هو الله أحد، الله الصمد... تنتهي جميعها بحرف الدال."],
         ["في أي سورة ذُكرت قصة (أصحاب الأخدود)؟", "سورة البروج", "سورة الغاشية", "سورة الفجر", "سورة الطارق", "الذين شقوا الأخدود وأحرقوا فيه المؤمنين بالله."],
         ["ما هي السورة التي سُميت باسم (أحد أركان الإسلام)؟", "سورة الحج", "سورة الصيام", "سورة الزكاة", "سورة الصلاة", "الحج هو الركن الخامس من أركان الإسلام."],
@@ -858,7 +841,6 @@
         ["ما هي السورة التي وردت فيها بسملتان؟", "سورة النمل", "سورة هود", "سورة البقرة", "سورة طه", "واحدة في البداية، والثانية في كتاب سليمان لبلقيس."],
         ["ما هي السورة التي ذكرت (النجم الطارق) الذي يثقب السماء بضيائه؟", "سورة الطارق", "سورة النجم", "سورة التكوير", "سورة الانفطار", "(والسماء والطارق * وما أدراك ما الطارق * النجم الثاقب)."],
 
-        // الأنبياء 
         ["من هو النبي الذي صام عن الكلام ثلاثة أيام كآية من الله تعالى؟", "زكريا عليه السلام", "يحيى عليه السلام", "أيوب عليه السلام", "عيسى عليه السلام", "قال آيتك ألا تكلم الناس ثلاثة أيام إلا رمزا."],
         ["من هو النبي الذي قتله بنو إسرائيل بنشره بالمنشار نصفين؟", "زكريا عليه السلام", "يحيى عليه السلام", "إلياس عليه السلام", "جرجيس عليه السلام", "اختبأ في شجرة فنشروه مع الشجرة نصفين."],
         ["ما هو اسم الملك الذي كان يحكم بابل في عهد إبراهيم عليه السلام وحاجه في ربه؟", "النمرود بن كنعان", "بختنصر", "فرعون", "جالوت", "ادعى الألوهية وقال (أنا أحيي وأميت)."],
@@ -872,7 +854,6 @@
         ["من هو النبي الذي سخر الله له الريح والجن وألان له الحديد؟", "داود عليه السلام", "سليمان عليه السلام", "ذو القرنين", "صالح عليه السلام", "ألان الله له الحديد فصنع منه الدروع السابغات."],
         ["ما هو اسم الجبل الذي رست عليه سفينة نوح عليه السلام بعد الطوفان؟", "جبل الجودي", "جبل الطور", "جبل الجلجلة", "جبل عرفات", "(واستوت على الجودي وقيل بعداً للقوم الظالمين)."],
 
-        // تاريخ عام
         ["ما هي العاصمة الأولى للدولة الأموية في الأندلس؟", "قرطبة", "إشبيلية", "غرناطة", "طليطلة", "جعلها عبد الرحمن الداخل عاصمة للإمارة الأموية."],
         ["متى وقعت معركة (عين جالوت) التي هزم فيها المسلمون المغول؟", "658 هـ (1260 م)", "688 هـ (1289 م)", "648 هـ (1250 م)", "668 هـ (1270 م)", "بقيادة سيف الدين قطز والظاهر بيبرس."],
         ["من هو الخليفة العباسي الذي أمر ببناء مدينة (سامراء) لتكون مقراً لجيشه؟", "المعتصم بالله", "المأمون", "الواثق", "المتوكل", "بناها لتجنب احتكاك جنوده الترك بعامة الناس في بغداد."],
@@ -1018,7 +999,6 @@
             var hasTrophy = false;
             if(window.campaignsData && window.campaignsData.wisdom && window.campaignsData.wisdom.gotTrophy) hasTrophy = true;
             if(window.campaignsData && window.campaignsData.emperor && window.campaignsData.emperor.gotTrophy) hasTrophy = true;
-            
             if (!hasTrophy) {
                 window.showTopToast("هذه الصورة مقفلة! 🔒 اختم المسابقات للحصول عليها");
                 return;
@@ -1033,6 +1013,7 @@
         if (el) el.classList.add('selected'); window.saveProgress(false); window.showBottomToast("تم اختيار الشخصية بنجاح! ✅"); window.openMod('modal-profile-settings'); 
     };
 
+    // نقل طلبات الصداقة إلى الجرس وتحديث الواجهة
     window.openFriendRequests = function() {
         window.closeMod();
         var modal = document.getElementById('modal-friend-requests');
@@ -1042,25 +1023,29 @@
             modal.className = 'm-content';
             document.getElementById('custom-modal').appendChild(modal);
         }
-        modal.innerHTML = '<h3 style="color:var(--p); text-align:center;">طلبات الصداقة</h3><div id="fr-list-content" style="max-height:60vh; overflow-y:auto; padding:10px;">جاري التحميل...</div><button class="q-btn danger" onclick="window.openMod(\'modal-profile-settings\')">رجوع</button>';
+        modal.innerHTML = '<h3 style="color:var(--p); text-align:center;">طلبات الصداقة</h3><div id="fr-list-content" style="max-height:60vh; overflow-y:auto; padding:10px;">جاري التحميل...</div><button class="q-btn danger" onclick="window.closeMod()">رجوع</button>';
         window.openMod('modal-friend-requests');
         
-        window.db.collection('users_v4').doc(authUid).get().then(doc => {
-            var c = document.getElementById('fr-list-content');
-            if(!doc.exists || !doc.data().requests || doc.data().requests.length === 0) {
-                c.innerHTML = '<p style="text-align:center;">لا توجد طلبات حالياً 📩</p>'; return;
-            }
-            var listHtml = '';
-            doc.data().requests.forEach(req => {
-                listHtml += '<div style="background:#222; padding:10px; margin-bottom:5px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">' +
-                            '<span>' + req.fromName + '</span>' +
-                            '<div><button class="q-btn primary" style="padding:5px 10px; margin:0 5px;" onclick="window.acceptFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">قبول</button>' +
-                            '<button class="q-btn danger" style="padding:5px 10px; margin:0;" onclick="window.rejectFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">رفض</button></div>' +
-                            '</div>';
+        if(window.db && authUid) {
+            window.db.collection('users_v4').doc(authUid).get().then(doc => {
+                var c = document.getElementById('fr-list-content');
+                if(!doc.exists || !doc.data().requests || doc.data().requests.length === 0) {
+                    c.innerHTML = '<p style="text-align:center;">لا توجد طلبات صداقة حالياً 📩</p>'; return;
+                }
+                var listHtml = '';
+                doc.data().requests.forEach(req => {
+                    listHtml += '<div style="background:#222; padding:10px; margin-bottom:5px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">' +
+                                '<span>' + req.fromName + '</span>' +
+                                '<div><button class="q-btn primary" style="padding:5px 10px; margin:0 5px;" onclick="window.acceptFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">قبول</button>' +
+                                '<button class="q-btn danger" style="padding:5px 10px; margin:0;" onclick="window.rejectFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">رفض</button></div>' +
+                                '</div>';
+                });
+                c.innerHTML = listHtml;
             });
-            c.innerHTML = listHtml;
-        });
+        }
     };
+    window.openNotifications = window.openFriendRequests;
+    window.showNotifications = window.openFriendRequests;
 
     window.acceptFriend = function(reqUid, reqName, reqNumId) {
         var myReqObj = { fromUid: reqUid, fromName: reqName, fromNumId: reqNumId };
@@ -1125,36 +1110,36 @@
         });
     };
 
-    // دوال الإجراءات مع التأكيد القياسي لحمايتها من الانهيار
+    // استخدام دالة تأكيد مخصصة لضمان عمل الأزرار دون مشاكل
     window.unbanUser = function(uid) {
-        if(confirm("هل أنت متأكد من إزالة الحظر؟")) {
+        window.showCustomConfirm("تأكيد", "هل أنت متأكد من إزالة الحظر؟", function() {
             window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); window.openAdminList('banned'); });
-        }
+        });
     };
     window.removeNeon = function(uid, name) {
-        if(confirm("هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟ ❌")) {
-            window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم إزالة الفوسفوري عن " + name); var c = document.getElementById('modal-admin-list'); if(c && c.style.display !== 'none') window.openAdminList('neon'); else window.openLB(); });
-        }
+        window.showCustomConfirm("تأكيد", "هل أنت متأكد من إزالة الفوسفوري عن " + name + "؟", function() {
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم إزالة الفوسفوري عن " + name); var c = document.getElementById('modal-admin-list'); if(c && c.style.display !== 'none') window.openAdminList('neon'); else window.closeMod(); });
+        });
     };
     window.demoteFromMod = function(uid, name) { 
-        if(confirm("هل أنت متأكد من ازالة رتبة المشرف من " + name + "؟ 🗑️")) {
-            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.openLB(); });
-        }
+        window.showCustomConfirm("تأكيد", "هل أنت متأكد من ازالة رتبة المشرف من " + name + "؟", function() {
+            window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت ازالة " + name + " من المشرفين ✅"); window.closeMod(); });
+        });
     };
     window.promoteToMod = function(uid, name) { 
-        if(confirm("هل أنت متأكد من تعيين " + name + " كمشرف؟ 👮")) { 
-            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف بنجاح! ✅"); window.openLB(); }); 
-        } 
+        window.showCustomConfirm("تأكيد", "هل أنت متأكد من تعيين " + name + " كمشرف؟", function() { 
+            window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين " + name + " كمشرف بنجاح! ✅"); window.closeMod(); }); 
+        }); 
     };
     window.giveNeon = function(uid, name) { 
-        if(confirm("هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟ ✨")) { 
-            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.openLB(); }); 
-        } 
+        window.showCustomConfirm("تأكيد", "هل أنت متأكد من اعطاء اسم فوسفوري لـ " + name + "؟", function() { 
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري لـ " + name + " ✅"); window.closeMod(); }); 
+        }); 
     };
     window.banUser = function(uid, name) { 
-        if(confirm("هل أنت متأكد من حظر " + name + "؟ 🚫")) { 
-            window.closeMod(); window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.openLB(); }); 
-        } 
+        window.showCustomConfirm("تأكيد الحظر", "هل أنت متأكد من حظر " + name + "؟", function() { 
+            window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم حظر " + name + " ✅"); window.closeMod(); }); 
+        }); 
     };
 
     window.openManageBanned = function() { window.openAdminList('banned'); };
@@ -1172,30 +1157,14 @@
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { if (isOwn) badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; else if (isMd) badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star"></i></span>'; else badgeEl.innerHTML = ''; }
             
-            // إضافة زر طلبات الصداقة ديناميكياً
-            var frCont = document.getElementById('friend-requests-container');
-            if(!frCont) {
-                frCont = document.createElement('div'); frCont.id = 'friend-requests-container'; frCont.style.marginTop = '15px';
-                if(sid) sid.parentNode.insertBefore(frCont, sid.nextSibling);
-            }
-            if (window.db && authUid) {
-                window.db.collection('users_v4').doc(authUid).get().then(function(doc) {
-                    if(doc.exists && doc.data().requests && doc.data().requests.length > 0) {
-                        frCont.innerHTML = '<button class="q-btn primary" onclick="window.openFriendRequests()" style="width:100%; margin:0;">طلبات الصداقة ('+doc.data().requests.length+') 📩</button>';
-                    } else {
-                        frCont.innerHTML = '<button class="q-btn" disabled style="width:100%; margin:0; background:#444;">لا توجد طلبات صداقة 📩</button>';
-                    }
-                });
-            }
-
-            // تطبيق تأثيرات القفل على صورة الكأس في صفحة البروفايل
+            // قفل صورة الكأس في البروفايل بصرياً
             var trophyImg = document.querySelector('.preset-img-opt[src="https://i.postimg.cc/Rh90Sysy/Pngtree-beautiful-trophy-4541793.png"]');
             if (trophyImg) {
                 var hasTrophy = false;
                 if(window.campaignsData && window.campaignsData.wisdom && window.campaignsData.wisdom.gotTrophy) hasTrophy = true;
                 if(window.campaignsData && window.campaignsData.emperor && window.campaignsData.emperor.gotTrophy) hasTrophy = true;
                 if (!hasTrophy) {
-                    trophyImg.style.filter = 'grayscale(100%) opacity(0.4)';
+                    trophyImg.style.filter = 'grayscale(100%) opacity(0.3)';
                     trophyImg.style.border = '2px solid #ff4d4d';
                 } else {
                     trophyImg.style.filter = 'none';
@@ -1203,7 +1172,6 @@
                 }
             }
 
-            // إظهار أزرار المطور وتفعيل عملها بربطها الصحيح
             var devControls = document.getElementById('admin-buttons-container');
             if (isOwn) {
                  devControls.style.display = 'flex';
@@ -1219,7 +1187,6 @@
                  devControls.style.display = 'none';
             }
             
-            // ربط الدوال بأزرار القوائم بشكل سليم
             var btnBan = document.getElementById('btn-ban-list'); if(btnBan) btnBan.onclick = window.openManageBanned;
             var btnMod = document.getElementById('btn-mod-list'); if(btnMod) btnMod.onclick = window.openManageMods;
             var btnNeon = document.getElementById('btn-neon-list'); if(btnNeon) btnNeon.onclick = window.openManageNeon;
@@ -1262,7 +1229,11 @@
         } else { 
             wrapperStyle = 'min-width:180px; margin-top:5px; border-radius:8px; display:flex; align-items:center; justify-content:center; height:55px; padding:0; position:relative; overflow:hidden;'; 
             fontSize = isMythic ? '1.2rem' : '1.0rem'; 
-            if (isMythic) smallClass = 'main-mythic'; 
+            if (isMythic) {
+                smallClass = 'main-mythic'; 
+                // فرض لون دم الغزال للألقاب الأسطورية في الشاشة الرئيسية بشكل إجباري
+                wrapperStyle += ' background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important;';
+            }
         } 
 
         if (isMythic) {
@@ -1311,7 +1282,18 @@
     };
     
     window.showGrandPrize = function(titleAr, icon, isMythic) { var gt = document.getElementById('grand-prize-title-ui'); var gd = document.getElementById('grand-prize-desc-ui'); var gi = document.getElementById('grand-prize-icon-ui'); var modalContent = document.getElementById('modal-grand-prize'); if (isMythic) { if(gt) { gt.innerText = '🔥 جائزة أسطورية MYTHIC! 🔥'; gt.style.color = '#ff4d4d'; gt.style.textShadow = '0 0 20px #ff0000'; } if(modalContent) { modalContent.classList.add('mythic-modal-bg'); } } else { if(gt) { gt.innerText = 'مبروك! 🎉'; gt.style.color = 'var(--p)'; gt.style.textShadow = 'none'; } if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } } if (gd) gd.innerText = titleAr; if (gi) gi.innerHTML = icon; window.openMod('modal-grand-prize'); window.playSndSafe('sfx-win'); };
-    window.closeGrandPrize = function() { var modalContent = document.getElementById('modal-grand-prize'); if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } window.openMod('modal-luckyspin'); window.updateStatsUI(); };
+    
+    window.closeGrandPrize = function() { 
+        var modalContent = document.getElementById('modal-grand-prize'); 
+        if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } 
+        // توجيه اللاعب إذا كان عائداً من المسابقات
+        if (window.isCampMode === false && window.activeCampId) {
+            window.openCampaignMap(window.activeCampId);
+        } else {
+            window.openMod('modal-luckyspin'); 
+        }
+        window.updateStatsUI(); 
+    };
 
     // ==========================================
     // 6. المسابقات 
@@ -1456,7 +1438,7 @@
         else if (wonLevel === 12) { var targetTitle = (window.activeCampId === 'wisdom') ? 't_wisdom' : 't_emperor'; if (ownedTitles.indexOf(targetTitle) === -1) { ownedTitles.push(targetTitle); newTitlesList.push(targetTitle); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); var tName = (window.activeCampId === 'wisdom') ? 'منبع الحكمة 🐅' : 'إمبراطور المعرفة 🐆'; rewardMsg = "لقد ختمت المسار وفزت بلقب: " + tName; rewardIcon = "👑"; isGrand = true; } } 
         else { window.addPoints(100); } 
         
-        window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); window.saveProgress(false); window.isCampMode = false; window.goHomeG(); if (isGrand) { window.showGrandPrize(rewardMsg, rewardIcon, true); } else { window.showSuccessModal("أحسنت! 🎉", rewardMsg, rewardIcon, "modal-campaign-map"); } 
+        window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); window.saveProgress(false); window.isCampMode = false; window.goHomeG(); window.showGrandPrize(rewardMsg, rewardIcon, isGrand);
     };
 
     // ==========================================
@@ -1599,6 +1581,15 @@
         window.openMod('modal-user-action'); 
     };
 
+    window.sendFriendReq = function(targetUid, fName) { 
+        if (!isGoogle) { window.showTopToast("سجل بجوجل أولاً! 🔒"); return; } 
+        window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { 
+            window.showTopToast('تم إرسال طلب الصداقة لـ ' + fName); 
+            var inp = document.getElementById('friend-id-input'); if(inp) inp.value = ""; 
+            window.closeMod(); // إغلاق النافذة بنجاح
+        }).catch(function(){}); 
+    };
+
     window.searchFriend = function() { var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { if (!snap.empty) { var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; var safeAvatar = d.avatar ? d.avatar.replace(/'/g, "\\'") : ''; var adminBtns = ''; if (currentUserRole === 'mod' || currentUserRole === 'owner') { adminBtns = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon===true||d.hasNeon==='true') + ")\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px; width:100%;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + safeName + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + adminBtns + ' </div>'; window.safeShow('search-result-container', 'block'); } } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } }).catch(function(){}); };
     
     // ==========================================
@@ -1623,6 +1614,15 @@
     window.addEventListener('DOMContentLoaded', function() { 
         window.safeShow('loading-screen', 'flex'); 
         setTimeout(function() { var ls = document.getElementById('loading-screen'); if (ls && ls.style.display !== 'none') { if (typeof window.finishLoading === 'function') window.finishLoading(true); } }, 6000);
+        
+        // ربط الجرس بطلبات الصداقة بشكل متأخر لضمان وجوده في واجهة المستخدم
+        setTimeout(function() {
+            var bells = document.querySelectorAll('.fa-bell');
+            bells.forEach(function(b) {
+                if(b.parentElement) b.parentElement.onclick = window.openFriendRequests;
+            });
+        }, 2000);
+
         if (window.auth) { 
             window.auth.onAuthStateChanged(function(user) { 
                 if (user) { 
@@ -1635,7 +1635,6 @@
                                 loggedUser = d.name || user.displayName || 'أسطورة'; pID = d.numId || pID; pts = parseInt(d.score || pts); 
                                 if (d.hints !== undefined) totalHints = parseInt(d.hints); if (d.spins !== undefined) spins = parseInt(d.spins); if (d.ownedTitles) ownedTitles = d.ownedTitles; if (d.title) activeTitleId = d.title; if (d.answeredQs) answeredQs = d.answeredQs; if (d.avatar) currentAvatar = d.avatar; if (d.randomWinStreak !== undefined) randomWinStreak = parseInt(d.randomWinStreak); if (d.role) { currentUserRole = d.role; window.lsSet('ULT_ROLE', d.role); } if (d.hasNeon === true || d.hasNeon === 'true') hasNeonUser = true; 
                                 
-                                // تحقق من الدورة اليومية المجانية
                                 var lastDailySpin = parseInt(window.lsGet('ULT_LAST_DAILY_SPIN', 0));
                                 if (Date.now() - lastDailySpin > (24 * 60 * 60 * 1000)) {
                                     window.addSpin(1);
