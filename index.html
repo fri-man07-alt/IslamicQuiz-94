@@ -601,6 +601,8 @@
     var preSunnah = new Image(); preSunnah.src = 'https://i.postimg.cc/qMK4bRNG/file_000000009fe87246bc1eaf17ce750a96.png';
     var preWisdom = new Image(); preWisdom.src = 'https://i.postimg.cc/9QV0yTLq/file_0000000002e47246a8e74ec6a7044090.png';
     var preEmp = new Image(); preEmp.src = 'https://i.postimg.cc/4dS46P6L/Pngtree_3d_realistic_tiger_fur_animation_14476392.png';
+    var preWait = new Image(); preWait.src = 'https://i.postimg.cc/nzRJtRWr/image-1.jpg';
+    var preGame = new Image(); preGame.src = 'https://i.postimg.cc/W18FkjFW/image-3.jpg';
 
     // ==========================================
     // 0. التنسيقات الجذرية 
@@ -628,105 +630,50 @@
         /* باقي الألقاب (مع لمعة وحركة) */
         .title-حافظ { background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), linear-gradient(135deg, #2d1b0d 0%, #4a2e15 50%, #2d1b0d 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 20px #000, 0 0 15px rgba(255, 215, 0, 0.6) !important; background-size: 200% 200% !important; animation: forceBgMove 8s infinite alternate !important;}
         .title-سيد { background-color: #0288d1 !important; background-image: radial-gradient(circle at 10px 10px, rgba(255,255,255,0.9) 2px, transparent 3px), radial-gradient(circle at 30px 25px, rgba(255,255,255,0.7) 1.5px, transparent 2px), linear-gradient(135deg, #b3e5fc 0%, #4fc3f7 50%, #0288d1 100%) !important; background-size: 40px 40px, 50px 50px, 100% 100% !important; animation: innerSnowFall 3s linear infinite !important; border: 2px solid #fff !important; }
-        
-        /* حكيم الأمة */
         .title-حكيم { background-image: url('https://www.transparenttextures.com/patterns/black-scales.png'), linear-gradient(0deg, #300 0%, #900 30%, #f40 70%, #fc0 100%) !important; border: 2px solid #f40 !important; background-size: 200% 200% !important; animation: fireMoving 10s ease-in-out infinite !important;}
-        
         .title-تاج { background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(270deg, #111 0%, #2a2a2a 50%, #000 100%) !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 8s infinite alternate !important;}
         .title-نجم { background-color: #000a1a !important; background-image: url('https://www.transparenttextures.com/patterns/stardust.png') !important; border: 2px solid #ffd700 !important; background-size: 200% 200% !important; animation: forceBgMove 10s infinite alternate !important;}
         .title-ذهبي { background-image: url('https://www.transparenttextures.com/patterns/cubes.png'), linear-gradient(45deg, #b8860b, #ffd700, #b8860b) !important; background-size: 200% 200% !important; border: 2px solid #fff !important; box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.9) !important; animation: forceBgMove 5s linear infinite alternate !important; }
 
-        /* الألقاب الأسطورية الثلاثة بخلفية دم الغزال الصافية في كل مكان */
+        /* الألقاب الأسطورية الثلاثة */
         .title-sunnah, .title-wisdom, .title-emperor { background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; position: relative; overflow: hidden; }
         .title-sunnah { border: 2px solid #ff3333 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff0000 !important; }
         .title-wisdom { border: 2px solid #00d4ff !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #00d4ff !important; }
         .title-emperor { border: 2px solid #ff9800 !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 0 15px #ff9800 !important; }
 
         .legendary-badge { display: flex; align-items: center; justify-content: center; position: relative; box-sizing: border-box; border-radius: 8px; }
-        
-        .mythic-img { 
-            position: absolute; 
-            left: -10px; 
-            top: 0px; 
-            height: 135px; 
-            width: auto;
-            object-fit: contain; 
-            mix-blend-mode: lighten; 
-            pointer-events: none; 
-            z-index: 1; 
-        }
+        .mythic-img { position: absolute; left: -10px; top: 0px; height: 135px; width: auto; object-fit: contain; mix-blend-mode: lighten; pointer-events: none; z-index: 1; }
 
-        .main-mythic {
-            height: 55px !important;
-            min-width: 180px !important;
-            justify-content: center !important;
-            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
-            border: 2px solid #ffd700 !important;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.4) !important;
-        }
-        .main-mythic .mythic-img {
-            height: 75px !important; 
-            top: 0px !important; 
-            left: 5px !important;
-        }
-        
-        .small-mythic {
-            justify-content: flex-end; 
-            padding: 2px 5px !important;
-            width: max-content !important;
-            min-width: 90px !important;
-            height: auto !important;
-            border-radius: 6px !important;
-            overflow: hidden !important;
-        }
-        .small-mythic .mythic-img { 
-            left: -5px; 
-            top: 0px !important; 
-            height: 45px !important; 
-            width: auto;
-        }
+        .main-mythic { height: 55px !important; min-width: 180px !important; justify-content: center !important; background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important; border: 2px solid #ffd700 !important; box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.4) !important; }
+        .main-mythic .mythic-img { height: 75px !important; top: 0px !important; left: 5px !important; }
+        .small-mythic { justify-content: flex-end; padding: 2px 5px !important; width: max-content !important; min-width: 90px !important; height: auto !important; border-radius: 6px !important; overflow: hidden !important; }
+        .small-mythic .mythic-img { left: -5px; top: 0px !important; height: 45px !important; width: auto; }
+        .title-sunnah .mythic-img, .title-wisdom .mythic-img, .title-emperor .mythic-img { top: 0px !important; }
 
-        .title-sunnah .mythic-img, .title-wisdom .mythic-img, .title-emperor .mythic-img {
-            top: 0px !important;
-        }
-
-        .mythic-txt { 
-            position: relative; 
-            z-index: 2; 
-            width: 100%; 
-            text-align: right; 
-            padding-right: 15px; 
-            color: #ffd700; 
-            text-shadow: 2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; 
-            font-family: 'Amiri', serif; 
-            font-weight: 900; 
-        }
-        
-        .small-mythic .mythic-txt { 
-            width: auto;
-            padding: 0 !important; 
-            padding-left: 25px !important; 
-            text-align: right !important; 
-            font-size: 0.75rem !important; 
-            display: block !important; 
-        }
-
+        .mythic-txt { position: relative; z-index: 2; width: 100%; text-align: right; padding-right: 15px; color: #ffd700; text-shadow: 2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Amiri', serif; font-weight: 900; }
+        .small-mythic .mythic-txt { width: auto; padding: 0 !important; padding-left: 25px !important; text-align: right !important; font-size: 0.75rem !important; display: block !important; }
         .badge-text { position: relative; z-index: 2; width: 100%; display: flex; align-items: center; justify-content: center; color: #ffd700; text-shadow: 2px 2px 4px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; font-family: 'Amiri', serif; font-weight: 900; }
 
         .mythic-modal-bg { background-color: #4A0000 !important; background-image: radial-gradient(circle, #8A0303 0%, #4A0000 100%) !important; color: #ffd700 !important; border: 2px solid #FFD700 !important; font-weight: 900 !important; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5) !important; }
         
-        /* تأثيرات ثيم الميثيك لطور الأونلاين (الغرفة والتحدي والنتائج) */
-        body.vs-mode-active {
-            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
-        }
+        /* ثيم الأونلاين الميثيك للعبة */
         #modal-loading-online {
-            background: linear-gradient(135deg, #8A0303 0%, #4A0000 100%) !important;
-            border: 2px solid #FFD700 !important;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(255,0,0,0.5) !important;
+            background-image: url('https://i.postimg.cc/nzRJtRWr/image-1.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border: 2px solid #ffd700 !important;
         }
-
-        .admin-placeholder-btn { color: #aaa; font-weight: bold; font-size: 0.9rem; margin: 0 5px; cursor: pointer; transition: 0.3s; border-bottom: 1px dashed transparent; }
-        .admin-placeholder-btn:hover { color: var(--p); border-bottom-color: var(--p); transform: translateY(-2px); }
+        body.vs-mode-active #screen-game {
+            background-image: url('https://i.postimg.cc/W18FkjFW/image-3.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-color: transparent !important;
+        }
+        body.vs-mode-active #vs-header { background: transparent !important; border: none !important; box-shadow: none !important; }
+        body.vs-mode-active #q-txt { background: transparent !important; border: none !important; box-shadow: none !important; font-size: 1.4rem !important; margin-top: 10vh !important; text-shadow: 2px 2px 4px #000 !important; color: #fff !important; }
+        body.vs-mode-active .vs-option-btn { background: rgba(0,0,0,0.5) !important; border: 1px solid #ffd700 !important; font-weight: bold !important; color: #fff !important; }
+        
+        #btn-surrender { position: absolute !important; top: 15px !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 1000 !important; background: rgba(0,0,0,0.7) !important; border: 1px solid #ff4d4d !important; color: #ff4d4d !important; padding: 5px 15px !important; border-radius: 10px !important; font-weight: bold !important; }
 
         .lucky-spin-container { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .circular-spin-container { position: relative; width: 260px; height: 260px; border-radius: 50%; border: 4px solid var(--p); background-image: url('https://i.postimg.cc/sD5MxKKX/Pngtree-purple-planetary-universe-dark-galaxy-5480314.png') !important; background-size: cover !important; background-position: center !important; margin: 20px auto; box-shadow: 0 0 30px rgba(255,215,0,0.3), inset 0 0 50px rgba(0,0,0,0.8); overflow: hidden; }
@@ -757,7 +704,6 @@
         .preset-img-opt { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.3s; object-fit: cover; }
         .preset-img-opt:hover, .preset-img-opt.selected { border-color: #ffd700; transform: scale(1.1); }
         #preset-imgs-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-height: 50vh; overflow-y: auto; padding: 10px; }
-        .theme-opt { width: 35px; height: 35px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.3s; pointer-events: auto; }
 
         #wait-my-img, #wait-opp-img, #p-left-img, #p-right-img {
             width: 80px !important;
@@ -782,7 +728,7 @@
     var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
     var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = []; var isBusy = false; 
 
-    // تعريف دوال التأكيد و الرسائل لضمان عمل الأزرار بشكل سليم 100%
+    // نافذة التأكيد الخاصة لضمان عمل الأزرار وتوافقها مع جميع الأجهزة
     window.showCustomConfirm = function(title, msg, onConfirm) {
         var modal = document.getElementById('modal-custom-confirm');
         if(!modal) {
@@ -797,26 +743,13 @@
         
         document.getElementById('confirm-yes').onclick = function() {
             window.playSndSafe('sfx-click');
-            window.closeMod(); // إغلاق النافذة فوراً قبل التنفيذ
+            window.closeMod();
             setTimeout(function() { onConfirm(); }, 200); 
         };
         document.getElementById('confirm-no').onclick = function() {
             window.playSndSafe('sfx-click');
             window.closeMod();
         };
-    };
-
-    window.showSuccessModal = function(title, msg, icon, backModalId) {
-        var modal = document.getElementById('modal-success-msg');
-        if (!modal) {
-            modal = document.createElement('div');
-            modal.id = 'modal-success-msg';
-            modal.className = 'm-content mythic-modal-bg';
-            document.getElementById('custom-modal').appendChild(modal);
-        }
-        modal.innerHTML = '<h3 style="color:#2ecc71; text-align:center; margin-bottom:15px;">' + title + '</h3><div style="font-size:3rem; text-align:center; margin-bottom:10px;">' + icon + '</div><p style="text-align:center; margin-bottom:20px; font-size:1.1rem; color:#fff;">' + msg + '</p><button class="q-btn primary" onclick="window.openCampaignMap(window.activeCampId)">متابعة</button>';
-        window.openMod('modal-success-msg');
-        window.playSndSafe('sfx-win');
     };
 
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null) ? d : v; } catch(e) { return d; } };
@@ -835,12 +768,9 @@
     try { answeredQs = JSON.parse(window.lsGet('ULT_ANSWERED_QS', '[]')); } catch(e) {}
     try { newTitlesList = JSON.parse(window.lsGet('ULT_NEW_TITLES', '[]')); } catch(e) {}
 
-    window.isOwner = function(email) { 
-        return (currentUserRole === 'owner' || (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase())); 
-    };
-    window.isMod = function() { 
-        return (currentUserRole === 'mod' || currentUserRole === 'owner'); 
-    };
+    // تصليح منطق النجوم (المطور والمشرفين) لضمان عدم تداخل الأدوار
+    window.isOwner = function(email) { return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); };
+    window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
 
     // ==========================================
     // 2. الألقاب وعجلة الحظ والأسئلة ووسائل المساعدة
@@ -880,6 +810,7 @@
         ["من هو الصحابي الملقب بـ (ذو الشهادتين) لأن النبي ﷺ جعل شهادته بشهادة رجلين؟", "خزيمة بن ثابت", "سلمان الفارسي", "عمار بن ياسر", "صهيب الرومي", "صدق النبي ﷺ في بيع فرس لأعرابي دون أن يشهد البيعة."],
         ["ما هي السورة التي نُسخت فيها آية (المصابرة) من مقاتلة الواحد لعشرة إلى مقاتلة الواحد لاثنين؟", "سورة الأنفال", "سورة التوبة", "سورة آل عمران", "سورة محمد", "(الآن خفف الله عنكم وعلم أن فيكم ضعفا...)."],
         
+        // علوم القرآن 
         ["ما هي السورة التي تنتهي جميع آياتها بحرف (الدال)؟", "سورة الإخلاص", "سورة المسد", "سورة الفلق", "سورة الكوثر", "قل هو الله أحد، الله الصمد... تنتهي جميعها بحرف الدال."],
         ["في أي سورة ذُكرت قصة (أصحاب الأخدود)؟", "سورة البروج", "سورة الغاشية", "سورة الفجر", "سورة الطارق", "الذين شقوا الأخدود وأحرقوا فيه المؤمنين بالله."],
         ["ما هي السورة التي سُميت باسم (أحد أركان الإسلام)؟", "سورة الحج", "سورة الصيام", "سورة الزكاة", "سورة الصلاة", "الحج هو الركن الخامس من أركان الإسلام."],
@@ -896,6 +827,7 @@
         ["ما هي السورة التي وردت فيها بسملتان؟", "سورة النمل", "سورة هود", "سورة البقرة", "سورة طه", "واحدة في البداية، والثانية في كتاب سليمان لبلقيس."],
         ["ما هي السورة التي ذكرت (النجم الطارق) الذي يثقب السماء بضيائه؟", "سورة الطارق", "سورة النجم", "سورة التكوير", "سورة الانفطار", "(والسماء والطارق * وما أدراك ما الطارق * النجم الثاقب)."],
 
+        // الأنبياء 
         ["من هو النبي الذي صام عن الكلام ثلاثة أيام كآية من الله تعالى؟", "زكريا عليه السلام", "يحيى عليه السلام", "أيوب عليه السلام", "عيسى عليه السلام", "قال آيتك ألا تكلم الناس ثلاثة أيام إلا رمزا."],
         ["من هو النبي الذي قتله بنو إسرائيل بنشره بالمنشار نصفين؟", "زكريا عليه السلام", "يحيى عليه السلام", "إلياس عليه السلام", "جرجيس عليه السلام", "اختبأ في شجرة فنشروه مع الشجرة نصفين."],
         ["ما هو اسم الملك الذي كان يحكم بابل في عهد إبراهيم عليه السلام وحاجه في ربه؟", "النمرود بن كنعان", "بختنصر", "فرعون", "جالوت", "ادعى الألوهية وقال (أنا أحيي وأميت)."],
@@ -909,6 +841,7 @@
         ["من هو النبي الذي سخر الله له الريح والجن وألان له الحديد؟", "داود عليه السلام", "سليمان عليه السلام", "ذو القرنين", "صالح عليه السلام", "ألان الله له الحديد فصنع منه الدروع السابغات."],
         ["ما هو اسم الجبل الذي رست عليه سفينة نوح عليه السلام بعد الطوفان؟", "جبل الجودي", "جبل الطور", "جبل الجلجلة", "جبل عرفات", "(واستوت على الجودي وقيل بعداً للقوم الظالمين)."],
 
+        // تاريخ عام
         ["ما هي العاصمة الأولى للدولة الأموية في الأندلس؟", "قرطبة", "إشبيلية", "غرناطة", "طليطلة", "جعلها عبد الرحمن الداخل عاصمة للإمارة الأموية."],
         ["متى وقعت معركة (عين جالوت) التي هزم فيها المسلمون المغول؟", "658 هـ (1260 م)", "688 هـ (1289 م)", "648 هـ (1250 م)", "668 هـ (1270 م)", "بقيادة سيف الدين قطز والظاهر بيبرس."],
         ["من هو الخليفة العباسي الذي أمر ببناء مدينة (سامراء) لتكون مقراً لجيشه؟", "المعتصم بالله", "المأمون", "الواثق", "المتوكل", "بناها لتجنب احتكاك جنوده الترك بعامة الناس في بغداد."],
@@ -971,7 +904,7 @@
     };
 
     // ==========================================
-    // 3. دوال الواجهة، الحفظ، وعجلة الحظ، والصور
+    // 3. دوال الواجهة والحفظ وعجلة الحظ والصور
     // ==========================================
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
@@ -1039,7 +972,6 @@
     window.updateStatsUI = function() { var uiPts = document.getElementById('ui-pts'); if (uiPts) uiPts.innerText = pts; var savedHintsUI = document.getElementById('saved-hints-ui'); if (savedHintsUI) savedHintsUI.innerText = totalHints; var spinCount = document.getElementById('spin-count'); if (spinCount) spinCount.innerText = spins; window.updateTitleDisplay(); };
     window.updateAvatarUI = function() { var btnPlaceholder = document.getElementById('profile-img-btn-placeholder'); var btnImg = document.getElementById('profile-img-btn'); if (currentAvatar && currentAvatar !== '') { if (btnPlaceholder) btnPlaceholder.style.display = 'none'; if (btnImg) { btnImg.style.display = 'inline-block'; btnImg.src = currentAvatar; } } else { if (btnPlaceholder) btnPlaceholder.style.display = 'flex'; if (btnImg) btnImg.style.display = 'none'; } };
     
-    window.goHome = function() { window.goHomeG(); }; // ضمان عمل زر الرئيسية دائماً
     window.goHomeG = function() { window.closeMod(); window.safeHide('match-result-overlay'); document.body.classList.remove('vs-mode-active'); window.showStartScreen(); };
     window.saveAndExitG = function() { window.saveProgress(false); window.showTopToast("تم الحفظ بنجاح ✅"); window.goHomeG(); };
     window.skipQMenu = function() { locked = false; cur++; window.closeMod(); if (window.isCampMode) window.loadCampQ(); else window.loadQ(); };
@@ -1077,24 +1009,24 @@
         if(!modal) {
             modal = document.createElement('div');
             modal.id = 'modal-friend-requests';
-            modal.className = 'm-content';
+            modal.className = 'm-content mythic-modal-bg';
             document.getElementById('custom-modal').appendChild(modal);
         }
-        modal.innerHTML = '<h3 style="color:var(--p); text-align:center;">طلبات الصداقة</h3><div id="fr-list-content" style="max-height:60vh; overflow-y:auto; padding:10px;">جاري التحميل...</div><button class="q-btn danger" onclick="window.closeMod()">رجوع</button>';
+        modal.innerHTML = '<h3 style="color:#ffd700; text-align:center;">طلبات الصداقة</h3><div id="fr-list-content" style="max-height:60vh; overflow-y:auto; padding:10px;">جاري التحميل...</div><button class="q-btn danger" onclick="window.closeMod()">رجوع</button>';
         window.openMod('modal-friend-requests');
         
         if(window.db && authUid) {
             window.db.collection('users_v4').doc(authUid).get().then(doc => {
                 var c = document.getElementById('fr-list-content');
                 if(!doc.exists || !doc.data().requests || doc.data().requests.length === 0) {
-                    c.innerHTML = '<p style="text-align:center;">لا توجد طلبات صداقة حالياً 📩</p>'; return;
+                    c.innerHTML = '<p style="text-align:center; color:#fff;">لا توجد طلبات صداقة حالياً 📩</p>'; return;
                 }
                 var listHtml = '';
                 doc.data().requests.forEach(req => {
-                    listHtml += '<div style="background:#222; padding:10px; margin-bottom:5px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">' +
-                                '<span>' + req.fromName + '</span>' +
+                    listHtml += '<div style="background:rgba(0,0,0,0.6); padding:10px; margin-bottom:5px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; border:1px solid #ffd700;">' +
+                                '<span style="color:#fff; font-weight:bold;">' + req.fromName + '</span>' +
                                 '<div><button class="q-btn primary" style="padding:5px 10px; margin:0 5px;" onclick="window.acceptFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">قبول</button>' +
-                                '<button class="q-btn danger" style="padding:5px 10px; margin:0;" onclick="window.rejectFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">رفض</button></div>' +
+                                '<button class="q-btn danger" style="padding:5px 10px; margin:0; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;" onclick="window.rejectFriend(\''+req.fromUid+'\', \''+req.fromName+'\', \''+req.fromNumId+'\')">رفض</button></div>' +
                                 '</div>';
                 });
                 c.innerHTML = listHtml;
@@ -1137,7 +1069,7 @@
         if(!modal) {
             modal = document.createElement('div');
             modal.id = 'modal-admin-list';
-            modal.className = 'm-content';
+            modal.className = 'm-content mythic-modal-bg';
             document.getElementById('custom-modal').appendChild(modal);
         }
         modal.innerHTML = html;
@@ -1150,50 +1082,50 @@
 
         query.get().then(function(snap) {
             var c = document.getElementById('admin-list-content');
-            if (snap.empty) { c.innerHTML = '<p style="text-align:center;">القائمة فارغة</p>'; return; }
+            if (snap.empty) { c.innerHTML = '<p style="text-align:center; color:#fff;">القائمة فارغة</p>'; return; }
             var listHtml = '';
             snap.forEach(function(doc) {
                 var d = doc.data();
                 var actionBtn = '';
                 if (type === 'banned') actionBtn = '<button class="q-btn primary" style="padding:5px 10px; margin:0;" onclick="window.unbanUser(\''+doc.id+'\')">إزالة الحظر</button>';
-                else if (type === 'mods') actionBtn = '<button class="q-btn danger" style="padding:5px 10px; margin:0;" onclick="window.demoteFromMod(\''+doc.id+'\', \''+d.name+'\')">إزالة الإشراف</button>';
-                else if (type === 'neon') actionBtn = '<button class="q-btn danger" style="padding:5px 10px; margin:0;" onclick="window.removeNeon(\''+doc.id+'\', \''+d.name+'\')">إزالة الفوسفوري</button>';
+                else if (type === 'mods') actionBtn = '<button class="q-btn danger" style="padding:5px 10px; margin:0; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;" onclick="window.demoteFromMod(\''+doc.id+'\', \''+d.name+'\')">إزالة الإشراف</button>';
+                else if (type === 'neon') actionBtn = '<button class="q-btn danger" style="padding:5px 10px; margin:0; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;" onclick="window.removeNeon(\''+doc.id+'\', \''+d.name+'\')">إزالة الفوسفوري</button>';
                 
-                listHtml += '<div style="display:flex; justify-content:space-between; align-items:center; background:#222; padding:10px; margin-bottom:5px; border-radius:8px;"><span>'+d.name+'</span>'+actionBtn+'</div>';
+                listHtml += '<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.6); border:1px solid #ffd700; padding:10px; margin-bottom:5px; border-radius:8px;"><span style="color:#fff;">'+d.name+'</span>'+actionBtn+'</div>';
             });
             c.innerHTML = listHtml;
         });
     };
 
-    // دوال الإجراءات مع التأكيد السريع للإغلاق والتنفيذ في الخلفية لضمان عملها
+    // دوال الإجراءات مع التأكيد السريع للضمان
     window.unbanUser = function(uid) {
         window.showCustomConfirm("تأكيد", "إزالة الحظر؟", function() {
-            window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); }).catch(function(){});
+            window.db.collection("users_v4").doc(uid).update({ isBanned: firebase.firestore.FieldValue.delete() }).then(function() { window.showTopToast("تم إزالة الحظر"); window.openAdminList('banned'); }).catch(function(){});
         });
     };
     window.removeNeon = function(uid, name) {
         window.showCustomConfirm("تأكيد", "إزالة الفوسفوري عن " + name + "؟", function() {
-            window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم التنفيذ بنجاح"); }).catch(function(){});
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: false }).then(function() { window.showTopToast("تم التنفيذ بنجاح"); var c = document.getElementById('modal-admin-list'); if(c && c.style.display !== 'none') window.openAdminList('neon'); else window.closeMod(); }).catch(function(){});
         });
     };
     window.demoteFromMod = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "إزالة رتبة المشرف من " + name + "؟", function() {
-            window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت الإزالة بنجاح ✅"); }).catch(function(){});
+            window.db.collection("users_v4").doc(uid).update({ role: 'user' }).then(function() { window.showTopToast("تمت الإزالة بنجاح ✅"); window.closeMod(); }).catch(function(){});
         });
     };
     window.promoteToMod = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "تعيين " + name + " كمشرف؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين المشرف بنجاح! ✅"); }).catch(function(){}); 
+            window.db.collection("users_v4").doc(uid).update({ role: 'mod' }).then(function() { window.showTopToast("تم تعيين المشرف بنجاح! ✅"); window.closeMod(); }).catch(function(){}); 
         }); 
     };
     window.giveNeon = function(uid, name) { 
         window.showCustomConfirm("تأكيد", "إعطاء اسم فوسفوري لـ " + name + "؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري بنجاح ✅"); }).catch(function(){}); 
+            window.db.collection("users_v4").doc(uid).update({ hasNeon: true }).then(function() { window.showTopToast("تم اعطاء الاسم الفوسفوري بنجاح ✅"); window.closeMod(); }).catch(function(){}); 
         }); 
     };
     window.banUser = function(uid, name) { 
         window.showCustomConfirm("تأكيد الحظر", "حظر " + name + " نهائياً؟", function() { 
-            window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم الحظر ✅"); }).catch(function(){}); 
+            window.db.collection("users_v4").doc(uid).update({ isBanned: true }).then(function() { window.showTopToast("تم الحظر ✅"); window.closeMod(); }).catch(function(){}); 
         }); 
     };
 
@@ -1205,18 +1137,21 @@
         window.playSndSafe('sfx-click'); var els = document.querySelectorAll('.m-content'); for (var i = 0; i < els.length; i++) els[i].style.display = 'none';
         window.safeShow('custom-modal', 'flex'); window.safeShow(id, 'flex'); 
         if (id === 'modal-profile-settings') {
-            var wms = document.getElementById('welcome-msg-settings'); var isOwn = window.isOwner(window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''); var isMd = window.isMod();
+            var wms = document.getElementById('welcome-msg-settings'); 
+            var isOwn = window.isOwner(window.auth && window.auth.currentUser ? window.auth.currentUser.email : ''); 
+            var isMd = window.isMod();
+            
             if (wms) { wms.innerText = loggedUser; if (hasNeonUser || isOwn) wms.className = "neon-bg"; else wms.className = "premium-name"; }
             var sid = document.getElementById('settings-id'); if (sid) sid.innerText = pID; var sp = document.getElementById('current-profile-preview'); if (sp) sp.src = currentAvatar;
             var googleBtn = document.getElementById('profile-google-link-btn'); if (googleBtn) googleBtn.style.display = isGoogle ? 'none' : 'flex';
             
-            // ضبط النجوم بشكل دقيق: المطور نجمتين، المشرف نجمة واحدة فقط
+            // ضبط النجوم: المطور نجمتين، المشرف نجمة واحدة
             var badgeEl = document.getElementById('profile-role-badge');
             if (badgeEl) { 
                 if (isOwn) {
                     badgeEl.innerHTML = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; 
                 } else if (isMd) {
-                    badgeEl.innerHTML = '<span class="mythic-mod-star"><i class="fas fa-star" style="color:#ffd700;"></i></span>'; 
+                    badgeEl.innerHTML = '<i class="fas fa-star" style="color:#ffd700; font-size:1.2rem; filter:drop-shadow(0 0 5px #ffd700);"></i>'; 
                 } else {
                     badgeEl.innerHTML = ''; 
                 }
@@ -1307,7 +1242,7 @@
         }
 
         var shineCls = ''; 
-        if (t.shine) { 
+        if (t.shine && id !== 't1' && id !== 't2') { 
             shineCls = 'has-shine ' + (t.shine === 'silver' ? 'shine-silver' : (t.shine === 'gold' ? 'shine-gold' : 'shine-blue')); 
         } 
         return '<div class="legendary-badge ' + t.c + ' ' + shineCls + ' ' + smallClass + '" ' + clickEv + ' style="' + wrapperStyle + '">' + newBadge + lockSpan + contentHtml + checkSpan + '</div>'; 
@@ -1358,7 +1293,7 @@
     };
 
     // ==========================================
-    // 6. المسابقات 
+    // 6. المسابقات (الكروت)
     // ==========================================
     window.isCampMode = false; window.campTimerInterval = null;
     window.campaignsData = JSON.parse(window.lsGet('ULT_CAMPAIGNS_V3', JSON.stringify({ 
@@ -1374,9 +1309,39 @@
         window.campaignsData.emperor.audUsed = false; window.campaignsData.emperor.f50Used = false; window.campaignsData.emperor.hintUsed = false;
     }
     
-    window.openCampaignSelect = function() { window.playSndSafe('sfx-click'); window.openMod('modal-campaign-select'); };
+    window.openCampaignSelect = function() { 
+        window.playSndSafe('sfx-click'); 
+        var html = '<h3 style="color:var(--p); text-align:center; margin-bottom:20px; font-size:1.5rem; text-shadow:0 0 10px var(--p);">اختر المسار 🏆</h3>';
+        html += '<div style="display:flex; justify-content:center; gap:20px;">';
+        
+        // كرت منبع الحكمة
+        html += '<div onclick="window.openCampaignMap(\'wisdom\')" style="width:140px; height:200px; background:linear-gradient(135deg, #FF8C00 0%, #FF4500 100%); border-radius:15px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 8px 15px rgba(0,0,0,0.6); position:relative; overflow:hidden; border:2px solid #ffd700;">';
+        html += '<img src="https://i.postimg.cc/9QV0yTLq/file_0000000002e47246a8e74ec6a7044090.png" style="width:90px; height:90px; object-fit:contain; mix-blend-mode:lighten; margin-bottom:15px; transform:scale(1.2);">';
+        html += '<div style="width:100%; background:rgba(0,0,0,0.6); padding:8px 0; position:absolute; bottom:0; text-align:center;"><span style="color:#fff; font-weight:bold; font-family:\'Amiri\', serif; font-size:1.1rem;">منبع الحكمة</span></div>';
+        html += '</div>';
+
+        // كرت إمبراطور المعرفة
+        html += '<div onclick="window.openCampaignMap(\'emperor\')" style="width:140px; height:200px; background:linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%); border-radius:15px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 8px 15px rgba(0,0,0,0.6); position:relative; overflow:hidden; border:2px solid #ffd700;">';
+        html += '<img src="https://i.postimg.cc/4dS46P6L/Pngtree_3d_realistic_tiger_fur_animation_14476392.png" style="width:90px; height:90px; object-fit:contain; mix-blend-mode:lighten; margin-bottom:15px; transform:scale(1.2);">';
+        html += '<div style="width:100%; background:rgba(0,0,0,0.6); padding:8px 0; position:absolute; bottom:0; text-align:center;"><span style="color:#fff; font-weight:bold; font-family:\'Amiri\', serif; font-size:1.1rem;">إمبراطور المعرفة</span></div>';
+        html += '</div>';
+
+        html += '</div>';
+        html += '<button class="q-btn danger" onclick="window.closeMod()" style="width:100%; margin-top:30px; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;">رجوع</button>';
+        
+        var modal = document.getElementById('modal-campaign-select');
+        if(!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modal-campaign-select';
+            modal.className = 'm-content mythic-modal-bg';
+            document.getElementById('custom-modal').appendChild(modal);
+        }
+        modal.innerHTML = html;
+        window.openMod('modal-campaign-select');
+    };
+    
     window.openCampaignMap = function(campId) { 
-        clearInterval(window.campTimerInterval); window.playSndSafe('sfx-click'); window.activeCampId = campId; var camp = window.campaignsData[campId]; var conf = { wisdom: { name: 'منبع الحكمة', icon: '🐅' }, emperor: { name: 'إمبراطور المعرفة', icon: '🐆' } }[campId]; var now = Date.now(); 
+        clearInterval(window.campTimerInterval); window.playSndSafe('sfx-click'); window.activeCampId = campId; var camp = window.campaignsData[campId]; var conf = { wisdom: { name: 'منبع الحكمة', icon: '' }, emperor: { name: 'إمبراطور المعرفة', icon: '' } }[campId]; var now = Date.now(); 
         if (camp.lives <= 0) { 
             if (now >= camp.cooldown) { 
                 camp.lives = 5; camp.cooldown = 0; 
@@ -1385,7 +1350,7 @@
             } 
         } 
         
-        var html = '<h3 style="color:var(--p); text-align:center; margin-bottom:10px;">مسار ' + conf.name + ' ' + conf.icon + '</h3>' + '<div style="background:#1a1a1a; padding:10px; border-radius:15px; border:1px solid #444; margin-bottom:15px; display:flex; justify-content:space-around;">' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المستوى</span><br><span style="color:#00d4ff; font-size:1.3rem;">' + Math.min(camp.level, 12) + ' / 12</span></div>' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">الأرواح</span><br><div id="camp-lives-display" style="font-size:1.2rem;">❤️ ' + camp.lives + '</div></div></div>'; 
+        var html = '<h3 style="color:var(--p); text-align:center; margin-bottom:10px;">' + conf.name + '</h3>' + '<div style="background:#1a1a1a; padding:10px; border-radius:15px; border:1px solid #444; margin-bottom:15px; display:flex; justify-content:space-around;">' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المستوى</span><br><span style="color:#00d4ff; font-size:1.3rem;">' + Math.min(camp.level, 12) + ' / 12</span></div>' + '<div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">الأرواح</span><br><div id="camp-lives-display" style="font-size:1.2rem;">❤️ ' + camp.lives + '</div></div></div>'; 
         
         html += '<div class="camp-map-scroll"><div class="camp-map-container">'; 
         for (var i = 1; i <= 12; i++) { 
@@ -1497,7 +1462,7 @@
         else if (wonLevel === 6) { window.addSpin(1); window.addHints(2); rewardMsg = "حصلت على دورة حظ + تلميحان! 🎁💡"; rewardIcon = "🎁💡"; isGrand = true; } 
         else if (wonLevel === 8) { camp.lives++; rewardMsg = "حصلت على +1 روح ❤️"; rewardIcon = "❤️"; } 
         else if (wonLevel === 10) { if(!camp.gotTrophy) { camp.gotTrophy = true; rewardMsg = "تم فتح الكأس كصورة شخصية في البروفايل! 🏆"; rewardIcon = "🏆"; isGrand = true; } else { window.addPoints(200); rewardMsg = "حصلت على 200 عملة (بدل الكأس) 💰"; } } 
-        else if (wonLevel === 12) { var targetTitle = (window.activeCampId === 'wisdom') ? 't_wisdom' : 't_emperor'; if (ownedTitles.indexOf(targetTitle) === -1) { ownedTitles.push(targetTitle); newTitlesList.push(targetTitle); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); var tName = (window.activeCampId === 'wisdom') ? 'منبع الحكمة 🐅' : 'إمبراطور المعرفة 🐆'; rewardMsg = "لقد ختمت المسار وفزت بلقب: " + tName; rewardIcon = "👑"; isGrand = true; } } 
+        else if (wonLevel === 12) { var targetTitle = (window.activeCampId === 'wisdom') ? 't_wisdom' : 't_emperor'; if (ownedTitles.indexOf(targetTitle) === -1) { ownedTitles.push(targetTitle); newTitlesList.push(targetTitle); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); var tName = (window.activeCampId === 'wisdom') ? 'منبع الحكمة' : 'إمبراطور المعرفة'; rewardMsg = "لقد ختمت المسار وفزت بلقب: " + tName; rewardIcon = "👑"; isGrand = true; } } 
         else { window.addPoints(100); } 
         
         window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); window.saveProgress(false); window.isCampMode = false; window.goHomeG(); 
@@ -1589,8 +1554,15 @@
                 var d = doc.data(); var isMe = (doc.id === authUid) ? " lb-me" : ""; 
                 var tObj = titlesData[d.title] || titlesData['t1']; 
                 var roleBadge = ''; var em = d.email || ''; 
-                if (d.role === 'owner' || window.isOwner(em)) { roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; } 
-                else if (d.role === 'mod') { roleBadge = '<i class="fas fa-star" style="color:#ffd700; margin-right:5px;"></i>'; } 
+                
+                // تمييز المطور والمشرف
+                if (window.isOwner(em)) { 
+                    roleBadge = '<span class="owner-stars-stack"><i class="fas fa-star mythic-owner-star"></i><i class="fas fa-star mythic-owner-star"></i></span> <span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>'; 
+                } 
+                else if (d.role === 'mod') { 
+                    roleBadge = '<i class="fas fa-star" style="color:#ffd700; margin-right:5px; filter:drop-shadow(0 0 5px #ffd700);"></i>'; 
+                } 
+                
                 var nameCls = (d.role === 'owner' || d.role === 'mod' || d.name !== "أسطورة") ? 'premium-name' : ''; 
                 if (d.hasNeon === true || d.hasNeon === 'true' || window.isOwner(em)) { nameCls = 'neon-bg'; } 
                 var av = d.avatar ? d.avatar : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; 
@@ -1598,7 +1570,7 @@
                 var smallTitle = window.generateTitleHtml(d.title, tObj, false, true, true, true); 
                 var safeName = d.name ? d.name.replace(/'/g, "\\'") : 'لاعب'; 
                 var safeAvatar = d.avatar ? d.avatar.replace(/'/g, "\\'") : ''; 
-                var rowClick = "onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon === true || d.hasNeon === 'true') + ")\" style='cursor:pointer;'"; 
+                var rowClick = "onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon === true || d.hasNeon === 'true') + ", '" + em + "')\" style='cursor:pointer;'"; 
                 
                 html += '<div class="lb-row' + isMe + '" ' + rowClick + '><div class="rank-num">' + rank + '</div><img src="' + av + '" class="lb-avatar"><div class="lb-info"><div class="lb-info-top"><span class="' + nameCls + '" style="font-size:1rem;">' + d.name + '</span>' + roleBadge + '</div>' + smallTitle + '</div><div class="lb-score">' + d.score + '</div></div>'; 
                 rank++; 
@@ -1607,10 +1579,13 @@
         }).catch(function(){}); 
     };
 
-    window.openUserAction = function(targetUid, targetName, targetNumId, targetRole, targetAvatar, targetHasNeon) { 
+    window.openUserAction = function(targetUid, targetName, targetNumId, targetRole, targetAvatar, targetHasNeon, targetEmail) { 
         if (!authUid || !window.db) return; 
-        var myRole = window.lsGet('ULT_ROLE', currentUserRole); 
-        if (authUid && window.isOwner(window.auth.currentUser ? window.auth.currentUser.email : '')) myRole = 'owner'; 
+        
+        var myEm = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : '';
+        var isMeOwner = window.isOwner(myEm);
+        var isMeMod = window.isMod();
+        var isTargetOwner = window.isOwner(targetEmail);
         
         var html = '<div style="text-align:center; padding: 20px;">' + 
                    '<img src="' + (targetAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png') + '" style="width:100px; height:100px; border-radius:50%; border:3px solid var(--p); object-fit:cover; margin-bottom:15px;">' + 
@@ -1619,8 +1594,8 @@
                    '<div style="display:flex; flex-direction:column; gap:10px;">' + 
                    '<button class="q-btn primary" onclick="window.sendFriendReq(\'' + targetUid + '\', \'' + targetName + '\')">➕ اضافة صديق</button>'; 
                    
-        if (myRole === 'owner') { 
-            if (targetRole !== 'owner') {
+        if (isMeOwner) { 
+            if (!isTargetOwner) {
                 if (targetRole === 'user') { 
                     html += '<button class="q-btn primary" onclick="window.promoteToMod(\'' + targetUid + '\', \'' + targetName + '\')">👮 اضافة مشرف</button>'; 
                 } else if (targetRole === 'mod') { 
@@ -1635,8 +1610,8 @@
                 
                 html += '<button class="q-btn danger" onclick="window.banUser(\'' + targetUid + '\', \'' + targetName + '\')">🚫 حظر</button>'; 
             }
-        } else if (myRole === 'mod') {
-            if (targetRole === 'user') {
+        } else if (isMeMod) {
+            if (targetRole === 'user' && !isTargetOwner) {
                 html += '<button class="q-btn danger" onclick="window.banUser(\'' + targetUid + '\', \'' + targetName + '\')">🚫 حظر</button>'; 
             }
         }
@@ -1648,86 +1623,128 @@
 
     window.sendFriendReq = function(targetUid, fName) { 
         if (!isGoogle) { window.showTopToast("سجل بجوجل أولاً! 🔒"); return; } 
-        window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { 
-            window.showTopToast('تم إرسال طلب الصداقة لـ ' + fName); 
-            var inp = document.getElementById('friend-id-input'); if(inp) inp.value = ""; 
-            window.closeMod(); 
-        }).catch(function(){ window.showTopToast('تعذر الإرسال'); }); 
+        window.showCustomConfirm("إضافة صديق", "هل تريد إرسال طلب صداقة لـ " + fName + "؟", function() {
+            window.db.collection("users_v4").doc(targetUid).update({ requests: firebase.firestore.FieldValue.arrayUnion({ fromUid: authUid, fromName: loggedUser, fromNumId: pID }) }).then(function() { 
+                window.showTopToast('تم إرسال طلب الصداقة بنجاح! ✅'); 
+                var inp = document.getElementById('friend-id-input'); if(inp) inp.value = ""; 
+            }).catch(function(){ window.showTopToast('تعذر الإرسال ❌'); }); 
+        });
     };
 
-    window.searchFriend = function() { var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { if (!snap.empty) { var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; var safeAvatar = d.avatar ? d.avatar.replace(/'/g, "\\'") : ''; var adminBtns = ''; if (currentUserRole === 'mod' || currentUserRole === 'owner') { adminBtns = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon===true||d.hasNeon==='true') + ")\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px; width:100%;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + safeName + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + adminBtns + ' </div>'; window.safeShow('search-result-container', 'block'); } } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } }).catch(function(){}); };
+    window.searchFriend = function() { var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { if (!snap.empty) { var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwner(em); var devBadge = isDev ? '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; var safeAvatar = d.avatar ? d.avatar.replace(/'/g, "\\'") : ''; var adminBtns = ''; if (currentUserRole === 'mod' || currentUserRole === 'owner') { adminBtns = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon===true||d.hasNeon==='true') + ", '" + em + "')\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px; width:100%;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + safeName + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + adminBtns + ' </div>'; window.safeShow('search-result-container', 'block'); } } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } }).catch(function(){}); };
     
     // ==========================================
-    // 9. الأونلاين (تم إضافة ستايل الميثيك لغرفة الانتظار والنتائج)
+    // 9. الأونلاين (الميثيك)
     // ==========================================
     var matchRef = null; var matchmakingUnsubscribe = null; var onlineMatchId = null; var myMatchRole = null; var onlineTimerInterval = null; var currentTurnUid = null; var isOnlineMode = false; var onlineData = {}; var turnTimeLeft = 25; var randomMatchTimeout = null; var inviteInterval = null;
     window.startMatchmaking = function(type, friendUid, friendName) { if (!authUid) { window.showTopToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } if (qList.length < 10) { window.showTopToast("خطأ: الأسئلة قيد التحميل..."); return; } if (type === 'friend') { window.db.collection("users_v4").doc(friendUid).get().then(function(doc){ if(doc.exists && (doc.data().isBusy === true || doc.data().isBusy === 'true')) { window.showTopToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴"); } else { window.proceedMatchmaking(type, friendUid, friendName); } }); } else { window.proceedMatchmaking(type, friendUid, friendName); clearTimeout(randomMatchTimeout); randomMatchTimeout = setTimeout(function() { var loadingModal = document.getElementById('modal-loading-online'); if (loadingModal && loadingModal.style.display === 'flex') { window.cancelMatchmaking(); window.showTopToast("لا يوجد لاعبين متاحين حالياً ⏳"); } }, 30000); } };
     window.proceedMatchmaking = function(type, friendUid, friendName) { 
-        var loadingModal = document.getElementById('modal-loading-online');
-        if (loadingModal) loadingModal.classList.add('mythic-modal-bg'); // إعطاء ستايل الميثيك لغرفة الانتظار
         window.openMod('modal-loading-online'); 
-        
         var waitMsg = document.getElementById('wait-msg-ui'); if (type === 'friend') { if (waitMsg) waitMsg.innerText = "في انتظار قبول " + friendName + " للتحدي..."; } else { if (waitMsg) waitMsg.innerText = "جاري البحث عن منافس..."; } var waitMyImg = document.getElementById('wait-my-img'); if (waitMyImg) waitMyImg.src = currentAvatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var waitMyName = document.getElementById('wait-my-name'); if (waitMyName) waitMyName.innerText = loggedUser; var matchQs = []; var tempQ = []; for (var i=0; i<qList.length; i++) tempQ.push(i); window.shuffle(tempQ); for (var i=0; i<10; i++) matchQs.push(tempQ[i]); var matchData = { p1_id: authUid, p1_name: loggedUser, p1_avatar: currentAvatar, p1_neon: hasNeonUser, p1_score: 0, p1_ready: false, p2_id: (type === 'friend') ? friendUid : null, p2_name: (type === 'friend') ? friendName : '', p2_avatar: '', p2_neon: false, p2_score: 0, p2_ready: false, status: 'waiting', type: type, current_turn: authUid, questions: matchQs, current_q_index: 0, timestamp: firebase.firestore.FieldValue.serverTimestamp() }; if (type === 'friend') { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.db.collection("users_v4").doc(friendUid).update({ challenges: firebase.firestore.FieldValue.arrayUnion({ matchId: ref.id, fromUid: authUid, fromName: loggedUser }) }); window.listenToMatch(ref.id); }).catch(function(){}); } else { window.db.collection("matches_v4").where("status", "==", "waiting").get().then(function(snap) { var foundMatch = null; snap.forEach(function(doc) { if(doc.data().type === 'random' && doc.data().p1_id !== authUid) { foundMatch = doc; } }); if (!foundMatch) { window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); } else { clearTimeout(randomMatchTimeout); foundMatch.ref.update({ p2_id: authUid, p2_name: loggedUser, p2_avatar: currentAvatar, p2_neon: hasNeonUser, status: 'waiting_ready' }).then(function() { window.startVSGame(foundMatch.id, "p2"); }); } }).catch(function(e){ window.db.collection("matches_v4").add(matchData).then(function(ref) { matchRef = ref; window.listenToMatch(ref.id); }); }); } };
     window.listenToMatch = function(matchId) { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(matchId).onSnapshot(function(doc) { if (!doc.exists) return; var d = doc.data(); if (d.status === 'waiting_ready' && d.p2_id) { clearTimeout(randomMatchTimeout); if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.startVSGame(matchId, "p1"); } else if (d.status === 'cancelled') { clearTimeout(randomMatchTimeout); if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showTopToast("تم إلغاء التحدي أو رفضه."); window.closeMod(); } }); };
     window.cancelMatchmaking = function() { clearTimeout(randomMatchTimeout); if (matchmakingUnsubscribe) matchmakingUnsubscribe(); if (matchRef) { matchRef.update({status: 'cancelled'}); matchRef = null; } window.closeMod(); };
-    window.startVSGame = function(matchId, myRole) { window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.safeHide('btn-cancel-ready'); window.safeHide('btn-surrender'); window.safeShow('vs-countdown', 'block'); var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "متصل 🟢"; oppStatus.style.color = "#2ecc71"; } window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; var emMe = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true || window.isOwner(emMe)) ? 'neon-bg' : 'premium-name'; } if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true) ? 'neon-bg' : 'premium-name'; } }).catch(function(){}); cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
+    window.startVSGame = function(matchId, myRole) { window.closeMod(); window.showBottomToast("تم إنشاء غرفة التحدي! ⚔️"); onlineMatchId = matchId; myMatchRole = myRole; isOnlineMode = true; window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('normal-header'); window.safeHide('normal-helps'); window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeShow('vs-header', 'flex'); document.body.classList.add('vs-mode-active'); window.safeHide('match-result-overlay'); window.safeHide('vs-left-status'); window.safeHide('vs-right-status'); window.safeHide('btn-cancel-ready'); window.safeShow('btn-surrender', 'block'); window.safeShow('vs-countdown', 'block'); var oppStatus = document.getElementById('opp-status-text'); if (oppStatus) { oppStatus.innerText = "متصل 🟢"; oppStatus.style.color = "#2ecc71"; } window.db.collection("matches_v4").doc(matchId).get().then(function(doc) { var d = doc.data(); var myImg = document.getElementById('p-left-img'); var myName = document.getElementById('vs-left-name'); var oppImg = document.getElementById('p-right-img'); var oppName = document.getElementById('vs-right-name'); var meData = (myRole === "p1") ? {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon} : {name: d.p2_name, avatar: d.p2_avatar, isNeon: d.p2_neon}; var oppData = (myRole === "p1") ? {name: d.p2_name || 'الخصم', avatar: d.p2_avatar, isNeon: d.p2_neon} : {name: d.p1_name, avatar: d.p1_avatar, isNeon: d.p1_neon}; var emMe = (window.auth && window.auth.currentUser) ? window.auth.currentUser.email : ''; if (myImg) myImg.src = meData.avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; if (myName) { myName.innerText = meData.name; myName.className = (meData.isNeon === true || window.isOwner(emMe)) ? 'neon-bg' : 'premium-name'; } if (oppImg) oppImg.src = oppData.avatar || 'https://cdn-icons-png.flaticon.com/512/2829/2829835.png'; if (oppName) { oppName.innerText = oppData.name; oppName.className = (oppData.isNeon === true) ? 'neon-bg' : 'premium-name'; } }).catch(function(){}); cur = 0; window.isCountdownStarted = false; window.listenToOnlineMatch(); var updateField = (myMatchRole === 'p1') ? {p1_ready: true} : {p2_ready: true}; window.db.collection("matches_v4").doc(onlineMatchId).update(updateField); };
     window.listenToOnlineMatch = function() { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { if (!doc.exists) return; onlineData = doc.data(); if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showTopToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } }); };
-    window.startVSCountdown = function() { window.safeHide('ready-area-left'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); var cdInt = setInterval(function() { count--; if (count > 0) { if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); } else if (count === 0) { if (cdDiv) cdDiv.innerHTML = 'انطلق!'; window.playSndSafe('sfx-win'); } else { clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'inline-block'); if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } } }, 1000); };
+    window.startVSCountdown = function() { window.safeHide('ready-area-left'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); var cdInt = setInterval(function() { count--; if (count > 0) { if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); } else if (count === 0) { if (cdDiv) cdDiv.innerHTML = 'انطلق!'; window.playSndSafe('sfx-win'); } else { clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'grid'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'block'); if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } } }, 1000); };
     window.renderOnlineTurn = function() { locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i=0; i<4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; if (currentTurnUid === authUid) { if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); } else { if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); } onlineTimerInterval = setInterval(function() { turnTimeLeft--; if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } if (turnTimeLeft <= 0) { clearInterval(onlineTimerInterval); if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } } }, 1000); };
     window.submitOnlineAnswer = function(idx) { locked = true; clearInterval(onlineTimerInterval); var isCorrect = (idx !== -1 && optsOrder[idx] === 0); var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; if (btn) { if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } } var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid }; if (isCorrect) { if (myMatchRole === 'p1') { updateObj.p1_score = onlineData.p1_score + 1; } else { updateObj.p2_score = onlineData.p2_score + 1; } } if (nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; } setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000); };
+    
+    // الانسحاب يعمل بنافذة تأكيد خاصة وينهي اللعبة بشكل سليم
     window.askSurrender = function() { 
-        window.showCustomConfirm("تأكيد الانسحاب", "هل تريد الانسحاب من التحدي؟ ستعتبر خاسراً! 🏳️", function() { window.confirmSurrender(); }); 
+        window.showCustomConfirm("تأكيد الانسحاب", "هل تريد الانسحاب من التحدي؟ ستعتبر خاسراً! 🏳️", function() { 
+            window.confirmSurrender(); 
+        }); 
     };
-    window.confirmSurrender = function() { window.closeMod(); if (!isOnlineMode) return; if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
+    
+    window.confirmSurrender = function() { 
+        window.closeMod(); 
+        if (!isOnlineMode) return; 
+        if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { 
+            window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }).then(function(){ window.goHomeG(); }); 
+        } else { 
+            window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); 
+        } 
+    };
     
     window.endOnlineMatch = function() { 
         clearInterval(onlineTimerInterval); if (matchmakingUnsubscribe) { matchmakingUnsubscribe(); } 
         window.safeHide('opts-container'); window.safeHide('q-txt'); window.safeHide('btn-surrender'); 
+        
         var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; 
         var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; 
         var isWin = false; var isDraw = false; 
-        if (onlineData.forfeited_by) { isWin = (onlineData.forfeited_by !== authUid); } 
-        else { if (myScore > oppScore) { isWin = true; } else if (myScore === oppScore) { isDraw = true; } } 
         
-        var pLeftStatus = document.getElementById('vs-left-status'); var pRightStatus = document.getElementById('vs-right-status'); 
-        if (pLeftStatus) { pLeftStatus.className = "match-status-text"; } if (pRightStatus) { pRightStatus.className = "match-status-text"; } 
-        if (isWin) { if (pLeftStatus) { pLeftStatus.innerText = "فزت 🏆"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "خسر 💀"; pRightStatus.classList.add("status-lose"); pRightStatus.style.color="#ff4d4d"; pRightStatus.style.display = "block"; } } else if (isDraw) { if (pLeftStatus) { pLeftStatus.innerText = "تعادل 🤝"; pLeftStatus.classList.add("status-win"); pLeftStatus.style.color="#eee"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "تعادل 🤝"; pRightStatus.classList.add("status-win"); pRightStatus.style.color="#eee"; pRightStatus.style.display = "block"; } } else { if (pLeftStatus) { pLeftStatus.innerText = "خسرت 💀"; pLeftStatus.classList.add("status-lose"); pLeftStatus.style.color="#ff4d4d"; pLeftStatus.style.display = "block"; } if (pRightStatus) { pRightStatus.innerText = "فاز 🏆"; pRightStatus.classList.add("status-win"); pRightStatus.style.display = "block"; } } 
+        if (onlineData.forfeited_by) { 
+            isWin = (onlineData.forfeited_by !== authUid); 
+        } else { 
+            if (myScore > oppScore) { isWin = true; } else if (myScore === oppScore) { isDraw = true; } 
+        } 
         
-        var rTitle = document.getElementById('mr-title'); var rDesc = document.getElementById('mr-desc'); var rIcon = document.getElementById('mr-icon'); var rBtn = document.getElementById('btn-rematch'); 
-        if (rBtn) { if (onlineData.type === 'friend') { rBtn.style.display = 'block'; } else { rBtn.style.display = 'none'; } } 
-        var rewardPts = 0; var titleMsg = ""; 
+        var rewardPts = 0;
         if (isWin) { 
             rewardPts = (onlineData.type === 'random') ? 150 : 50; if(typeof window.addPoints === 'function') window.addPoints(rewardPts); window.playSndSafe('sfx-win'); 
-            if (onlineData.type === 'random') { randomWinStreak++; if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); titleMsg = "<br><span class='shine-blue' style='color:#00d4ff; font-weight:900; display:block; margin-top:5px;'>لقد ربحت لقب العقل الذهبي! 💎</span>"; } } 
-            if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "انسحب الخصم! 🎉" : "انتصار عظيم! 🎉"; rTitle.style.color = '#ffd700'; } 
-            if (rDesc) { rDesc.innerHTML = "لقد سحقت خصمك وربحت " + rewardPts + " نقطة!" + titleMsg; } if (rIcon) { rIcon.innerText = "🏆"; } 
+            if (onlineData.type === 'random') { 
+                randomWinStreak++; 
+                if (randomWinStreak >= 12 && ownedTitles.indexOf('t_ذهبي') === -1) { 
+                    ownedTitles.push('t_ذهبي'); newTitlesList.push('t_ذهبي'); window.lsSet('ULT_NEW_TITLES', JSON.stringify(newTitlesList)); 
+                    window.showTopToast("لقد ربحت لقب العقل الذهبي! 💎"); 
+                } 
+            } 
         } else if (isDraw) { 
             window.playSndSafe('sfx-click'); 
-            if (rTitle) { rTitle.innerText = "تعادل! ⚖️"; rTitle.style.color = '#eee'; } 
-            if (rDesc) { rDesc.innerText = "لقد تعادلت مع خصمك، حظاً أوفر في المرة القادمة."; } if (rIcon) { rIcon.innerText = "🤝"; } 
             if (onlineData.type === 'random') { randomWinStreak = 0; } 
         } else { 
             window.playSndSafe('sfx-lose'); 
-            if (rTitle) { rTitle.innerText = onlineData.forfeited_by ? "لقد انسحبت! 🏳️" : "خسارة قاسية! 💔"; rTitle.style.color = '#ff4d4d'; } 
-            if (rDesc) { rDesc.innerText = onlineData.forfeited_by ? "الانسحاب يعني الخسارة التلقائية." : "لقد هزمك خصمك، لا تستسلم وعد أقوى!"; } if (rIcon) { rIcon.innerText = "💀"; } 
             if (onlineData.type === 'random') { randomWinStreak = 0; } 
         } 
         window.saveProgress(false); 
         
-        // إعطاء ستايل الميثيك لشاشة النتائج
+        // بناء شاشة النتائج الاحترافية المطابقة للصورة
+        var myAvatar = currentAvatar;
+        var oppAvatar = (myMatchRole === 'p1') ? onlineData.p2_avatar : onlineData.p1_avatar;
+        var myNameStr = loggedUser;
+        var oppNameStr = (myMatchRole === 'p1') ? onlineData.p2_name : onlineData.p1_name;
+
+        var winnerName = isWin ? myNameStr : (isDraw ? 'تعادل' : oppNameStr);
+        var winnerAvatar = isWin ? myAvatar : (isDraw ? 'https://i.postimg.cc/Rh90Sysy/Pngtree-beautiful-trophy-4541793.png' : oppAvatar);
+        var loserAvatar = isWin ? oppAvatar : (isDraw ? 'https://i.postimg.cc/Rh90Sysy/Pngtree-beautiful-trophy-4541793.png' : myAvatar);
+        var winnerTitle = isWin ? myNameStr : oppNameStr;
+        var loserTitle = isWin ? oppNameStr : myNameStr;
+
+        var winnerGlow = isDraw ? '' : 'box-shadow: 0 0 30px #ffd700; border: 3px solid #ffd700;';
+        var loserFade = isDraw ? '' : 'filter: grayscale(100%) opacity(0.5); border: 3px solid #555;';
+
         var overlay = document.getElementById('match-result-overlay');
-        var resBox = overlay ? overlay.querySelector('.result-box, div') : null;
-        if(resBox && overlay.style.display !== 'flex') {
-            resBox.style.background = 'linear-gradient(135deg, #8A0303 0%, #4A0000 100%)';
-            resBox.style.border = '2px solid #FFD700';
-            resBox.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.8), 0 0 15px rgba(255,0,0,0.6)';
-        }
+        var resultHtml = `
+            <div style="position:fixed; top:0; left:0; width:100%; height:100%; background-image:url('https://i.postimg.cc/wTK0W5fK/image-2.jpg'); background-size:100% 100%; display:flex; flex-direction:column; align-items:center; z-index:99999;">
+                
+                <div style="width:100%; display:flex; justify-content:center; margin-top:20px; z-index:1000;">
+                    <button onclick="window.askSurrender()" style="background:rgba(0,0,0,0.6); border:1px solid #ff4d4d; color:#ff4d4d; padding:8px 25px; border-radius:15px; font-weight:bold; cursor:pointer;">انسحاب 🏳️</button>
+                </div>
 
-        // تفعيل زر الرئيسية بالنتائج
-        var btnHome = document.getElementById('btn-home');
-        if(btnHome) btnHome.onclick = window.goHomeG;
+                <div style="display:flex; justify-content:space-around; align-items:center; width:100%; margin-top:15vh; padding: 0 10%;">
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <img src="${winnerAvatar}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; ${winnerGlow}">
+                        <span style="color:#ffd700; font-weight:bold; margin-top:10px; font-size:1.1rem; text-shadow:1px 1px 3px #000;">${isDraw ? 'تعادل' : winnerTitle}</span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <img src="${loserAvatar}" style="width:100px; height:100px; border-radius:50%; object-fit:cover; ${loserFade}">
+                        <span style="color:#aaa; font-weight:bold; margin-top:10px; font-size:1.1rem; text-shadow:1px 1px 3px #000;">${isDraw ? 'تعادل' : loserTitle}</span>
+                    </div>
+                </div>
 
-        window.safeShow('match-result-overlay', 'flex'); 
+                <div style="margin-top:28vh; width:70%; height:60px; display:flex; align-items:center; justify-content:center; background:transparent;">
+                    <span style="color:#ffd700; font-size:1.5rem; font-weight:900; text-shadow:2px 2px 4px #000;">🏆 ${winnerName}</span>
+                </div>
+
+                <div style="margin-top:auto; margin-bottom:8vh; width:100%; display:flex; flex-direction:column; align-items:center; gap:15px;">
+                    <button onclick="window.goHomeG()" style="background:linear-gradient(90deg, #ffd700, #ff8c00); color:#000; border:none; padding:12px 40px; border-radius:25px; font-weight:bold; font-size:1.3rem; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5);">الرئيسية 🏠</button>
+                    <button onclick="window.goHomeG()" style="background:transparent; border:2px solid #ffd700; color:#ffd700; padding:10px 30px; border-radius:20px; font-weight:bold; font-size:1.1rem; cursor:pointer;">بدء من جديد 🔄</button>
+                </div>
+            </div>
+        `;
+        overlay.innerHTML = resultHtml;
+        window.safeShow('match-result-overlay', 'block'); 
     };
 
     // الإقلاع
@@ -1735,15 +1752,6 @@
         window.safeShow('loading-screen', 'flex'); 
         setTimeout(function() { var ls = document.getElementById('loading-screen'); if (ls && ls.style.display !== 'none') { if (typeof window.finishLoading === 'function') window.finishLoading(true); } }, 6000);
         
-        // ربط جميع أيقونات الجرس في الصفحة لفتح قائمة طلبات الصداقة
-        setTimeout(function() {
-            var bells = document.querySelectorAll('.fa-bell');
-            bells.forEach(function(b) {
-                var btn = b.closest('button, div');
-                if(btn) btn.onclick = window.openFriendRequests;
-            });
-        }, 1500);
-
         if (window.auth) { 
             window.auth.onAuthStateChanged(function(user) { 
                 if (user) { 
@@ -1792,6 +1800,5 @@
         if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } 
     });
 </script>
-
 </body>
 </html>
