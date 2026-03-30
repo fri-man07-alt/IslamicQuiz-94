@@ -656,18 +656,55 @@
         
         #modal-loading-online { background-image: url('https://i.postimg.cc/nzRJtRWr/image-1.jpg') !important; background-size: 100% 100% !important; background-position: center !important; border: none !important; box-shadow: none !important; }
 
-        #wait-my-img, #wait-opp-img { width: 85px !important; height: 85px !important; object-fit: cover !important; border-radius: 50% !important; transform: translateY(18px) !important; box-shadow: 0 0 15px rgba(0,0,0,0.8); }
-        #wait-my-name, #wait-opp-name { display: inline-block; transform: translateY(22px) !important; font-weight: bold; text-shadow: 2px 2px 4px #000 !important; }
+        /* تعديلات غرفة الانتظار الموزونة بنسبة 100% (تعديل الصور والأسماء وزر الإلغاء) */
+        #wait-my-img, #wait-opp-img { 
+            width: 85px !important; height: 85px !important; 
+            object-fit: cover !important; border-radius: 50% !important; 
+            position: relative !important; top: 16px !important; 
+            display: block !important; margin: 0 auto !important; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.8); 
+        }
+        #wait-my-name, #wait-opp-name { 
+            position: relative !important; top: 40px !important; 
+            display: block !important; text-align: center !important; 
+            font-weight: 900 !important; font-size: 1.05rem !important; 
+            color: #fff !important; text-shadow: 2px 2px 4px #000 !important; 
+            width: 100% !important; line-height: 1 !important; 
+            margin: 0 !important; padding: 0 !important; vertical-align: middle !important;
+        }
+
+        /* زر الإلغاء في غرفة الانتظار (في الأسفل تحت الأسماء) */
+        #btn-cancel-ready { 
+            position: absolute !important; bottom: 10% !important; top: auto !important; 
+            left: 50% !important; transform: translateX(-50%) !important; 
+            z-index: 1000 !important; background: #ffd700 !important; 
+            border: 2px solid #0000cd !important; color: #0000cd !important; 
+            padding: 8px 25px !important; border-radius: 12px !important; 
+            font-weight: 900 !important; font-size: 1rem !important; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6); 
+        }
 
         body.vs-mode-active { background-image: url('https://i.postimg.cc/W18FkjFW/image-3.jpg') !important; background-size: 100% 100% !important; background-position: center !important; background-color: #111 !important; }
         body.vs-mode-active #screen-game { background: transparent !important; }
         body.vs-mode-active #vs-header { background: transparent !important; border: none !important; box-shadow: none !important; }
         
+        /* زر الانسحاب داخل التحدي (شكل صغير ومصغر تحت VS) */
+        #btn-surrender { 
+            position: absolute !important; top: 60px !important; left: 50% !important; 
+            transform: translateX(-50%) !important; z-index: 1000 !important; 
+            background: #ffd700 !important; border: 2px solid #0000cd !important; 
+            color: #0000cd !important; padding: 3px 12px !important; border-radius: 8px !important; 
+            font-weight: 900 !important; font-size: 0.8rem !important; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.6); 
+        }
+
         body.vs-mode-active #q-txt { background: rgba(0,0,0,0.65) !important; border: 1px solid #555 !important; box-shadow: 0 0 15px rgba(0,0,0,0.8) !important; font-size: 1.4rem !important; text-shadow: 2px 2px 4px #000 !important; color: #fff !important; padding: 15px !important; border-radius: 12px !important; }
         body.vs-mode-active .vs-option-btn { background: rgba(0,0,0,0.8) !important; border: 2px solid #ffd700 !important; font-weight: bold !important; font-size: 1.1rem !important; color: #fff !important; transition: all 0.2s; }
         body.vs-mode-active .vs-option-btn:active { transform: scale(0.95); background: rgba(255,215,0,0.5) !important; }
         
-        #btn-surrender, #btn-cancel-ready { position: absolute !important; top: 75px !important; left: 50% !important; transform: translateX(-50%) !important; z-index: 1000 !important; background: #ffd700 !important; border: 2px solid #0000cd !important; color: #0000cd !important; padding: 6px 20px !important; border-radius: 12px !important; font-weight: 900 !important; font-size: 1rem !important; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
+        /* تعديل ألوان الإجابات في التحدي بشكل واضح جداً */
+        body.vs-mode-active .vs-option-btn.correct { background: #2ecc71 !important; border-color: #fff !important; color: #000 !important; font-weight: 900 !important; text-shadow: none !important; }
+        body.vs-mode-active .vs-option-btn.wrong { background: #e74c3c !important; border-color: #fff !important; color: #fff !important; font-weight: 900 !important; text-shadow: 1px 1px 2px #000 !important; }
 
         .admin-placeholder-btn { color: #aaa; font-weight: bold; font-size: 0.9rem; margin: 0 5px; cursor: pointer; transition: 0.3s; border-bottom: 1px dashed transparent; }
         .admin-placeholder-btn:hover { color: var(--p); border-bottom-color: var(--p); transform: translateY(-2px); }
@@ -707,14 +744,13 @@
     try { 
         var firebaseConfig = { apiKey: "AIzaSyB5aIAXxxtpVCyvu4aveECY3CtfU0kQlAg", authDomain: "islamicquiz-94.firebaseapp.com", projectId: "islamicquiz-94", storageBucket: "islamicquiz-94.appspot.com" }; 
         if (typeof firebase !== 'undefined') { if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); } window.db = firebase.firestore(); window.auth = firebase.auth(); } 
-    } catch(e) { console.error("Firebase Init Error", e); }
+    } catch(e) {}
 
     var DEVELOPER_EMAIL = "Fri-man07@hotmail.com"; var currentUserRole = 'user'; var hasNeonUser = false; var sndOn = true;
     var qList = []; var aud = 5; var f50 = 5; var cur = 0; var locked = false; var qOrder = []; var optsOrder = []; var currentRunCorrect = 0; var lastAnswerCorrect = false;
     var authUid = null; var pID = ""; var loggedUser = ""; var isGoogle = false; var pts = 0; var totalHints = 3; var spins = 1; var randomWinStreak = 0; var activeTitleId = 't1'; 
     var currentAvatar = 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; var ownedTitles = ['t1']; var answeredQs = []; var newTitlesList = []; var isBusy = false; 
 
-    // دوال المودال الأساسية
     window.showCustomConfirm = function(title, msg, onConfirm) {
         var modal = document.getElementById('modal-custom-confirm');
         if(!modal) { modal = document.createElement('div'); modal.id = 'modal-custom-confirm'; modal.className = 'm-content mythic-modal-bg'; document.getElementById('custom-modal').appendChild(modal); }
@@ -731,7 +767,6 @@
         window.openMod('modal-success-msg'); window.playSndSafe('sfx-win');
     };
 
-    // قراءة البيانات من الذاكرة بحماية تامة لمنع تعليق التطبيق (Anti-Freeze)
     window.lsGet = function(k, d) { try { var v = localStorage.getItem(k); return (v === null || v === 'undefined' || v === '') ? d : v; } catch(e) { return d; } };
     window.lsSet = function(k, v) { try { localStorage.setItem(k, v); } catch(e) {} };
     window.generateNumID = function() { return Math.floor(10000000 + Math.random() * 89999999).toString(); };
@@ -744,7 +779,6 @@
     randomWinStreak = parseInt(window.lsGet('ULT_STREAK', 0)) || 0; isBusy = window.lsGet('ULT_BUSY', 'false') === 'true';
     currentUserRole = window.lsGet('ULT_ROLE', 'user');
     
-    // حماية القوائم من أخطاء الـ JSON التي تدمر الصفحة
     try { var rawT = window.lsGet('ULT_OWNED_TITLES', '["t1"]'); ownedTitles = JSON.parse(rawT); if(!Array.isArray(ownedTitles)) throw "err"; } catch(e) { ownedTitles = ['t1']; }
     try { var rawQ = window.lsGet('ULT_ANSWERED_QS', '[]'); answeredQs = JSON.parse(rawQ); if(!Array.isArray(answeredQs)) throw "err"; } catch(e) { answeredQs = []; }
     try { var rawN = window.lsGet('ULT_NEW_TITLES', '[]'); newTitlesList = JSON.parse(rawN); if(!Array.isArray(newTitlesList)) throw "err"; } catch(e) { newTitlesList = []; }
@@ -752,9 +786,6 @@
     window.isOwnerEmail = function(email) { return (email && email.toLowerCase() === DEVELOPER_EMAIL.toLowerCase()); };
     window.isMod = function() { return (currentUserRole === 'mod' || currentUserRole === 'owner'); };
 
-    // ==========================================
-    // الأسئلة 
-    // ==========================================
     window.shuffle = function(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var temp = a[i]; a[i] = a[j]; a[j] = temp; } return a; };
 
     var titlesData = { 
@@ -831,9 +862,6 @@
     window.use50 = function() { if (locked) return; if (window.isCampMode) { var camp = window.campaignsData[window.activeCampId]; if (camp.f50Used) return; camp.f50Used = true; window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); var c50 = document.getElementById('c-50'); if (c50) c50.innerText = "0"; } else { if (f50 <= 0) return; f50--; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; } var h = 0; for (var i=0; i<4; i++) { if (optsOrder[i] !== 0 && h < 2) { var btn = document.getElementById('opt'+i); if (btn) btn.style.visibility='hidden'; h++; } } };
     window.useHint = function() { if (locked) return; if (window.isCampMode) { var camp = window.campaignsData[window.activeCampId]; if (camp.hintUsed) return; camp.hintUsed = true; window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); var ch = document.getElementById('c-hint'); if (ch) ch.innerText = "0"; } else { if (totalHints <= 0) return; totalHints--; var ch = document.getElementById('c-hint'); if (ch) ch.innerText = totalHints; window.saveProgress(false); } var correctIdx = optsOrder.indexOf(0); var btn = document.getElementById('opt'+correctIdx); if (btn) btn.style.border='3px solid var(--p)'; };
 
-    // ==========================================
-    // 3. دوال الواجهة الأساسية (محمية ضد التعليق)
-    // ==========================================
     window.safeShow = function(id, displayType) { var el = document.getElementById(id); if (el) el.style.display = displayType || 'block'; };
     window.safeHide = function(id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; };
     window.showBottomToast = function(msg) { var t = document.getElementById("bottom-toast-msg"); if (!t) return; t.innerText = msg; t.className = "show"; window.playSndSafe('sfx-click'); setTimeout(function() { t.className = ""; }, 3000); };
@@ -880,43 +908,19 @@
     window.saveAndExitG = function() { window.saveProgress(false); window.showTopToast("تم الحفظ بنجاح ✅"); window.goHomeG(); };
     window.skipQMenu = function() { locked = false; cur++; window.closeMod(); if (window.isCampMode) window.loadCampQ(); else window.loadQ(); };
 
-    // إصلاح زر الدخول كضيف (حماية ضد أي خطأ يمنع الدخول)
     window.loginGuest = function() { 
         try { window.playSndSafe('sfx-click'); } catch(e){} 
         try {
-            var n = document.getElementById('guest-name-input'); 
-            var val = n ? n.value.trim() : ''; 
-            loggedUser = val === '' ? 'أسطورة' : val; 
-            isGoogle = false; 
-            window.lsSet('ULT_USER', loggedUser); 
-            window.lsSet('ULT_FB', 'false'); 
-            var sl = document.getElementById('screen-login');
-            if(sl) sl.style.display = 'none'; 
-            window.showStartScreen(); 
-        } catch(err) {
-            // إجبار واجهة اللعبة على الفتح إذا حدث خطأ غير متوقع
-            document.getElementById('screen-login').style.display = 'none';
-            document.getElementById('screen-start').style.display = 'flex';
-            document.getElementById('main-nav').style.display = 'flex';
-        }
+            var n = document.getElementById('guest-name-input'); var val = n ? n.value.trim() : ''; loggedUser = val === '' ? 'أسطورة' : val; isGoogle = false; window.lsSet('ULT_USER', loggedUser); window.lsSet('ULT_FB', 'false'); var sl = document.getElementById('screen-login'); if(sl) sl.style.display = 'none'; window.showStartScreen(); 
+        } catch(err) { document.getElementById('screen-login').style.display = 'none'; document.getElementById('screen-start').style.display = 'flex'; document.getElementById('main-nav').style.display = 'flex'; }
     };
 
-    // إصلاح زر جوجل (تنبيه تلقائي إذا كان هناك مانع إعلانات يعلق الفايربيس)
     window.loginGoogle = function() { 
         try { window.playSndSafe('sfx-click'); } catch(e){}
-        if (!window.auth) {
-            // إذا لم يتم تحميل فايربيس (تعليق بسبب النت)، يتم الدخول كضيف مباشرة!
-            window.showTopToast("تعذر الاتصال بخوادم Google، سيتم الدخول كضيف.");
-            setTimeout(window.loginGuest, 1500);
-            return;
-        }
+        if (!window.auth) { window.showTopToast("تعذر الاتصال بخوادم Google، سيتم الدخول كضيف."); setTimeout(window.loginGuest, 1500); return; }
         window.safeShow('loading-screen', 'flex'); 
-        var provider = new firebase.auth.GoogleAuthProvider(); 
-        provider.setCustomParameters({ prompt: 'select_account' }); 
-        window.auth.signInWithRedirect(provider).catch(function(error){ 
-            window.showTopToast("حدث خطأ في التسجيل، حاول مجدداً"); 
-            window.safeHide('loading-screen'); 
-        }); 
+        var provider = new firebase.auth.GoogleAuthProvider(); provider.setCustomParameters({ prompt: 'select_account' }); 
+        window.auth.signInWithRedirect(provider).catch(function(error){ window.showTopToast("حدث خطأ في التسجيل، حاول مجدداً"); window.safeHide('loading-screen'); }); 
     };
 
     window.logout = function() { window.playSndSafe('sfx-click'); if (window.auth) { window.auth.signOut().then(function() { localStorage.clear(); location.reload(); }); } else { localStorage.clear(); location.reload(); } };
@@ -1026,18 +1030,12 @@
     window.closeGrandPrize = function() { var modalContent = document.getElementById('modal-grand-prize'); if(modalContent) { modalContent.classList.remove('mythic-modal-bg'); } if (window.isCampMode === false && window.activeCampId) { window.openCampaignMap(window.activeCampId); } else { window.openMod('modal-luckyspin'); } window.updateStatsUI(); };
 
     // ==========================================
-    // 6. المسابقات (الكروت الفخمة) - حماية ضد الأخطاء
+    // 6. المسابقات 
     // ==========================================
     window.isCampMode = false; window.campTimerInterval = null;
-    
-    // استخراج آمن للمسابقات (Anti-Crash)
     var _campRaw = window.lsGet('ULT_CAMPAIGNS_V3', null);
     var _defCamp = { wisdom: { level: 1, lives: 5, gotTrophy: false, cooldown: 0, audUsed: false, f50Used: false, hintUsed: false }, emperor: { level: 1, lives: 5, gotTrophy: false, cooldown: 0, audUsed: false, f50Used: false, hintUsed: false } };
-    try {
-        if (!_campRaw || _campRaw === 'undefined') throw "err";
-        window.campaignsData = JSON.parse(_campRaw);
-    } catch(e) { window.campaignsData = _defCamp; }
-    
+    try { if (!_campRaw || _campRaw === 'undefined') throw "err"; window.campaignsData = JSON.parse(_campRaw); } catch(e) { window.campaignsData = _defCamp; }
     if(window.campaignsData.wisdom.gotTrophy === undefined) window.campaignsData.wisdom.gotTrophy = false; 
     if(window.campaignsData.emperor.gotTrophy === undefined) window.campaignsData.emperor.gotTrophy = false; 
     if(window.campaignsData.wisdom.cooldown === undefined) window.campaignsData.wisdom.cooldown = 0; 
@@ -1050,7 +1048,6 @@
         html += '<button onclick="window.openCampaignMap(\'wisdom\')" style="width:90%; padding:25px 0; background:linear-gradient(90deg, #ff8c00, #ff4500); border-radius:10px; border:2px solid #ffd700; color:#fff; font-size:1.5rem; font-weight:bold; font-family:\'Amiri\', serif; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5);">منبع الحكمة</button>';
         html += '<button onclick="window.openCampaignMap(\'emperor\')" style="width:90%; padding:25px 0; background:linear-gradient(90deg, #c71585, #8a2be2); border-radius:10px; border:2px solid #ffd700; color:#fff; font-size:1.5rem; font-weight:bold; font-family:\'Amiri\', serif; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5);">إمبراطور المعرفة</button></div>';
         html += '<button class="q-btn danger" onclick="window.closeMod()" style="width:90%; margin:20px auto 0 auto; display:block; background:transparent; border:1px solid #ff4d4d; color:#ff4d4d;">رجوع</button>';
-        
         var modal = document.getElementById('modal-campaign-select');
         if(!modal) { modal = document.createElement('div'); modal.id = 'modal-campaign-select'; modal.className = 'm-content mythic-modal-bg'; document.getElementById('custom-modal').appendChild(modal); }
         modal.innerHTML = html; window.openMod('modal-campaign-select');
@@ -1060,7 +1057,6 @@
         clearInterval(window.campTimerInterval); window.playSndSafe('sfx-click'); window.activeCampId = campId; var camp = window.campaignsData[campId]; var conf = { wisdom: { name: 'منبع الحكمة' }, emperor: { name: 'إمبراطور المعرفة' } }[campId]; var now = Date.now(); 
         if (camp.lives <= 0) { if (now >= camp.cooldown) { camp.lives = 5; camp.cooldown = 0; camp.audUsed = false; camp.f50Used = false; camp.hintUsed = false; window.lsSet('ULT_CAMPAIGNS_V3', JSON.stringify(window.campaignsData)); } } 
         var html = '<h3 style="color:var(--p); text-align:center; margin-bottom:10px;">' + conf.name + '</h3><div style="background:#1a1a1a; padding:10px; border-radius:15px; border:1px solid #444; margin-bottom:15px; display:flex; justify-content:space-around;"><div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">المستوى</span><br><span style="color:#00d4ff; font-size:1.3rem;">' + Math.min(camp.level, 12) + ' / 12</span></div><div style="text-align:center;"><span style="color:#aaa; font-size:0.8rem;">الأرواح</span><br><div id="camp-lives-display" style="font-size:1.2rem;">❤️ ' + camp.lives + '</div></div></div>'; 
-        
         html += '<div class="camp-map-scroll"><div class="camp-map-container">'; 
         for (var i = 1; i <= 12; i++) { 
             var isPassed = camp.level > i; var isActive = camp.level === i; var isBoss = (i === 12); 
@@ -1077,7 +1073,6 @@
             if (i < 12) { html += '<div class="camp-line' + (camp.level > i ? " passed" : "") + '"></div>'; } 
         } 
         html += '</div></div>'; 
-        
         if (camp.level > 12) { html += '<button class="q-btn" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; background:#2ecc71; color:#000; font-weight:bold; margin-top:20px;" disabled>لقد ختمت هذا المسار! 🎉</button>'; } 
         else if (camp.lives <= 0) { html += '<button id="camp-cooldown-btn" class="q-btn danger" style="width:100%; font-size:1.5rem; font-weight:bold; padding:12px; border-radius:10px; margin-top:20px; letter-spacing:2px; font-family:monospace;" disabled>30:00</button>'; window.startCampCooldownTimer(campId); } 
         else { html += '<button class="q-btn primary" onclick="window.startCampLevel()" style="width:100%; font-size:1.2rem; padding:12px; border-radius:10px; border:none; margin-top:20px;">بدء المرحلة ' + camp.level + ' 🚀</button>'; } 
@@ -1114,11 +1109,12 @@
     };
 
     // ==========================================
-    // 7. اللعب العادي 
+    // 7. اللعب العادي والإجابات 
     // ==========================================
     window.startG = function() { isOnlineMode = false; window.isCampMode = false; if (qList.length === 0) { window.showTopToast("عذراً، الأسئلة قيد التحميل..."); return; } window.safeHide('screen-start'); window.safeHide('main-nav'); window.safeShow('screen-game', 'block'); window.safeHide('vs-header'); window.safeShow('normal-header', 'flex'); window.safeShow('normal-helps', 'flex'); window.safeShow('opts-container', 'block'); window.safeShow('q-txt', 'flex'); cur = 0; aud = 5; f50 = 5; currentRunCorrect = 0; qOrder = []; for (var i = 0; i < qList.length; i++) { if (answeredQs.indexOf(i) === -1) qOrder.push(i); } if (qOrder.length === 0) { answeredQs = []; window.lsSet('ULT_ANSWERED_QS', JSON.stringify(answeredQs)); for (var i = 0; i < qList.length; i++) qOrder.push(i); window.showBottomToast("تمت إعادة التحدي من جديد 🔄"); } window.shuffle(qOrder); window.loadQ(); };
     window.loadQ = function() { locked = false; window.safeHide('post-ans-actions'); window.safeHide('explanation-box'); if (cur >= qList.length) { window.openMod('modal-win'); return; } var q = qList[qOrder[cur]]; var progEl = document.getElementById('ui-prog'); if (progEl) progEl.innerText = (cur+1) + " / " + qList.length; var qTxt = document.getElementById('q-txt'); if (qTxt) qTxt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i = 0; i < 4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.visibility = 'visible'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var cAud = document.getElementById('c-aud'); if (cAud) cAud.innerText = aud; var c50 = document.getElementById('c-50'); if (c50) c50.innerText = f50; var cHint = document.getElementById('c-hint'); if (cHint) cHint.innerText = totalHints; };
     
+    // تم الحفاظ على نظام وضع كلاس correct و wrong هنا لتتجاوب مع CSS الجديد
     window.checkAns = function(idx) { 
         if (locked) return; locked = true; 
         if (isOnlineMode) { if (currentTurnUid !== authUid) return; window.submitOnlineAnswer(idx); return; } 
@@ -1144,7 +1140,6 @@
             } 
         } 
     };
-    
     window.handleContinue = function() { if (lastAnswerCorrect) { cur++; if(window.isCampMode) window.loadCampQ(); else window.loadQ(); } else { if(!window.isCampMode) { window.openMod('modal-lose-menu'); } } };
 
     // ==========================================
@@ -1177,7 +1172,7 @@
     window.searchFriend = function() { var fId = document.getElementById('friend-id-input').value.trim(); var resContainer = document.getElementById('search-result-container'); if (fId === "" || fId === pID) { window.showTopToast("ID غير صالح! 🚫"); return; } window.db.collection("users_v4").where("numId", "==", fId).get().then(function(snap) { if (!snap.empty) { var doc = snap.docs[0]; var d = doc.data(); var em = d.email ? d.email : ''; var isDev = window.isOwnerEmail(em); var devBadge = isDev ? '<span class="dev-badge"><i class="fas fa-laptop-code"></i> المطور</span>' : ''; var fTitleId = d.title || 't1'; var tObj = titlesData[fTitleId] || titlesData['t1']; var fTitleHtml = window.generateTitleHtml(fTitleId, tObj, false, true, false, false); var nameCls = (isDev || d.name !== "أسطورة") ? 'premium-name' : ''; if (d.hasNeon === true || d.hasNeon === 'true' || isDev) { nameCls = 'neon-bg'; } var fAvatar = d.avatar ? '<img src="' + d.avatar + '" style="width:50px;height:50px;border-radius:50%;border:2px solid var(--p);object-fit:cover;">' : '<i class="fas fa-user-circle" style="font-size:2.5rem;color:var(--p);"></i>'; var safeName = d.name ? d.name.replace(/'/g, "\\'") : ''; var safeAvatar = d.avatar ? d.avatar.replace(/'/g, "\\'") : ''; var adminBtns = ''; if (currentUserRole === 'mod' || currentUserRole === 'owner') { adminBtns = "<button class='q-btn danger' style='width:100%; margin:5px 0 0 0; padding:10px; background:rgba(255,0,0,0.2); border-color:#ff4d4d; color:#ff4d4d;' onclick=\"window.openUserAction('" + doc.id + "', '" + safeName + "', '" + d.numId + "', '" + (d.role||'user') + "', '" + safeAvatar + "', " + (d.hasNeon===true||d.hasNeon==='true') + ", '" + em + "')\">إدارة اللاعب ⚙️</button>"; } if (resContainer) { resContainer.innerHTML = '<div style="padding:15px; border:1px solid var(--p); border-radius:12px; background:rgba(0,0,0,0.6); display:flex; flex-direction:column; gap:12px; align-items:center;"> <div style="display:flex; align-items:center; gap:10px;">' + fAvatar + ' <span class="' + nameCls + '" style="font-size:1.6rem !important;">' + d.name + '</span></div> <div style="display:flex; justify-content:center; align-items:center; gap:8px;">' + devBadge + '</div><div style="margin-top:5px; width:100%;">' + fTitleHtml + '</div> <button class="q-btn primary" style="width:100%; margin:0; padding:10px;" onclick="window.sendFriendReq(\'' + doc.id + '\', \'' + safeName + '\')">إرسال طلب صداقة <i class="fas fa-user-plus"></i></button> ' + adminBtns + ' </div>'; window.safeShow('search-result-container', 'block'); } } else { window.showTopToast("لا يوجد حساب بهذا الـ ID 🚫"); } }).catch(function(){}); };
 
     // ==========================================
-    // 9. الأونلاين (الميثيك) والنتائج الخاصة
+    // 9. الأونلاين والمطابقة
     // ==========================================
     var matchRef = null; var matchmakingUnsubscribe = null; var onlineMatchId = null; var myMatchRole = null; var onlineTimerInterval = null; var currentTurnUid = null; var isOnlineMode = false; var onlineData = {}; var turnTimeLeft = 25; var randomMatchTimeout = null; var inviteInterval = null;
     window.startMatchmaking = function(type, friendUid, friendName) { if (!authUid) { window.showTopToast("سجل دخول بحساب جوجل لتتمكن من المنافسة! 🔒"); return; } if (qList.length < 10) { window.showTopToast("خطأ: الأسئلة قيد التحميل..."); return; } if (type === 'friend') { window.db.collection("users_v4").doc(friendUid).get().then(function(doc){ if(doc.exists && (doc.data().isBusy === true || doc.data().isBusy === 'true')) { window.showTopToast("عذراً، اللاعب " + friendName + " مشغول حالياً 🔴"); } else { window.proceedMatchmaking(type, friendUid, friendName); } }); } else { window.proceedMatchmaking(type, friendUid, friendName); clearTimeout(randomMatchTimeout); randomMatchTimeout = setTimeout(function() { var loadingModal = document.getElementById('modal-loading-online'); if (loadingModal && loadingModal.style.display === 'flex') { window.cancelMatchmaking(); window.showTopToast("لا يوجد لاعبين متاحين حالياً ⏳"); } }, 30000); } };
@@ -1197,12 +1192,14 @@
     window.listenToOnlineMatch = function() { matchmakingUnsubscribe = window.db.collection("matches_v4").doc(onlineMatchId).onSnapshot(function(doc) { if (!doc.exists) return; onlineData = doc.data(); if (onlineData.status === 'cancelled') { if (matchmakingUnsubscribe) matchmakingUnsubscribe(); window.showTopToast("انسحب الخصم أو رُفض التحدي."); window.goHomeG(); return; } if (onlineData.p1_ready && onlineData.p2_ready && onlineData.status === 'waiting_ready' && !window.isCountdownStarted) { window.isCountdownStarted = true; window.startVSCountdown(); } if (onlineData.status === 'playing') { window.renderOnlineTurn(); } else if (onlineData.status === 'finished') { window.endOnlineMatch(); } }); };
     window.startVSCountdown = function() { window.safeHide('ready-area-left'); window.safeHide('ready-area-right'); window.safeShow('vs-countdown', 'block'); var cdDiv = document.getElementById('vs-countdown'); var count = 3; if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); var cdInt = setInterval(function() { count--; if (count > 0) { if (cdDiv) cdDiv.innerHTML = count; window.playSndSafe('sfx-click'); } else if (count === 0) { if (cdDiv) cdDiv.innerHTML = 'انطلق!'; window.playSndSafe('sfx-win'); } else { clearInterval(cdInt); window.safeHide('vs-countdown'); window.safeShow('opts-container', 'grid'); window.safeShow('q-txt', 'flex'); window.safeShow('btn-surrender', 'block'); if (myMatchRole === 'p1') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'playing' }); } } }, 1000); };
     window.renderOnlineTurn = function() { locked = false; clearInterval(onlineTimerInterval); currentTurnUid = onlineData.current_turn; var qIdx = onlineData.questions[onlineData.current_q_index]; var q = qList[qIdx]; var qt = document.getElementById('q-txt'); if (qt) qt.innerText = q.q; optsOrder = window.shuffle([0, 1, 2, 3]); for (var i=0; i<4; i++) { var btn = document.getElementById('opt'+i); if (btn) { btn.className = 'q-btn vs-option-btn'; btn.style.background = ''; btn.style.border = ''; btn.style.boxShadow = ''; btn.style.color = '#fff'; btn.innerText = q.o[optsOrder[i]]; } } var optsCont = document.getElementById('opts-container'); var pLeft = document.getElementById('p-left-box'); var pRight = document.getElementById('p-right-box'); var myTimer = document.getElementById('p-left-timer'); var oppTimer = document.getElementById('p-right-timer'); if (pLeft) pLeft.classList.remove('active-turn'); if (pRight) pRight.classList.remove('active-turn'); turnTimeLeft = 25; if (myTimer) myTimer.innerText = "25"; if (oppTimer) oppTimer.innerText = "25"; if (currentTurnUid === authUid) { if (optsCont) optsCont.classList.remove('disabled-opts'); if (pLeft) pLeft.classList.add('active-turn'); } else { if (optsCont) optsCont.classList.add('disabled-opts'); if (pRight) pRight.classList.add('active-turn'); } onlineTimerInterval = setInterval(function() { turnTimeLeft--; if (currentTurnUid === authUid) { if (myTimer) myTimer.innerText = turnTimeLeft; } else { if (oppTimer) oppTimer.innerText = turnTimeLeft; } if (turnTimeLeft <= 0) { clearInterval(onlineTimerInterval); if (currentTurnUid === authUid) { window.submitOnlineAnswer(-1); } } }, 1000); };
+    
+    // تم الحفاظ على الكلاسات ليتم إضافة التلوين الجديد بكل وضوح
     window.submitOnlineAnswer = function(idx) { locked = true; clearInterval(onlineTimerInterval); var isCorrect = (idx !== -1 && optsOrder[idx] === 0); var btn = (idx !== -1) ? document.getElementById('opt'+idx) : null; if (btn) { if (isCorrect) { btn.classList.add('correct'); window.playSndSafe('sfx-win'); } else { btn.classList.add('wrong'); window.playSndSafe('sfx-lose'); var co = document.getElementById('opt'+optsOrder.indexOf(0)); if (co) co.classList.add('correct'); } } var nextTurnUid = (currentTurnUid === onlineData.p1_id) ? onlineData.p2_id : onlineData.p1_id; var nextQIndex = onlineData.current_q_index + 1; var updateObj = { current_turn: nextTurnUid }; if (isCorrect) { if (myMatchRole === 'p1') { updateObj.p1_score = onlineData.p1_score + 1; } else { updateObj.p2_score = onlineData.p2_score + 1; } } if (nextQIndex >= 10) { updateObj.status = 'finished'; } else { updateObj.current_q_index = nextQIndex; } setTimeout(function() { window.db.collection("matches_v4").doc(onlineMatchId).update(updateObj); }, 2000); };
     
     window.askSurrender = function() { window.showCustomConfirm("تأكيد الانسحاب", "هل تريد الانسحاب من التحدي؟ ستعتبر خاسراً! 🏳️", function() { window.confirmSurrender(); }); };
     window.confirmSurrender = function() { window.closeMod(); if (!isOnlineMode) return; if (onlineData.status === 'waiting_ready' || onlineData.status === 'waiting') { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'cancelled' }).then(function(){ window.goHomeG(); }); } else { window.db.collection("matches_v4").doc(onlineMatchId).update({ status: 'finished', forfeited_by: authUid }); } };
     
-    // شاشة النتائج
+    // شاشة النتائج النهائية مع الاسم المرفوع بالمنتصف
     window.endOnlineMatch = function() { 
         clearInterval(onlineTimerInterval); if (matchmakingUnsubscribe) { matchmakingUnsubscribe(); } 
         var myScore = (myMatchRole === 'p1') ? onlineData.p1_score : onlineData.p2_score; var oppScore = (myMatchRole === 'p1') ? onlineData.p2_score : onlineData.p1_score; 
@@ -1229,12 +1226,13 @@
         var myOverlay = document.getElementById('custom-mythic-result');
         if(!myOverlay) { myOverlay = document.createElement('div'); myOverlay.id = 'custom-mythic-result'; myOverlay.style.cssText = "position:fixed; top:0; left:0; width:100%; height:100%; background-image:url('https://i.postimg.cc/wTK0W5fK/image-2.jpg'); background-size:100% 100%; display:flex; flex-direction:column; align-items:center; z-index:999999;"; document.body.appendChild(myOverlay); }
 
+        // تم رفع اسم الفائز عبر تقليل margin-top وإزالة المسافات الإضافية ليكون بمنتصف المستطيل
         myOverlay.innerHTML = '<div style="width:100%; display:flex; justify-content:center; margin-top:20px; z-index:1000;"><button id="res-surrender-btn" style="background:rgba(0,0,0,0.6); border:1px solid #ff4d4d; color:#ff4d4d; padding:8px 25px; border-radius:15px; font-weight:bold; cursor:pointer;">انسحاب 🏳️</button></div>' +
             '<div style="display:flex; justify-content:space-around; align-items:center; width:100%; margin-top:20vh; padding: 0 10%;">' +
             '<div style="display:flex; flex-direction:column; align-items:center; width: 120px;"><img src="' + winnerAvatar + '" style="width:95px; height:95px; border-radius:50%; object-fit:cover; margin-top: -10px; ' + winnerGlow + '"><span style="color:#ffd700; font-weight:bold; margin-top:25px; font-size:1.1rem; text-shadow:1px 1px 3px #000;">' + (isDraw ? 'تعادل' : winnerTitle) + '</span></div>' +
             '<div style="display:flex; flex-direction:column; align-items:center; width: 120px;"><img src="' + loserAvatar + '" style="width:95px; height:95px; border-radius:50%; object-fit:cover; margin-top: -10px; ' + loserFade + '"><span style="color:#aaa; font-weight:bold; margin-top:25px; font-size:1.1rem; text-shadow:1px 1px 3px #000;">' + (isDraw ? 'تعادل' : loserTitle) + '</span></div>' +
             '</div>' +
-            '<div style="margin-top:27vh; width:100%; height:80px; display:flex; align-items:center; justify-content:center; background:transparent;"><span style="color:#ffd700; font-size:1.8rem; font-weight:900; text-shadow:2px 2px 4px #000; padding-top:15px;">🏆 ' + winnerName + '</span></div>' +
+            '<div style="margin-top:22vh; width:100%; height:80px; display:flex; align-items:center; justify-content:center; background:transparent;"><span style="color:#ffd700; font-size:1.8rem; font-weight:900; text-shadow:2px 2px 4px #000;">🏆 ' + winnerName + '</span></div>' +
             '<div style="margin-top:auto; margin-bottom:10vh; width:100%; display:flex; flex-direction:row; justify-content:center; align-items:center; gap:10px;">' +
             '<button id="res-home-btn" style="background:linear-gradient(90deg, #ffd700, #ff8c00); color:#000; border:none; padding:12px 25px; border-radius:20px; font-weight:bold; font-size:1.1rem; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5);">الرئيسية 🏠</button>' +
             '<button id="res-rematch-btn" style="background:#4169E1; border:2px solid #fff; color:#fff; padding:12px 25px; border-radius:20px; font-weight:bold; font-size:1.1rem; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.5);">بدء من جديد 🔄</button>' +
@@ -1246,22 +1244,12 @@
         document.getElementById('res-surrender-btn').addEventListener('click', function() { window.askSurrender(); });
     };
 
-    // نظام تشغيل محمي يضمن فتح الواجهة دائماً وعدم تعليقها (Anti-Freeze Initialization)
     window._appInitialized = false;
     function startAppInit() { 
         if (window._appInitialized) return;
         window._appInitialized = true;
-
         window.safeShow('loading-screen', 'flex'); 
-        
-        // إجبار واجهة المتصفح على فتح شاشة الدخول مهما حدث بعد 4 ثوانٍ
-        setTimeout(function() { 
-            var ls = document.getElementById('loading-screen'); 
-            if (ls && ls.style.display !== 'none') { 
-                if (typeof window.finishLoading === 'function') window.finishLoading(true); 
-            } 
-        }, 4000);
-        
+        setTimeout(function() { var ls = document.getElementById('loading-screen'); if (ls && ls.style.display !== 'none') { if (typeof window.finishLoading === 'function') window.finishLoading(true); } }, 4000); 
         setTimeout(function() { var bells = document.querySelectorAll('.fa-bell'); bells.forEach(function(b) { var btn = b.closest('button, div'); if(btn) btn.onclick = window.openFriendRequests; }); }, 1500);
 
         if (window.auth) { 
@@ -1275,8 +1263,7 @@
                                 if (d.isBanned === true) { window.safeShow('banned-screen', 'flex'); return; } 
                                 loggedUser = d.name || user.displayName || 'أسطورة'; pID = d.numId || pID; pts = parseInt(d.score || pts); 
                                 if (d.hints !== undefined) totalHints = parseInt(d.hints); if (d.spins !== undefined) spins = parseInt(d.spins); if (d.ownedTitles) ownedTitles = d.ownedTitles; if (d.title) activeTitleId = d.title; if (d.answeredQs) answeredQs = d.answeredQs; if (d.avatar) currentAvatar = d.avatar; if (d.randomWinStreak !== undefined) randomWinStreak = parseInt(d.randomWinStreak); if (d.role) { currentUserRole = d.role; window.lsSet('ULT_ROLE', d.role); } if (d.hasNeon === true || d.hasNeon === 'true') hasNeonUser = true; 
-                                var lastDailySpin = parseInt(window.lsGet('ULT_LAST_DAILY_SPIN', 0));
-                                if (Date.now() - lastDailySpin > (24 * 60 * 60 * 1000)) { window.addSpin(1); window.lsSet('ULT_LAST_DAILY_SPIN', Date.now()); window.showTopToast("حصلت على دورة عجلة حظ مجانية لليوم! 🎁"); }
+                                var lastDailySpin = parseInt(window.lsGet('ULT_LAST_DAILY_SPIN', 0)); if (Date.now() - lastDailySpin > (24 * 60 * 60 * 1000)) { window.addSpin(1); window.lsSet('ULT_LAST_DAILY_SPIN', Date.now()); }
                             } else {
                                 pID = window.generateNumID(); window.lsSet('ULT_PRO_ID_V4', pID); loggedUser = user.displayName || 'أسطورة'; window.lsSet('ULT_USER', loggedUser); pts = 0; totalHints = 3; spins = 1; activeTitleId = 't1'; ownedTitles = ['t1']; currentAvatar = user.photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; randomWinStreak = 0; currentUserRole = 'user'; hasNeonUser = false; isBusy = false; window.lsSet('ULT_LAST_DAILY_SPIN', Date.now()); window.saveProgress(false);
                             }
@@ -1286,22 +1273,13 @@
                     } else { if (typeof window.finishLoading === 'function') window.finishLoading(false); }
                 } else { if (loggedUser && loggedUser !== '' && !isGoogle) { if (typeof window.finishLoading === 'function') window.finishLoading(false); } else { if (typeof window.finishLoading === 'function') window.finishLoading(true); } } 
             }); 
-        } else { 
-            if (loggedUser && loggedUser !== '' && !isGoogle) { if (typeof window.finishLoading === 'function') window.finishLoading(false); } else { if (typeof window.finishLoading === 'function') window.finishLoading(true); } 
-        } 
+        } else { if (loggedUser && loggedUser !== '' && !isGoogle) { if (typeof window.finishLoading === 'function') window.finishLoading(false); } else { if (typeof window.finishLoading === 'function') window.finishLoading(true); } } 
         var glowMessages = ["سبحان الله", "الحمد لله", "لا إله إلا الله", "الله أكبر", "اللهم صلِّ على محمد", "أستغفر الله العظيم"]; 
         var glowIndex = 0; var glowEl = document.getElementById('glow-msg'); 
         if (glowEl) { setInterval(function() { glowIndex = (glowIndex + 1) % glowMessages.length; glowEl.innerText = glowMessages[glowIndex]; }, 4000); } 
     }
 
-    if (document.readyState === "complete" || document.readyState === "interactive") {
-        setTimeout(startAppInit, 1);
-    } else {
-        window.addEventListener('DOMContentLoaded', startAppInit);
-        window.addEventListener('load', startAppInit);
-    }
-    
-    // إجبار تشغيل التهيئة إذا لم يستجب المتصفح
+    if (document.readyState === "complete" || document.readyState === "interactive") { setTimeout(startAppInit, 1); } else { window.addEventListener('DOMContentLoaded', startAppInit); window.addEventListener('load', startAppInit); }
     setTimeout(startAppInit, 3000);
 </script>
 </body>
